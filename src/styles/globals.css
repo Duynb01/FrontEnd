@@ -16,24 +16,6 @@
   --font-sans: "Quicksand", sans-serif;
   --font-mono: "Quicksand Mono", monospace;
 }
-.bg-color {
-  background-color: var(--main-color);
-}
-.t-color {
-  color: var(--main-color);
-}
-.b-color {
-  border-color: var(--main-color);
-}
-.label-color {
-  color: var(--label-color);
-}
-.price-discount {
-  color: var(--price-discount);
-}
-.price-old {
-  color: var(--price-old);
-}
 
 @media (prefers-color-scheme: dark) {
   :root {
