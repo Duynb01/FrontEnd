@@ -9,6 +9,9 @@ module.exports = {
         discount: "var(--price-discount)",
         old: "var(--price-old)",
       },
+      screens: {
+        mdx: "991px",
+      },
     },
   },
   plugins: [],
