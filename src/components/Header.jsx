@@ -141,7 +141,7 @@ export default function Header() {
       </div>
 
       {/* Menu chính */}
-      <nav className="bg-gray-100 ">
+      <nav className="bg-[#f2f2f2]">
         <ul className="max-w-7xl mx-auto px-4  flex flex-wrap items-center gap-x-6 text-sm font-medium text-gray-700 justify-center">
           {categories.map((category, index) => (
             <li

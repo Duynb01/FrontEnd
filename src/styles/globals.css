@@ -6,7 +6,7 @@
 
 :root {
   --container-width: 1400px;
-  --background: #ffffff;
+  --background: #f7f7f7;
   --foreground: #171717;
   --main-color: #c4123f;
   --label-color: #9a9a9a;
@@ -56,8 +56,8 @@ a {
   padding: 0 15px;
 }
 
-section{
-  padding-block: 35px
+section {
+  padding-block: 35px;
 }
 
 @media (prefers-color-scheme: dark) {
