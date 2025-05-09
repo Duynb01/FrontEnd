@@ -1,4 +1,5 @@
 import ProductCard from "@/components/ProductCard";
+import ProductSuper from "@/components/ProductSuper";
 import Banner from "@/components/Banner";
 import Image from "next/image";
 import Link from "next/link";
@@ -43,6 +44,19 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+        <section className="home-product">
+          <div className="product-content bg-[#ffeef0] rounded-md py-4 px-2">
+            <h2 className="text-[30px] font-bold mb-4 flex items-center gap-4 pl-4 before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:animate-pulseSmall">
+            
+              <a href="" className="">
+                Đồ bếp nhập khẩu cao cấp
+              </a>
+            </h2>
+            <div className="flex items-center">
+              <ProductSuper />
+            </div>
           </div>
         </section>
       </div>

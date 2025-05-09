@@ -12,6 +12,16 @@ module.exports = {
       screens: {
         mdx: "991px",
       },
+      keyframes: {
+        pulseSmall: {
+          "0%": { transform: "scale(0)", opacity: "1" },
+          "50%": { opacity: "0.6" },
+          "100%": { transform: "scale(3.4)", opacity: "0" },
+        },
+      },
+      animation: {
+        pulseSmall: "pulseSmall 1.2s ease-out forwards infinite",
+      },
     },
   },
   plugins: [],
