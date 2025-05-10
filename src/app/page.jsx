@@ -3,6 +3,7 @@ import ProductSuper from "@/components/ProductSuper";
 import Banner from "@/components/Banner";
 import Image from "next/image";
 import Link from "next/link";
+import { CircleChevronRightIcon } from "lucide-react";
 export default function Home() {
   const categorys = [
     { name: "Phòng khách", img: "/category/category_1_img.jpg" },
@@ -48,14 +49,24 @@ export default function Home() {
         </section>
         <section className="home-product">
           <div className="product-content bg-[#ffeef0] rounded-md py-4 px-2">
-            <h2 className="text-[30px] font-bold mb-4 flex items-center gap-4 pl-4 before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:animate-pulseSmall">
-            
-              <a href="" className="">
-                Đồ bếp nhập khẩu cao cấp
-              </a>
+            <h2 className="text-2xl font-bold mb-4 flex items-center gap-4 pl-[7px] relative before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:content[''] after:border-main after:rounded-full after:w-2 after:h-2 after:absolute after:border after:animate-pulseSmall">
+              <Link href="">Đồ bếp nhập khẩu cao cấp</Link>
             </h2>
             <div className="flex items-center">
               <ProductSuper />
+              <ProductSuper />
+              <ProductSuper />
+              <ProductSuper />
+              <ProductSuper />
+            </div>
+            <div className="bg-white w-[19%] mx-auto rounded-md overflow-hidden group">
+              <Link
+                href={"#"}
+                className="flex items-center justify-center py-2 gap-3 text-[#333333] group-hover:bg-main group-hover:text-white transition-colors duration-500 ease-in-out"
+              >
+                <span className="font-bold">Xem tất cả</span>
+                <CircleChevronRightIcon className="w-5 h-5" />
+              </Link>
             </div>
           </div>
         </section>
