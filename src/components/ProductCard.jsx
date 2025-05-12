@@ -1,30 +1,11 @@
 "use client";
 
-import { formatPrice } from "@/utils/price";
-import { useEffect, useState } from "react";
+import { useCaculatorPrice } from "@/hooks/useCaculatorPrice";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 export default function ProductCard({ product }) {
-  const [price, setPrice] = useState({});
-  useEffect(() => {
-    if (product.discount) {
-      const oldPrice = formatPrice(product.price);
-      const newPrice = formatPrice(
-        Number(product.price) * (1 - Number(product.discount) / 100)
-      );
-      setPrice({
-        oldPrice: oldPrice,
-        newPrice: newPrice,
-      });
-    } else {
-      const oriPrice = formatPrice(product.price);
-      setPrice({
-        oriPrice: oriPrice,
-      });
-    }
-  }, [product]);
-
+  const price = useCaculatorPrice(product);
   return (
     <div className="group m-[20px] max-w-[12rem] shadow-[0px_0px_3px_rgb(0,0,0,0.1)] rounded-sm bg-white">
       <div className="p-[5px] relative">

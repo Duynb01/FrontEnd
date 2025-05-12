@@ -33,6 +33,43 @@ export default function Home() {
       price: "65000",
     },
   ];
+  const productSuper = [
+    {
+      supplier: "anne",
+      name: "Bát ăn cơm gốm sứ ANNE màu ngẫu nhiên H5.7xD11.3",
+      src: "https://product.hstatic.net/200000796751/product/2002527.2_acffaf6d910445b1b29e0593ff392ba5.jpg",
+      price: "45000",
+      discount: "30",
+    },
+    {
+      supplier: "anne",
+      name: "Bát ăn snack gốm sứ ANNE màu ngẫu nhiên H6.5xD11.5",
+      src: "https://product.hstatic.net/200000796751/product/2002535_5b3eede60829490499619fabe5dbd0a9.jpg",
+      price: "55000",
+      discount: "60",
+    },
+    {
+      supplier: "anne",
+      name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
+      src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
+      price: "65000",
+      discount: "30",
+    },
+    {
+      supplier: "anne",
+      name: "Bát ăn snack gốm sứ ANNE màu ngẫu nhiên H6.5xD11.5",
+      src: "https://product.hstatic.net/200000796751/product/2002535_5b3eede60829490499619fabe5dbd0a9.jpg",
+      price: "55000",
+      discount: "60",
+    },
+    {
+      supplier: "anne",
+      name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
+      src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
+      price: "65000",
+      discount: "30",
+    },
+  ];
   return (
     <>
       <div className="wrapper container">
@@ -78,11 +115,9 @@ export default function Home() {
               <Link href="">Đồ bếp nhập khẩu cao cấp</Link>
             </h2>
             <div className="flex items-center overflow-x-scroll scrollbar-none">
-              <ProductSuper />
-              <ProductSuper />
-              <ProductSuper />
-              <ProductSuper />
-              <ProductSuper />
+              {productSuper.map((product, i) => (
+                <ProductSuper key={i} product={product} />
+              ))}
             </div>
             <div className="bg-white w-[19%] mx-auto rounded-md overflow-hidden group">
               <Link
@@ -100,11 +135,17 @@ export default function Home() {
           <Voucher />
           <Voucher />
         </section>
-        <section className="flex">
-          {/* <ProductCard product={product} /> */}
-          {products.map((product, i) => (
-            <ProductCard key={i} product={product} />
-          ))}
+        <section>
+          <div className="text-main text-2xl font-bold mb-5 pl-[7px]">
+            <h2>
+              <Link href={""}>Back To School - Up To 60%</Link>
+            </h2>
+          </div>
+          <div className="flex">
+            {productSuper.map((product, i) => (
+              <ProductSuper key={i} product={product} />
+            ))}
+          </div>
         </section>
       </div>
     </>
