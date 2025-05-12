@@ -1,29 +1,64 @@
 "use client";
+
+import { formatPrice } from "@/utils/price";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
+export default function ProductCard({ product }) {
+  const [price, setPrice] = useState({});
+  useEffect(() => {
+    if (product.discount) {
+      const oldPrice = formatPrice(product.price);
+      const newPrice = formatPrice(
+        Number(product.price) * (1 - Number(product.discount) / 100)
+      );
+      setPrice({
+        oldPrice: oldPrice,
+        newPrice: newPrice,
+      });
+    } else {
+      const oriPrice = formatPrice(product.price);
+      setPrice({
+        oriPrice: oriPrice,
+      });
+    }
+  }, [product]);
 
-export default function ProductCard() {
   return (
-    <div className="group m-[20px] max-w-[12rem] shadow-[0px_0px_3px_rgb(0,0,0,0.1)] rounded-sm">
-      <div className="p-[5px]">
-        <a href="">
+    <div className="group m-[20px] max-w-[12rem] shadow-[0px_0px_3px_rgb(0,0,0,0.1)] rounded-sm bg-white">
+      <div className="p-[5px] relative">
+        <Link href="" className="relative z-0">
           <img
-            src="https://product.hstatic.net/200000796751/product/2002527.1_bc0ddc2d40d44455a86bc4c9a443272e.jpg"
+            src={product.src}
             alt=""
             className="w-full max-h-[180px] object-contain rounded-t-sm transition-transform duration-300 ease-in-out group-hover:scale-105"
           />
-        </a>
+        </Link>
+        {product.discount && (
+          <span className="absolute bg-main text-white px-[5px] py-[2px] text-[12px] font-bold top-2 rounded-[4px]">
+            -{product.discount}%
+          </span>
+        )}
       </div>
-      <div className="px-[14px] py-[10px] flex flex-col items-center justify-center">
+      <div className="px-[14px] py-[10px] flex flex-col items-center justify-center ">
         <span className="uppercase text-xs text-label">
-          <a href="">nelly</a>
+          <Link href="">{product.supplier}</Link>
         </span>
-        <h3 className="text-sm  font-medium text-center">
-          <a href=""> Đệm Ngồi Ghế Thư Giãn 100% Cotton NELLY</a>
+        <h3 className="text-sm  font-medium text-center line-clamp-2">
+          <Link href="">{product.name}</Link>
         </h3>
-        <div className="flex items-center justify-center gap-2 mb-[10px]">
-          <span className="font-bold text-discount ">99,600₫</span>
-          <span className="line-through text-old text-[13px]">249,000₫</span>
+        <div className="price-content flex items-center justify-center gap-2 mb-[10px] mt-1 text-sm">
+          {!product.discount ? (
+            <span className="font-bold text-price ">{price.oriPrice}</span>
+          ) : (
+            <>
+              <span className="font-bold text-discount ">{price.newPrice}</span>
+              <span className="line-through text-old text-[13px]">
+                {price.oldPrice}
+              </span>
+            </>
+          )}
         </div>
         <button className="flex items-center justify-between text-[12px] font-bold rounded-full w-full border border-transparent cursor-pointer transition duration-300 ease-in-out group-hover:border-main">
           <span className="uppercase mx-4">Thêm vào giỏ</span>

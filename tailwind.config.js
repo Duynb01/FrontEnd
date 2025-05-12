@@ -8,6 +8,7 @@ module.exports = {
         label: "var(--label-color)",
         discount: "var(--price-discount)",
         old: "var(--price-old)",
+        price: "var(--price-color)",
       },
       screens: {
         mdc: "991px",
@@ -25,5 +26,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/line-clamp")],
 };

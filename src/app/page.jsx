@@ -12,6 +12,27 @@ export default function Home() {
     { name: "Phòng ăn và bếp", img: "/category/category_3_img.jpg" },
     { name: "Phòng làm việc", img: "/category/category_4_img.jpg" },
   ];
+  const products = [
+    {
+      supplier: "anne",
+      name: "Bát ăn cơm gốm sứ ANNE màu ngẫu nhiên H5.7xD11.3",
+      src: "https://product.hstatic.net/200000796751/product/2002527.2_acffaf6d910445b1b29e0593ff392ba5.jpg",
+      price: "45000",
+      discount: "30",
+    },
+    {
+      supplier: "anne",
+      name: "Bát ăn snack gốm sứ ANNE màu ngẫu nhiên H6.5xD11.5",
+      src: "https://product.hstatic.net/200000796751/product/2002535_5b3eede60829490499619fabe5dbd0a9.jpg",
+      price: "55000",
+    },
+    {
+      supplier: "anne",
+      name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
+      src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
+      price: "65000",
+    },
+  ];
   return (
     <>
       <div className="wrapper container">
@@ -78,6 +99,12 @@ export default function Home() {
           <Voucher />
           <Voucher />
           <Voucher />
+        </section>
+        <section className="flex">
+          {/* <ProductCard product={product} /> */}
+          {products.map((product, i) => (
+            <ProductCard key={i} product={product} />
+          ))}
         </section>
       </div>
     </>

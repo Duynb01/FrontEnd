@@ -7,7 +7,7 @@ export const metadata = {
   title: "Siêu thị nội thất & trang trí Baya",
   description: "Trang trí nội thất",
   icons: {
-    icon: "/favicon.ico", // Đường dẫn tới favicon trong thư mục public
+    icon: "/favicon.svg",
   },
 };
 
