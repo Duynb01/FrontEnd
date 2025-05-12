@@ -1,6 +1,7 @@
 import ProductCard from "@/components/ProductCard";
 import ProductSuper from "@/components/ProductSuper";
 import Banner from "@/components/Banner";
+import Voucher from "@/components/Voucher";
 import Image from "next/image";
 import Link from "next/link";
 import { CircleChevronRightIcon } from "lucide-react";
@@ -35,7 +36,10 @@ export default function Home() {
                 </Link>
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center px-5 py-[10px] w-full">
                   <h3>
-                    <Link href="" className="text-main font-bold text-[18px]">
+                    <Link
+                      href=""
+                      className="text-main font-bold text-[16px] mdx:text-[18px]"
+                    >
                       {category.name}
                     </Link>
                   </h3>
@@ -52,7 +56,7 @@ export default function Home() {
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-4 pl-[7px] relative before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:content[''] after:border-main after:rounded-full after:w-2 after:h-2 after:absolute after:border after:animate-pulseSmall">
               <Link href="">Đồ bếp nhập khẩu cao cấp</Link>
             </h2>
-            <div className="flex items-center">
+            <div className="flex items-center overflow-x-scroll scrollbar-none">
               <ProductSuper />
               <ProductSuper />
               <ProductSuper />
@@ -69,6 +73,11 @@ export default function Home() {
               </Link>
             </div>
           </div>
+        </section>
+        <section className="home-voucher flex flex-wrap pt-0 gap-y-[14px] ">
+          <Voucher />
+          <Voucher />
+          <Voucher />
         </section>
       </div>
     </>

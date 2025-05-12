@@ -22,7 +22,7 @@ export default function Banner() {
 
   return (
     <>
-      <div className="banner-content group relative w-full h-[20rem] sm:h-[24rem] md:h-[28rem] mdx:h-[30rem] lg:h-[33rem] rounded-md overflow-hidden">
+      <div className="banner-content group relative w-full h-[20rem] sm:h-[24rem] md:h-[28rem] mdc:h-[30rem] lg:h-[33rem] rounded-md overflow-hidden">
         <div className="picture absolute inset-0 w-full h-full">
           {images.map((image, i) => (
             <Image

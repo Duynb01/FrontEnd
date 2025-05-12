@@ -10,7 +10,8 @@ module.exports = {
         old: "var(--price-old)",
       },
       screens: {
-        mdx: "991px",
+        mdc: "991px",
+        smc: "576px",
       },
       keyframes: {
         pulseSmall: {
