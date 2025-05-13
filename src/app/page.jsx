@@ -70,6 +70,40 @@ export default function Home() {
       discount: "30",
     },
   ];
+  const trendCategorize = [
+    {
+      name: "Sofa",
+      scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_1_img.jpg?v=91",
+    },
+    {
+      name: "Bàn",
+      scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_2_img.jpg?v=91",
+    },
+    {
+      name: "Ghế",
+      scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_3_img.jpg?v=91",
+    },
+    {
+      name: "Giường",
+      scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_4_img.jpg?v=91",
+    },
+    {
+      name: "Nệm",
+      scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_5_img.jpg?v=91",
+    },
+    {
+      name: "Đèn",
+      scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_6_img.jpg?v=91",
+    },
+    {
+      name: "Lọ hoa",
+      scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_7_img.jpg?v=91",
+    },
+    {
+      name: "Khung ảnh",
+      scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_8_img.jpg?v=91",
+    },
+  ];
   return (
     <>
       <div className="wrapper container">
@@ -135,7 +169,7 @@ export default function Home() {
           <Voucher />
           <Voucher />
         </section>
-        <section>
+        <section className="home-discount">
           <div className="text-main text-2xl font-bold mb-5 pl-[7px]">
             <h2>
               <Link href={""}>Back To School - Up To 60%</Link>
@@ -145,6 +179,38 @@ export default function Home() {
             {productSuper.map((product, i) => (
               <ProductSuper key={i} product={product} />
             ))}
+          </div>
+        </section>
+        <section className="home-trend">
+          <div className="trend-content flex items-center px-5 py-[15px] bg-[url('https://theme.hstatic.net/200000796751/1001266995/14/categorize_img.jpg?v=91')] bg-cover bg-no-repeat before:content-[''] before:bg-[rgba(0,0,0,0.35)] before:absolute before:w-full before:h-full before:left-0 before:top-0 relative">
+            <div className="text-white relative px-[15px] text-right w-1/6">
+              <h3 className="text-lg font-bold mb-2">Xu hướng tìm kiếm</h3>
+              <Link
+                href={""}
+                className="uppercase text-[13px] px-[15px] py-[5px] bg-[#C31425] rounded-full"
+              >
+                xem ngay
+              </Link>
+            </div>
+            <div className="relative flex items-center justify-between px-[15px] w-full overflow-x-scroll scrollbar-none">
+              {trendCategorize.map((item, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col items-center justify-center px-[15px]"
+                >
+                  <div className="w-[90px] h-[90px] bg-white rounded-full p-[10px]">
+                    <img
+                      src={item.scr}
+                      alt=""
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
+                  <h3 className="text-white text-sm pt-2 font-medium">
+                    {item.name}
+                  </h3>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       </div>
