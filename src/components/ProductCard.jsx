@@ -1,18 +1,21 @@
 "use client";
+import Image from "next/image";
+import Link from "next/link";
 
 import { useCaculatorPrice } from "@/hooks/useCaculatorPrice";
-import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 export default function ProductCard({ product }) {
   const price = useCaculatorPrice(product);
   return (
-    <div className="group m-[20px] max-w-[12rem] shadow-[0px_0px_3px_rgb(0,0,0,0.1)] rounded-sm bg-white">
+    <div className="group w-full max-w-[12rem] smx:max-w-[14rem] mdx:max-w-[16rem] shadow-[0px_0px_3px_rgb(0,0,0,0.1)] rounded-sm bg-white">
       <div className="p-[5px] relative">
         <Link href="" className="relative z-0">
-          <img
+          <Image
             src={product.src}
             alt=""
+            width={480}
+            height={480}
             className="w-full max-h-[180px] object-contain rounded-t-sm transition-transform duration-300 ease-in-out group-hover:scale-105"
           />
         </Link>

@@ -1,12 +1,8 @@
 const formatPrice = (price) => {
-  const num = Number(price);
-  if (!isNaN(num)) {
-    return (
-      Math.round(num)
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "₫"
-    );
-  }
-  return "";
+  if (!price || isNaN(price)) return "0 ₫";
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(price);
 };
 export { formatPrice };

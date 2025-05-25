@@ -2,6 +2,7 @@ import ProductCard from "@/components/ProductCard";
 import ProductSuper from "@/components/ProductSuper";
 import Banner from "@/components/Banner";
 import Voucher from "@/components/Voucher";
+import SocialAccount from "@/components/SociaAccount";
 import Image from "next/image";
 import Link from "next/link";
 import { CircleChevronRightIcon } from "lucide-react";
@@ -31,6 +32,51 @@ export default function Home() {
       name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
       src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
       price: "65000",
+    },
+    {
+      supplier: "anne",
+      name: "Bát ăn cơm gốm sứ ANNE màu ngẫu nhiên H5.7xD11.3",
+      src: "https://product.hstatic.net/200000796751/product/2002527.2_acffaf6d910445b1b29e0593ff392ba5.jpg",
+      price: "45000",
+      discount: "30",
+    },
+    {
+      supplier: "anne",
+      name: "Bát ăn snack gốm sứ ANNE màu ngẫu nhiên H6.5xD11.5",
+      src: "https://product.hstatic.net/200000796751/product/2002535_5b3eede60829490499619fabe5dbd0a9.jpg",
+      price: "55000",
+    },
+    {
+      supplier: "anne",
+      name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
+      src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
+      price: "65000",
+    },
+    {
+      supplier: "anne",
+      name: "Bát ăn cơm gốm sứ ANNE màu ngẫu nhiên H5.7xD11.3",
+      src: "https://product.hstatic.net/200000796751/product/2002527.2_acffaf6d910445b1b29e0593ff392ba5.jpg",
+      price: "45000",
+      discount: "30",
+    },
+    {
+      supplier: "anne",
+      name: "Bát ăn snack gốm sứ ANNE màu ngẫu nhiên H6.5xD11.5",
+      src: "https://product.hstatic.net/200000796751/product/2002535_5b3eede60829490499619fabe5dbd0a9.jpg",
+      price: "55000",
+    },
+    {
+      supplier: "anne",
+      name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
+      src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
+      price: "65000",
+    },
+    {
+      supplier: "anne",
+      name: "Bát ăn cơm gốm sứ ANNE màu ngẫu nhiên H5.7xD11.3",
+      src: "https://product.hstatic.net/200000796751/product/2002527.2_acffaf6d910445b1b29e0593ff392ba5.jpg",
+      price: "45000",
+      discount: "30",
     },
   ];
   const productSuper = [
@@ -143,7 +189,7 @@ export default function Home() {
             ))}
           </div>
         </section>
-        <section className="home-product">
+        <section className="home-product-1">
           <div className="product-content bg-[#ffeef0] rounded-md py-4 px-2">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-4 pl-[7px] relative before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:content[''] after:border-main after:rounded-full after:w-2 after:h-2 after:absolute after:border after:animate-pulseSmall">
               <Link href="">Đồ bếp nhập khẩu cao cấp</Link>
@@ -169,7 +215,7 @@ export default function Home() {
           <Voucher />
           <Voucher />
         </section>
-        <section className="home-discount">
+        <section className="home-product-2">
           <div className="text-main text-2xl font-bold mb-5 pl-[7px]">
             <h2>
               <Link href={""}>Back To School - Up To 60%</Link>
@@ -199,7 +245,9 @@ export default function Home() {
                   className="flex flex-col items-center justify-center px-[15px]"
                 >
                   <div className="w-[90px] h-[90px] bg-white rounded-full p-[10px]">
-                    <img
+                    <Image
+                      width={100}
+                      height={100}
                       src={item.scr}
                       alt=""
                       className="w-full h-full object-cover rounded-full"
@@ -212,6 +260,40 @@ export default function Home() {
               ))}
             </div>
           </div>
+        </section>
+        <section className="home-product-3">
+          <div>
+            <h2 className="text-main text-2xl font-bold mb-5">
+              <Link href={""}>Sản phẩm mới</Link>
+            </h2>
+            <div className="flex items-start">
+              <div className="sidebar max-w-[20%] bg-black mdc:block hidden">
+                <Image
+                  src="https://theme.hstatic.net/200000796751/1001266995/14/home_coll_1_banner.jpg?v=91"
+                  width={1500}
+                  height={3764}
+                  alt=""
+                  className="w-full h-full object-cover "
+                />
+              </div>
+              <div className="product-content max-w-[80%] grid mdc:grid-rows-2 mdc:grid-cols-5 gap-4 grid-rows-2 grid-cols-5 w-full">
+                {products.map((product, i) => (
+                  <ProductCard key={i} product={product} />
+                ))}
+              </div>
+            </div>
+            <div>
+              <Link href={""}>
+                <div className="flex items-center justify-center py-2 gap-3 text-[#333333] group-hover:bg-main group-hover:text-white transition-colors duration-500 ease-in-out">
+                  <span className="font-bold">Xem tất cả</span>
+                  <CircleChevronRightIcon className="w-5 h-5" />
+                </div>
+              </Link>
+            </div>
+          </div>
+        </section>
+        <section>
+          <SocialAccount />
         </section>
       </div>
     </>

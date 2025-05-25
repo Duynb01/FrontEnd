@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Heart, ShoppingCart, User, ChevronDown } from "lucide-react";
+import NavDesktop from "./NavDesktop";
+import NavMobile from "./NavMobile";
+import Search from "./Search";
+import { Menu, Heart, ShoppingCart, User } from "lucide-react";
 
 export default function Header() {
   const categories = [
@@ -94,31 +97,26 @@ export default function Header() {
       childs: ["Thảm phòng tắm", "Rèm tắm", "Vật dụng phòng tắm"],
     },
   ];
+  const onShowMenu = () => {
+    console.log("show menu Vào đây");
+  };
   return (
-    <header className="shadow-sm sticky top-0 z-50 bg-main w-screen">
+    <header className="shadow-sm sticky top-0 z-40 bg-main w-screen">
       <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
+        <Menu className="w-8 h-8 text-white mdc:hidden" onClick={onShowMenu} />
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold text-white">
           BAYA
         </Link>
 
         {/* Search Bar */}
-        <div className="flex-1 max-w-xl relative">
-          <input
-            type="text"
-            placeholder="Tìm kiếm sản phẩm..."
-            className="text-gray font-medium w-full border border-gray-300 rounded-full px-4 py-2 bg-white focus:outline-none focus:ring-1 "
-          />
-          <button className="  text-main active:text-[#67031c] absolute top-2.5 right-4 cursor-pointer">
-            <Search className="w-5 h-5" />
-          </button>
-        </div>
+        <Search />
 
         {/* Icons */}
         <div className="flex items-center gap-6">
           <Link
             href="/login"
-            className="flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black"
+            className="mdc:flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black hidden "
           >
             <User className="w-5 h-5" />
             <span>Tài khoản</span>
@@ -127,56 +125,24 @@ export default function Header() {
             href="/wishlist"
             className="flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black"
           >
-            <Heart className="w-5 h-5" />
-            <span>Yêu thích</span>
+            <Heart size={32} className=" mdc:w-5 mdc:h-5" />
+            <span className="hidden mdc:block">Yêu thích</span>
           </Link>
           <Link
             href="/cart"
             className="flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black"
           >
-            <ShoppingCart className="w-5 h-5" />
-            <span>Giỏ hàng</span>
+            <ShoppingCart size={32} className=" mdc:w-5 mdc:h-5" />
+            <span className="hidden mdc:block">Giỏ hàng</span>
           </Link>
         </div>
       </div>
 
       {/* Menu chính */}
-      <nav className="bg-[#f2f2f2]">
-        <ul className="max-w-7xl mx-auto px-4  flex flex-wrap items-center gap-x-6 text-sm font-medium text-gray-700 justify-center">
-          {categories.map((category, index) => (
-            <li
-              className="relative group min-h-[52px] flex items-center"
-              key={index}
-            >
-              <Link
-                href={category.path}
-                className=" flex items-center text-main uppercase py-2"
-              >
-                {category.name}
-                <ChevronDown className="w-4 h-4 inline-block transform transition-transform duration-300 group-hover:rotate-180 text-main" />
-              </Link>
-              {/*Menu phụ*/}
-              <ul
-                className="absolute min-w-[220px] shadow-[0px_6px_15px_rgb(0,0,0,0.2)] left-0 top-full bg-white opacity-0 translate-y-8 pointer-events-none transform transition duration-300 ease 
-  group-hover:opacity-100 group-hover:translate-y-[0.5px] group-hover:pointer-events-auto"
-              >
-                {category.childs.map((child, index) => (
-                  <li
-                    key={index}
-                    className={`py-[9px] px-[18px] overflow-hidden cursor-pointer hover:font-bold ${
-                      index !== category.childs.length - 1
-                        ? "border-b border-gray-200"
-                        : ""
-                    }`}
-                  >
-                    {child}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <div>
+        <NavDesktop categories={categories} />
+        <NavMobile categories={categories} />
+      </div>
     </header>
   );
 }
