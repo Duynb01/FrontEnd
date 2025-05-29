@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import NavDesktop from "./NavDesktop";
 import NavMobile from "./NavMobile";
 import Search from "./Search";
@@ -103,8 +104,18 @@ export default function Header() {
           <NavMobile categories={categories} />
         </div>
         {/* Logo */}
-        <Link href="/" className="text-2xl font-bold text-white">
-          BAYA
+        <Link
+          href="#"
+          className="text-2xl font-bold text-white flex items-center gap-2"
+        >
+          <Image
+            src="/logo.svg"
+            width={50}
+            height={50}
+            alt="Logo"
+            className="mx-auto rounded-full  font-bold"
+          />
+          FNS
         </Link>
 
         {/* Search Bar */}
@@ -114,17 +125,10 @@ export default function Header() {
         <div className="flex items-center gap-6">
           <Link
             href="/login"
-            className="mdc:flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black hidden "
-          >
-            <User className="w-5 h-5" />
-            <span>Tài khoản</span>
-          </Link>
-          <Link
-            href="/wishlist"
             className="flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black"
           >
-            <Heart size={32} className=" mdc:w-5 mdc:h-5" />
-            <span className="hidden mdc:block">Yêu thích</span>
+            <User size={32} className=" mdc:w-5 mdc:h-5" />
+            <span className="hidden mdc:block">Tài khoản</span>
           </Link>
           <Link
             href="/cart"

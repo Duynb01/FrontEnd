@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { X, ChevronDown, Menu } from "lucide-react";
@@ -27,7 +28,7 @@ export default function NavMobile({ categories }) {
       ></div>
 
       <div
-        className={`z-50 p-4 block bg-white mdc:hidden w-[40%] fixed inset-0 transform transition-transform duration-300 ease-in-out h-screen overflow-y-auto scrollbar-none ${
+        className={`z-50 p-4 block bg-white mdc:hidden w-[40%] fixed inset-0 transform transition-transform duration-300 ease-in-out overflow-y-auto scrollbar-none ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -42,7 +43,7 @@ export default function NavMobile({ categories }) {
         <nav className="mt-10">
           <ul className="flex flex-col gap-1">
             {categories.map((category, index) => (
-              <>
+              <React.Fragment key={category.name}>
                 <li
                   key={index}
                   onClick={() => toggleCategory(index)}
@@ -50,7 +51,7 @@ export default function NavMobile({ categories }) {
                 >
                   <Link
                     href={"#"}
-                    className=" text-main font-bold text-md hover:text-amber-60 flex items-center justify-between"
+                    className=" text-main font-bold text-md flex items-center justify-between"
                   >
                     {category.name}
                     <ChevronDown
@@ -69,7 +70,7 @@ export default function NavMobile({ categories }) {
                     {category.childs.map((child, index) => (
                       <li
                         key={index}
-                        className={`py-[9px] px-[18px] overflow-hidden cursor-pointer hover:font-bold ${
+                        className={`py-[9px] px-[18px] cursor-pointer hover:font-bold ${
                           index !== category.childs.length - 1
                             ? "border-b border-gray-200"
                             : ""
@@ -80,7 +81,7 @@ export default function NavMobile({ categories }) {
                     ))}
                   </ul>
                 </div>
-              </>
+              </React.Fragment>
             ))}
           </ul>
         </nav>

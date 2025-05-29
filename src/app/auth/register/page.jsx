@@ -1,149 +1,126 @@
 "use client";
 
+import SocialAccount from "@/components/SociaAccount";
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
-export default function RegisterPage() {
-  const RegisterForm = ({ onSubmit, onToggle }) => {
-    const [formData, setFormData] = useState({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+export default function LoginForm() {
+  const message = "Đăng ký";
 
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    };
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
 
-    const handleSubmit = () => {
-      if (
-        !formData.name ||
-        !formData.email ||
-        !formData.password ||
-        !formData.confirmPassword
-      ) {
-        alert("Vui lòng điền đầy đủ thông tin!");
-        return;
-      }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-      if (formData.password !== formData.confirmPassword) {
-        alert("Mật khẩu xác nhận không khớp!");
-        return;
-      }
-
-      onSubmit({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-    };
-
-    return (
-      <div className="space-y-6">
-        {/* Họ và Tên */}
-        <div className="space-y-2">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Họ và Tên
-          </label>
+  const handleSubmit = () => {
+    if (!formData.email || !formData.password) {
+      alert("Vui lòng điền đầy đủ thông tin!");
+      return;
+    }
+    //   onSubmit(formData);
+  };
+  // shadow-[0px_1px_4px_rgb(0, 0, 0, 0.16)]
+  return (
+    <>
+      <div className="w-[30rem] mx-auto my-7 px-5 py-5 border rounded-sm flex flex-col">
+        <Image
+          src="/logo.svg"
+          width={120}
+          height={120}
+          alt="Logo"
+          className="mx-auto rounded-full  font-bold"
+        />
+        <form action="" className="flex flex-col gap-4 items-center my-3">
+          <h2 className="uppercase font-bold text-main text-xl">
+            đăng ký tài khoản
+          </h2>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.name}
+            id="fullname"
+            name="fullname"
+            value={formData.fullname}
             onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-            placeholder="Nhập họ và tên"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
+            placeholder="Họ tên .."
+            required
           />
-        </div>
 
-        {/* Email */}
-        <div className="space-y-2">
-          <label
-            htmlFor="register-email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email
-          </label>
           <input
             type="email"
-            id="register-email"
+            id="email"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-            placeholder="Nhập email"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
+            placeholder="Email .."
+            required
           />
-        </div>
-
-        {/* Mật khẩu */}
-        <div className="space-y-2">
-          <label
-            htmlFor="register-password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Mật khẩu
-          </label>
+          <input
+            type="number"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
+            placeholder="Số điện thoại .."
+            required
+          />
           <input
             type="password"
-            id="register-password"
+            id="password"
             name="password"
             value={formData.password}
             onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-            placeholder="Nhập mật khẩu"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
+            placeholder="Mật Khẩu .."
+            required
           />
-        </div>
-
-        {/* Xác nhận mật khẩu */}
-        <div className="space-y-2">
-          <label
-            htmlFor="confirmPassword"
-            className="block text-sm font-medium text-gray-700"
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="w-full  bg-main text-white py-3 px-4 rounded-md font-bold "
           >
-            Xác nhận mật khẩu
-          </label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-            placeholder="Nhập lại mật khẩu"
-          />
-        </div>
+            Đăng Ký
+          </button>
+        </form>
+        <div></div>
+        {/* Quên mật khẩu Sẽ suy nghĩ thêm sau*/}
+        {/* <div className="text-right">
+          <button
+            type="button"
+            className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+          >
+            Quên mật khẩu?
+          </button>
+        </div> */}
 
-        {/* Submit button */}
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="w-full bg-gradient-to-r from-green-500 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-green-600 hover:to-blue-700 focus:ring-4 focus:ring-green-300 transition-all duration-200 transform hover:scale-105"
-        >
-          Đăng Ký
-        </button>
-
-        {/* Toggle to Login */}
+        {/* Toggle to Register */}
         <div className="text-center">
           <p className="text-gray-600">
-            Đã có tài khoản?
-            <button
-              type="button"
-              onClick={onToggle}
-              className="ml-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
+            Nếu đã có tài khoản?
+            <Link
+              href={`/login`}
+              className="ml-2 text-main font-medium transition-colors"
             >
               Đăng nhập ngay
-            </button>
+            </Link>
           </p>
         </div>
+        <div>
+          <SocialAccount message={message} />
+        </div>
       </div>
-    );
-  };
+    </>
+  );
 }

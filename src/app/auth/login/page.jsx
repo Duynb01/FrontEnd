@@ -1,11 +1,13 @@
 "use client";
 
 import SocialAccount from "@/components/SociaAccount";
-
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function LoginForm() {
+  const message = "Đăng nhập";
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,82 +28,76 @@ export default function LoginForm() {
     }
     //   onSubmit(formData);
   };
-
+  // shadow-[0px_1px_4px_rgb(0, 0, 0, 0.16)]
   return (
-    <div className="space-y-6">
-      {/* Email */}
-      <div className="space-y-2">
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-          placeholder="Nhập email"
+    <>
+      <div className="w-[30rem] mx-auto my-7 px-5 py-5 border rounded-sm flex flex-col">
+        <Image
+          src="/logo.svg"
+          width={120}
+          height={120}
+          alt="Logo"
+          className="mx-auto rounded-full  font-bold"
         />
-      </div>
-
-      {/* Mật khẩu */}
-      <div className="space-y-2">
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Mật khẩu
-        </label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-          placeholder="Nhập mật khẩu"
-        />
-      </div>
-
-      {/* Quên mật khẩu */}
-      <div className="text-right">
-        <button
-          type="button"
-          className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
-        >
-          Quên mật khẩu?
-        </button>
-      </div>
-
-      {/* Submit button */}
-      <button
-        type="button"
-        onClick={handleSubmit}
-        className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 focus:ring-4 focus:ring-blue-300 transition-all duration-200 transform hover:scale-105"
-      >
-        Đăng Nhập
-      </button>
-
-      {/* Toggle to Register */}
-      <div className="text-center">
-        <p className="text-gray-600">
-          Chưa có tài khoản?
+        <form action="" className="flex flex-col gap-4 items-center my-3">
+          <h2 className="uppercase font-bold text-main text-xl">
+            đăng nhập hệ thống
+          </h2>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
+            placeholder="Email"
+            required
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
+            placeholder="Mật Khẩu"
+            required
+          />
           <button
             type="button"
-            //   onClick={onToggle}
-            className="ml-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
+            onClick={handleSubmit}
+            className="w-full  bg-main text-white py-3 px-4 rounded-md font-bold "
           >
-            Đăng ký ngay
+            Đăng Nhập
           </button>
-        </p>
+        </form>
+        <div></div>
+        {/* Quên mật khẩu Sẽ suy nghĩ thêm sau*/}
+        {/* <div className="text-right">
+          <button
+            type="button"
+            className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+          >
+            Quên mật khẩu?
+          </button>
+        </div> */}
+
+        {/* Toggle to Register */}
+        <div className="text-center">
+          <p className="text-gray-600">
+            Chưa có tài khoản?
+            <Link
+              href={`/register`}
+              className="ml-2 text-main font-medium transition-colors"
+            >
+              Đăng ký ngay
+            </Link>
+          </p>
+        </div>
+        <div>
+          <SocialAccount message={message} />
+        </div>
       </div>
-      <div>
-        <SocialAccount />
-      </div>
-    </div>
+    </>
   );
 }
