@@ -4,8 +4,7 @@ import Link from "next/link";
 import NavDesktop from "./NavDesktop";
 import NavMobile from "./NavMobile";
 import Search from "./Search";
-import { Menu, Heart, ShoppingCart, User } from "lucide-react";
-
+import { Heart, ShoppingCart, User } from "lucide-react";
 export default function Header() {
   const categories = [
     {
@@ -97,13 +96,12 @@ export default function Header() {
       childs: ["Thảm phòng tắm", "Rèm tắm", "Vật dụng phòng tắm"],
     },
   ];
-  const onShowMenu = () => {
-    console.log("show menu Vào đây");
-  };
   return (
     <header className="shadow-sm sticky top-0 z-40 bg-main w-screen">
       <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
-        <Menu className="w-8 h-8 text-white mdc:hidden" onClick={onShowMenu} />
+        <div className="mdc:hidden relative z-50">
+          <NavMobile categories={categories} />
+        </div>
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold text-white">
           BAYA
@@ -141,7 +139,6 @@ export default function Header() {
       {/* Menu chính */}
       <div>
         <NavDesktop categories={categories} />
-        <NavMobile categories={categories} />
       </div>
     </header>
   );
