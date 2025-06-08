@@ -32,13 +32,15 @@ export default function LoginForm() {
   return (
     <>
       <div className="w-[30rem] mx-auto my-7 px-5 py-5 border rounded-sm flex flex-col">
-        <Image
-          src="/logo.svg"
-          width={120}
-          height={120}
-          alt="Logo"
-          className="mx-auto rounded-full  font-bold"
-        />
+        <Link href={`/`}>
+          <Image
+            src="/logo.svg"
+            width={120}
+            height={120}
+            alt="Logo"
+            className="mx-auto rounded-full  font-bold"
+          />
+        </Link>
         <form action="" className="flex flex-col gap-4 items-center my-3">
           <h2 className="uppercase font-bold text-main text-xl">
             đăng nhập hệ thống

@@ -105,7 +105,7 @@ export default function Header() {
         </div>
         {/* Logo */}
         <Link
-          href="#"
+          href="/"
           className="text-2xl font-bold text-white flex items-center gap-2"
         >
           <Image
@@ -124,18 +124,18 @@ export default function Header() {
         {/* Icons */}
         <div className="flex items-center gap-6">
           <Link
-            href="/login"
-            className="flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black"
-          >
-            <User size={32} className=" mdc:w-5 mdc:h-5" />
-            <span className="hidden mdc:block">Tài khoản</span>
-          </Link>
-          <Link
             href="/cart"
             className="flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black"
           >
             <ShoppingCart size={32} className=" mdc:w-5 mdc:h-5" />
             <span className="hidden mdc:block">Giỏ hàng</span>
+          </Link>
+          <Link
+            href="/login"
+            className="flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black"
+          >
+            <User size={32} className=" mdc:w-5 mdc:h-5" />
+            <span className="hidden mdc:block">Tài khoản</span>
           </Link>
         </div>
       </div>

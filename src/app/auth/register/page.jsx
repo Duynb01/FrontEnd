@@ -9,9 +9,8 @@ export default function LoginForm() {
   const message = "Đăng ký";
 
   const [formData, setFormData] = useState({
-    fullname: "",
+    name: "",
     email: "",
-    phone: "",
     password: "",
   });
 
@@ -34,13 +33,15 @@ export default function LoginForm() {
   return (
     <>
       <div className="w-[30rem] mx-auto my-7 px-5 py-5 border rounded-sm flex flex-col">
-        <Image
-          src="/logo.svg"
-          width={120}
-          height={120}
-          alt="Logo"
-          className="mx-auto rounded-full  font-bold"
-        />
+        <Link href={`/`}>
+          <Image
+            src="/logo.svg"
+            width={120}
+            height={120}
+            alt="Logo"
+            className="mx-auto rounded-full  font-bold"
+          />
+        </Link>
         <form action="" className="flex flex-col gap-4 items-center my-3">
           <h2 className="uppercase font-bold text-main text-xl">
             đăng ký tài khoản
@@ -49,7 +50,7 @@ export default function LoginForm() {
             type="text"
             id="fullname"
             name="fullname"
-            value={formData.fullname}
+            value={formData.name}
             onChange={handleInputChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
             placeholder="Họ tên .."
@@ -64,16 +65,6 @@ export default function LoginForm() {
             onChange={handleInputChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
             placeholder="Email .."
-            required
-          />
-          <input
-            type="number"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
-            placeholder="Số điện thoại .."
             required
           />
           <input

@@ -6,6 +6,11 @@ import SocialAccount from "@/components/SociaAccount";
 import Image from "next/image";
 import Link from "next/link";
 import { CircleChevronRightIcon } from "lucide-react";
+
+// export async function g(params) {
+
+// }
+
 export default function Home() {
   const categorys = [
     { name: "Phòng khách", img: "/category/category_1_img.jpg" },
@@ -192,7 +197,7 @@ export default function Home() {
         <section className="home-product-1">
           <div className="product-content bg-[#ffeef0] rounded-md py-4 px-2">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-4 pl-[7px] relative before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:content[''] after:border-main after:rounded-full after:w-2 after:h-2 after:absolute after:border after:animate-pulseSmall">
-              <Link href="">Đồ bếp nhập khẩu cao cấp</Link>
+              <Link href="">Sản phẩm nổi bật</Link>
             </h2>
             <div className="flex items-center overflow-x-scroll scrollbar-none">
               {productSuper.map((product, i) => (
@@ -201,7 +206,7 @@ export default function Home() {
             </div>
             <div className="bg-white w-[19%] mx-auto rounded-md overflow-hidden group">
               <Link
-                href={"#"}
+                href={`/products`}
                 className="flex items-center justify-center py-2 gap-3 text-[#333333] group-hover:bg-main group-hover:text-white transition-colors duration-500 ease-in-out"
               >
                 <span className="font-bold">Xem tất cả</span>
@@ -283,7 +288,7 @@ export default function Home() {
               </div>
             </div>
             <div>
-              <Link href={""}>
+              <Link href={`/products`}>
                 <div className="flex items-center justify-center py-2 gap-3 text-[#333333] group-hover:bg-main group-hover:text-white transition-colors duration-500 ease-in-out">
                   <span className="font-bold">Xem tất cả</span>
                   <CircleChevronRightIcon className="w-5 h-5" />

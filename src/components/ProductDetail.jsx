@@ -1,0 +1,158 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { useCaculatorPrice } from "@/hooks/useCaculatorPrice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCartPlus,
+  faCreditCard,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
+import { products as allProducts } from "@/data/products";
+import Link from "next/link";
+import Review from "./Review";
+
+export default function ProductDetail({ product }) {
+  const price = useCaculatorPrice(product);
+  const [quantity, setQuantity] = useState(1);
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleAddToCart = () => {
+    console.log("Thêm vào giỏ:", product.id, "Số lượng:", quantity);
+  };
+
+  const handleBuyNow = () => {
+    console.log("Mua ngay:", product.id, "Số lượng:", quantity);
+  };
+
+  const relatedProducts = allProducts.filter(
+    (p) => p.category === product.category && p.id !== product.id
+  );
+
+  return (
+    <div className="space-y-10 p-4">
+      {/* Phần chi tiết sản phẩm */}
+      <div className="flex flex-col md:flex-row gap-6 bg-white shadow-sm p-4 rounded-sm">
+        <div className="w-full md:w-1/2 flex justify-center items-center">
+          <Image
+            src={product.src}
+            alt={product.name}
+            width={500}
+            height={500}
+            className="w-full max-w-sm object-contain rounded-sm"
+          />
+        </div>
+
+        <div className="w-full md:w-1/2 flex flex-col gap-4">
+          <h1 className="text-2xl font-bold">{product.name}</h1>
+          <p className="text-gray-600 text-sm">
+            Thương hiệu: {product.supplier}
+          </p>
+
+          <div className="flex items-center gap-3 text-lg">
+            {!product.discount ? (
+              <span className="font-bold text-price">{price.oriPrice}</span>
+            ) : (
+              <>
+                <span className="font-bold text-discount">
+                  {price.newPrice}
+                </span>
+                <span className="line-through text-old text-sm">
+                  {price.oldPrice}
+                </span>
+              </>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span>Số lượng:</span>
+            <button
+              onClick={handleDecrease}
+              className="w-8 h-8 border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-100"
+            >
+              -
+            </button>
+            <span className="w-8 text-center">{quantity}</span>
+            <button
+              onClick={handleIncrease}
+              className="w-8 h-8 border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-100"
+            >
+              +
+            </button>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 mt-4">
+            <button
+              onClick={handleAddToCart}
+              className="flex items-center justify-center gap-2 bg-main text-white px-6 py-2 rounded-full hover:bg-[#67031c] w-full sm:w-auto"
+            >
+              <FontAwesomeIcon icon={faCartPlus} />
+              Thêm vào giỏ hàng
+            </button>
+            <button
+              onClick={handleBuyNow}
+              className="flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 w-full sm:w-auto"
+            >
+              <FontAwesomeIcon icon={faCreditCard} />
+              Mua ngay
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mô tả chi tiết */}
+      <div className="bg-white p-4 rounded-sm shadow-sm">
+        <h2 className="text-lg font-semibold mb-2">Mô tả sản phẩm</h2>
+        <p className="text-gray-700 text-sm leading-relaxed">
+          {product.description ||
+            "Chưa có mô tả chi tiết cho sản phẩm này. Đây là dòng sản phẩm chất lượng cao, được chế tác tỉ mỉ từ nguyên vật liệu bền đẹp và thiết kế hiện đại, phù hợp cho mọi không gian nội thất."}
+        </p>
+      </div>
+
+      {/* Đánh giá giả lập */}
+      <div className="bg-white p-4 rounded-sm shadow-sm">
+        <Review productId={product.id} />
+      </div>
+
+      {/* Sản phẩm liên quan */}
+      {relatedProducts.length > 0 && (
+        <div className="bg-white p-4 rounded-sm shadow-sm">
+          <h2 className="text-lg font-semibold mb-4">Sản phẩm liên quan</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {relatedProducts.slice(0, 4).map((item) => (
+              <Link
+                key={item.id}
+                href={`/product/${item.id}`}
+                className="border p-2 rounded-sm hover:shadow-sm transition"
+              >
+                <Image
+                  src={item.src}
+                  alt={item.name}
+                  width={200}
+                  height={200}
+                  className="w-full h-40 object-contain"
+                />
+                <h4 className="text-sm mt-2 font-medium line-clamp-2">
+                  {item.name}
+                </h4>
+                <p className="text-main font-bold text-sm">
+                  {useCaculatorPrice(item).newPrice}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
