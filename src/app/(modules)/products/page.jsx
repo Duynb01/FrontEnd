@@ -24,7 +24,7 @@ export default function ProductListPage() {
   });
 
   return (
-    <div className="p-6">
+    <div className="wrapper-product container">
       <h2 className="text-xl font-bold mb-4">Danh sách sản phẩm</h2>
 
       {/* Bộ lọc */}
@@ -55,7 +55,7 @@ export default function ProductListPage() {
       </div>
 
       {/* Danh sách sản phẩm */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-y-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {sortedProducts.length === 0 ? (
           <p className="col-span-full text-gray-500">Không có sản phẩm nào.</p>
         ) : (

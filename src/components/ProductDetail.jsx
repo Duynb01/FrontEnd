@@ -9,10 +9,10 @@ import { products as allProducts } from "@/data/products";
 import Link from "next/link";
 import Review from "./Review";
 import Voucher from "./Voucher";
+import ProductCard from "./ProductCard";
 
 export default function ProductDetail({ product }) {
   console.log("ProductDetail: ", product);
-
   const price = useCaculatorPrice(product);
   const [quantity, setQuantity] = useState(1);
 
@@ -59,6 +59,7 @@ export default function ProductDetail({ product }) {
           </p>
 
           <div className="flex items-center gap-3 text-lg">
+            Giá:
             {!product.discount ? (
               <span className="font-bold text-price">{price.oriPrice}</span>
             ) : (
@@ -68,6 +69,9 @@ export default function ProductDetail({ product }) {
                 </span>
                 <span className="line-through text-old text-sm">
                   {price.oldPrice}
+                </span>
+                <span className="bg-white text-discount px-[6px] py-[4px] text-sm font-bold rounded-[4px] border border-discount">
+                  -{product.discount}%
                 </span>
               </>
             )}
@@ -130,14 +134,14 @@ export default function ProductDetail({ product }) {
       {relatedProducts.length > 0 && (
         <div className="bg-white p-4 rounded-sm shadow-sm">
           <h2 className="text-lg font-semibold mb-4">Sản phẩm liên quan</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {relatedProducts.slice(0, 4).map((item) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {relatedProducts.slice(0, 6).map((item) => (
               <Link
                 key={item.id}
-                href={`/product/${item.id}`}
-                className="border p-2 rounded-sm hover:shadow-sm transition"
+                href={`/products/${item.id}`}
+                className="flex justify-center"
               >
-                <Image
+                {/* <Image
                   src={item.src}
                   alt={item.name}
                   width={200}
@@ -149,7 +153,8 @@ export default function ProductDetail({ product }) {
                 </h4>
                 <p className="text-main font-bold text-sm">
                   {useCaculatorPrice(item).newPrice}
-                </p>
+                </p> */}
+                <ProductCard product={item} />
               </Link>
             ))}
           </div>
