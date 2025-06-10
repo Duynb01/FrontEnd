@@ -4,16 +4,15 @@ import { useState } from "react";
 import Image from "next/image";
 import { useCaculatorPrice } from "@/hooks/useCaculatorPrice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCartPlus,
-  faCreditCard,
-  faStar,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCartPlus, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { products as allProducts } from "@/data/products";
 import Link from "next/link";
 import Review from "./Review";
+import Voucher from "./Voucher";
 
 export default function ProductDetail({ product }) {
+  console.log("ProductDetail: ", product);
+
   const price = useCaculatorPrice(product);
   const [quantity, setQuantity] = useState(1);
 
@@ -94,18 +93,21 @@ export default function ProductDetail({ product }) {
           <div className="flex flex-col sm:flex-row gap-3 mt-4">
             <button
               onClick={handleAddToCart}
-              className="flex items-center justify-center gap-2 bg-main text-white px-6 py-2 rounded-full hover:bg-[#67031c] w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 bg-white text-main px-6 py-2 rounded-md hover:bg-gray-200 w-full sm:w-auto font-bold border border-main"
             >
               <FontAwesomeIcon icon={faCartPlus} />
               Thêm vào giỏ hàng
             </button>
             <button
               onClick={handleBuyNow}
-              className="flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 bg-main text-white px-6 py-2 rounded-md hover:bg-[#960e30] w-full sm:w-auto"
             >
               <FontAwesomeIcon icon={faCreditCard} />
               Mua ngay
             </button>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 mt-4">
+            <Voucher />
           </div>
         </div>
       </div>
@@ -119,7 +121,7 @@ export default function ProductDetail({ product }) {
         </p>
       </div>
 
-      {/* Đánh giá giả lập */}
+      {/* Đánh giá */}
       <div className="bg-white p-4 rounded-sm shadow-sm">
         <Review productId={product.id} />
       </div>

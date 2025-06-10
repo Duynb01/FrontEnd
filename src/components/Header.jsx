@@ -5,7 +5,7 @@ import Image from "next/image";
 import NavDesktop from "./NavDesktop";
 import NavMobile from "./NavMobile";
 import Search from "./Search";
-import { Heart, ShoppingCart, User } from "lucide-react";
+import { ShoppingCart, User } from "lucide-react";
 export default function Header() {
   const categories = [
     {
@@ -114,6 +114,7 @@ export default function Header() {
             height={50}
             alt="Logo"
             className="mx-auto rounded-full  font-bold"
+            priority
           />
           FNS
         </Link>

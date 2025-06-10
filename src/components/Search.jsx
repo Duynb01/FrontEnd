@@ -1,3 +1,4 @@
+"use client";
 import { Search as SearchIcon } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";

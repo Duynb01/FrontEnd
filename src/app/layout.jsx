@@ -1,8 +1,6 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import ReduxProvider from "@/redux/Provider";
-import LayoutWrapper from "@/components/LayoutWrapper";
-// import { usePathname } from "next/navigation";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "@/styles/globals.css";
 
@@ -18,9 +16,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="flex flex-col min-h-screen">
-        <ReduxProvider>
-          <LayoutWrapper>{children}</LayoutWrapper>
-        </ReduxProvider>
+        <ReduxProvider>{children}</ReduxProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover={false}
+          theme="colored"
+        />
       </body>
     </html>
   );

@@ -72,6 +72,11 @@ section {
   padding-block: 35px;
 }
 
+.Toastify {
+  position: fixed;
+  z-index: 9999;
+}
+
 @keyframes pulseSmall {
   0% {
     transform: scale(0);

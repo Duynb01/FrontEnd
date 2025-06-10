@@ -13,7 +13,7 @@ export default function ProductCard({ product }) {
     <div className="group w-full max-w-[14rem] shadow-[0_0_3px_rgb(0,0,0,0.1)] rounded-sm bg-white">
       {/* Hình ảnh */}
       <div className="p-[5px] relative">
-        <Link href={`/products/${product.id}`} className="relative z-0">
+        <div className="relative z-0">
           <Image
             src={product.src}
             alt=""
@@ -21,7 +21,7 @@ export default function ProductCard({ product }) {
             height={480}
             className="w-full max-h-[180px] object-contain rounded-t-sm transition-transform duration-300 ease-in-out group-hover:scale-105"
           />
-        </Link>
+        </div>
 
         {product.discount > 0 && (
           <span className="absolute bg-main text-white px-[5px] py-[2px] text-[12px] font-bold top-2 left-2 rounded-[4px]">
@@ -33,11 +33,11 @@ export default function ProductCard({ product }) {
       {/* Nội dung */}
       <div className="px-[14px] py-[10px] flex flex-col items-center text-center">
         <span className="uppercase text-xs text-label mb-1">
-          <Link href="#">{product.supplier}</Link>
+          <p>{product.supplier}</p>
         </span>
 
         <h3 className="text-sm font-medium line-clamp-2">
-          <Link href={`/product/${product.id}`}>{product.name}</Link>
+          <p>{product.name}</p>
         </h3>
 
         <div className="flex items-center justify-center gap-2 my-2 text-sm">

@@ -1,17 +1,25 @@
 "use client";
 
-import SocialAccount from "@/components/SociaAccount";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Loader } from "lucide-react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+
+import SocialAccount from "@/components/SociaAccount";
+import { loginUser } from "@/lib/api/auth";
+import { validFormData } from "@/utils/isValidData";
 
 export default function LoginForm() {
+  const router = useRouter();
   const message = "Đăng nhập";
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,14 +29,29 @@ export default function LoginForm() {
     }));
   };
 
-  const handleSubmit = () => {
-    if (!formData.email || !formData.password) {
-      alert("Vui lòng điền đầy đủ thông tin!");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const errors = validFormData(formData);
+    if (errors.length > 0) {
+      errors.forEach((error) => toast.error(error));
+      setLoading(false);
       return;
     }
-    //   onSubmit(formData);
+    try {
+      const data = await loginUser(formData);
+      if (data.status === "success") {
+        await router.push("/");
+        toast.success("Đăng nhập thành công!");
+      }
+    } catch (err) {
+      toast.error(
+        err.message || "Đăng nhập thất bại, vui lòng kiểm tra lại thông tin!"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
-  // shadow-[0px_1px_4px_rgb(0, 0, 0, 0.16)]
   return (
     <>
       <div className="w-[30rem] mx-auto my-7 px-5 py-5 border rounded-sm flex flex-col">
@@ -66,11 +89,19 @@ export default function LoginForm() {
             required
           />
           <button
-            type="button"
+            type="submit"
+            disabled={loading}
             onClick={handleSubmit}
-            className="w-full  bg-main text-white py-3 px-4 rounded-md font-bold "
+            className="w-full  bg-main text-white py-3 px-4 rounded-md font-bold"
           >
-            Đăng Nhập
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <Loader className="w-4 h-4 animate-spin" />
+                Đang xử lý...
+              </div>
+            ) : (
+              "Đăng nhập"
+            )}
           </button>
         </form>
         <div></div>

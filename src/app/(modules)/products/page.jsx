@@ -3,7 +3,6 @@
 import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import { products as allProducts, categories } from "@/data/products";
-
 import Link from "next/link";
 
 export default function ProductListPage() {
