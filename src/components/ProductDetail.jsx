@@ -5,17 +5,21 @@ import Image from "next/image";
 import { useCaculatorPrice } from "@/hooks/useCaculatorPrice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus, faCreditCard } from "@fortawesome/free-solid-svg-icons";
-import { products as allProducts } from "@/data/products";
 import Link from "next/link";
 import Review from "./Review";
 import Voucher from "./Voucher";
 import ProductCard from "./ProductCard";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { addCart } from "@/lib/api/apiCart";
 
 export default function ProductDetail({ product }) {
-  console.log("ProductDetail: ", product);
+  const router = useRouter();
+  const isCheckLogin = useSelector((state) => state.auth.isCheckLogin);
+  const listProduct = useSelector((state) => state.product);
   const price = useCaculatorPrice(product);
   const [quantity, setQuantity] = useState(1);
-
   const handleDecrease = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
@@ -26,15 +30,30 @@ export default function ProductDetail({ product }) {
     setQuantity(quantity + 1);
   };
 
-  const handleAddToCart = () => {
-    console.log("Thêm vào giỏ:", product.id, "Số lượng:", quantity);
+  const handleAddToCart = async () => {
+    if (!isCheckLogin) {
+      toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+    } else {
+      const data = await addCart({ ...product, quantity });
+      if (data) {
+        toast.success("Thêm vào giỏ hàng thành công!");
+      }
+    }
   };
 
   const handleBuyNow = () => {
-    console.log("Mua ngay:", product.id, "Số lượng:", quantity);
+    if (!isCheckLogin) {
+      toast.error("Vui lòng đăng nhập để mua sản phẩm!");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    } else {
+      console.log("Mua ngay:", product.id, "Số lượng:", quantity);
+      router.push("/checkout");
+    }
   };
 
-  const relatedProducts = allProducts.filter(
+  const relatedProducts = listProduct.filter(
     (p) => p.category === product.category && p.id !== product.id
   );
 
@@ -44,7 +63,7 @@ export default function ProductDetail({ product }) {
       <div className="flex flex-col md:flex-row gap-6 bg-white shadow-sm p-4 rounded-sm">
         <div className="w-full md:w-1/2 flex justify-center items-center">
           <Image
-            src={product.src}
+            src={product.url}
             alt={product.name}
             width={500}
             height={500}
@@ -55,7 +74,7 @@ export default function ProductDetail({ product }) {
         <div className="w-full md:w-1/2 flex flex-col gap-4">
           <h1 className="text-2xl font-bold">{product.name}</h1>
           <p className="text-gray-600 text-sm">
-            Thương hiệu: {product.supplier}
+            Số lượng: {product.stock} sản phẩm
           </p>
 
           <div className="flex items-center gap-3 text-lg">
@@ -141,19 +160,6 @@ export default function ProductDetail({ product }) {
                 href={`/products/${item.id}`}
                 className="flex justify-center"
               >
-                {/* <Image
-                  src={item.src}
-                  alt={item.name}
-                  width={200}
-                  height={200}
-                  className="w-full h-40 object-contain"
-                />
-                <h4 className="text-sm mt-2 font-medium line-clamp-2">
-                  {item.name}
-                </h4>
-                <p className="text-main font-bold text-sm">
-                  {useCaculatorPrice(item).newPrice}
-                </p> */}
                 <ProductCard product={item} />
               </Link>
             ))}

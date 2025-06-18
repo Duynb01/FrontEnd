@@ -77,6 +77,14 @@ section {
   z-index: 9999;
 }
 
+.scroll-start {
+  scroll-snap-type: x mandatory;
+}
+.scroll-start > * {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
 @keyframes pulseSmall {
   0% {
     transform: scale(0);

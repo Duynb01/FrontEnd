@@ -1,13 +1,19 @@
 "use client";
-
 import { useParams } from "next/navigation";
 import ProductDetail from "@/components/ProductDetail";
-import { products } from "@/data/products";
+import { useEffect, useState } from "react";
+import { getOneProduct } from "@/lib/api/apiProduct";
 
 export default function ProductDetailPage() {
+  const [product, setProduct] = useState();
   const { id } = useParams();
-
-  const product = products.find((p) => p.id.toString() === id);
+  useEffect(() => {
+    const fetchProduct = async (id) => {
+      const data = await getOneProduct(id);
+      setProduct(data);
+    };
+    fetchProduct(id);
+  }, []);
 
   if (!product) {
     return <div className="p-6 text-red-500">Không tìm thấy sản phẩm.</div>;

@@ -2,18 +2,19 @@
 
 import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
-import { products as allProducts, categories } from "@/data/products";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export default function ProductListPage() {
+  const listProduct = useSelector((state) => state.product);
+  const listCategory = useSelector((state) => state.category);
   const [sortOrder, setSortOrder] = useState("default");
   const [selectedCategory, setSelectedCategory] = useState("Tất cả sản phẩm");
 
-  // lọc danh mục
-  const filteredProducts = allProducts.filter((p) =>
+  const filteredProducts = listProduct.filter((product) =>
     selectedCategory === "Tất cả sản phẩm"
       ? true
-      : p.category === selectedCategory
+      : product.category === selectedCategory
   );
 
   // sắp xếp theo giá
@@ -35,9 +36,10 @@ export default function ProductListPage() {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
+          <option value="Tất cả sản phẩm">Tất cả sản phẩm</option>
+          {listCategory.map((category) => (
+            <option key={category.name} value={category.name}>
+              {category.name}
             </option>
           ))}
         </select>
@@ -53,7 +55,6 @@ export default function ProductListPage() {
           <option value="high-to-low">Giá: Cao đến Thấp</option>
         </select>
       </div>
-
       {/* Danh sách sản phẩm */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {sortedProducts.length === 0 ? (

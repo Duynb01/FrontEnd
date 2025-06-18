@@ -1,15 +1,10 @@
-import ProductCard from "@/components/ProductCard";
 import ProductSuper from "@/components/ProductSuper";
 import Banner from "@/components/Banner";
 import Voucher from "@/components/Voucher";
-import SocialAccount from "@/components/SociaAccount";
 import Image from "next/image";
 import Link from "next/link";
 import { CircleChevronRightIcon } from "lucide-react";
-
-// export async function g(params) {
-
-// }
+import NewProduct from "@/components/NewProduct";
 
 export default function Home() {
   const categorys = [
@@ -17,72 +12,6 @@ export default function Home() {
     { name: "Phòng ngủ", img: "/category/category_2_img.jpg" },
     { name: "Phòng ăn và bếp", img: "/category/category_3_img.jpg" },
     { name: "Phòng làm việc", img: "/category/category_4_img.jpg" },
-  ];
-  const products = [
-    {
-      supplier: "anne",
-      name: "Bát ăn cơm gốm sứ ANNE màu ngẫu nhiên H5.7xD11.3",
-      src: "https://product.hstatic.net/200000796751/product/2002527.2_acffaf6d910445b1b29e0593ff392ba5.jpg",
-      price: "45000",
-      discount: "30",
-    },
-    {
-      supplier: "anne",
-      name: "Bát ăn snack gốm sứ ANNE màu ngẫu nhiên H6.5xD11.5",
-      src: "https://product.hstatic.net/200000796751/product/2002535_5b3eede60829490499619fabe5dbd0a9.jpg",
-      price: "55000",
-    },
-    {
-      supplier: "anne",
-      name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
-      src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
-      price: "65000",
-    },
-    {
-      supplier: "anne",
-      name: "Bát ăn cơm gốm sứ ANNE màu ngẫu nhiên H5.7xD11.3",
-      src: "https://product.hstatic.net/200000796751/product/2002527.2_acffaf6d910445b1b29e0593ff392ba5.jpg",
-      price: "45000",
-      discount: "30",
-    },
-    {
-      supplier: "anne",
-      name: "Bát ăn snack gốm sứ ANNE màu ngẫu nhiên H6.5xD11.5",
-      src: "https://product.hstatic.net/200000796751/product/2002535_5b3eede60829490499619fabe5dbd0a9.jpg",
-      price: "55000",
-    },
-    {
-      supplier: "anne",
-      name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
-      src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
-      price: "65000",
-    },
-    {
-      supplier: "anne",
-      name: "Bát ăn cơm gốm sứ ANNE màu ngẫu nhiên H5.7xD11.3",
-      src: "https://product.hstatic.net/200000796751/product/2002527.2_acffaf6d910445b1b29e0593ff392ba5.jpg",
-      price: "45000",
-      discount: "30",
-    },
-    {
-      supplier: "anne",
-      name: "Bát ăn snack gốm sứ ANNE màu ngẫu nhiên H6.5xD11.5",
-      src: "https://product.hstatic.net/200000796751/product/2002535_5b3eede60829490499619fabe5dbd0a9.jpg",
-      price: "55000",
-    },
-    {
-      supplier: "anne",
-      name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
-      src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
-      price: "65000",
-    },
-    {
-      supplier: "anne",
-      name: "Bát ăn cơm gốm sứ ANNE màu ngẫu nhiên H5.7xD11.3",
-      src: "https://product.hstatic.net/200000796751/product/2002527.2_acffaf6d910445b1b29e0593ff392ba5.jpg",
-      price: "45000",
-      discount: "30",
-    },
   ];
   const productSuper = [
     {
@@ -199,12 +128,12 @@ export default function Home() {
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-4 pl-[7px] relative before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:content[''] after:border-main after:rounded-full after:w-2 after:h-2 after:absolute after:border after:animate-pulseSmall">
               <Link href="">Sản phẩm nổi bật</Link>
             </h2>
-            <div className="flex items-center overflow-x-scroll scrollbar-none">
+            <div className="flex items-center overflow-x-scroll scrollbar-none scroll-start">
               {productSuper.map((product, i) => (
                 <ProductSuper key={i} product={product} />
               ))}
             </div>
-            <div className="bg-white w-[19%] mx-auto rounded-md overflow-hidden group">
+            <div className="bg-white w-[12.5rem] mx-auto rounded-md overflow-hidden group">
               <Link
                 href={`/products`}
                 className="flex items-center justify-center py-2 gap-3 text-[#333333] group-hover:bg-main group-hover:text-white transition-colors duration-500 ease-in-out"
@@ -226,7 +155,7 @@ export default function Home() {
               <Link href={""}>Back To School - Up To 60%</Link>
             </h2>
           </div>
-          <div className="flex">
+          <div className="flex overflow-x-scroll scrollbar-none scroll-start">
             {productSuper.map((product, i) => (
               <ProductSuper key={i} product={product} />
             ))}
@@ -236,14 +165,8 @@ export default function Home() {
           <div className="trend-content flex items-center px-5 py-[15px] bg-[url('https://theme.hstatic.net/200000796751/1001266995/14/categorize_img.jpg?v=91')] bg-cover bg-no-repeat before:content-[''] before:bg-[rgba(0,0,0,0.35)] before:absolute before:w-full before:h-full before:left-0 before:top-0 relative">
             <div className="text-white relative px-[15px] text-right w-1/6">
               <h3 className="text-lg font-bold mb-2">Xu hướng tìm kiếm</h3>
-              <Link
-                href={""}
-                className="uppercase text-[13px] px-[15px] py-[5px] bg-[#C31425] rounded-full"
-              >
-                xem ngay
-              </Link>
             </div>
-            <div className="relative flex items-center justify-between px-[15px] w-full overflow-x-scroll scrollbar-none">
+            <div className="relative flex items-center justify-between px-[15px] w-full overflow-x-scroll scrollbar-none scroll-start ">
               {trendCategorize.map((item, i) => (
                 <div
                   key={i}
@@ -267,35 +190,7 @@ export default function Home() {
           </div>
         </section>
         <section className="home-product-3">
-          <div>
-            <h2 className="text-main text-2xl font-bold mb-5">
-              <Link href={""}>Sản phẩm mới</Link>
-            </h2>
-            <div className="flex items-start">
-              <div className="sidebar max-w-[20%] bg-black mdc:block hidden">
-                <Image
-                  src="https://theme.hstatic.net/200000796751/1001266995/14/home_coll_1_banner.jpg?v=91"
-                  width={1500}
-                  height={3764}
-                  alt=""
-                  className="w-full h-full object-cover "
-                />
-              </div>
-              <div className="product-content max-w-[80%] grid mdc:grid-rows-2 mdc:grid-cols-5 gap-4 grid-rows-2 grid-cols-5 w-full">
-                {products.map((product, i) => (
-                  <ProductCard key={i} product={product} />
-                ))}
-              </div>
-            </div>
-            <div>
-              <Link href={`/products`}>
-                <div className="flex items-center justify-center py-2 gap-3 text-[#333333] group-hover:bg-main group-hover:text-white transition-colors duration-500 ease-in-out">
-                  <span className="font-bold">Xem tất cả</span>
-                  <CircleChevronRightIcon className="w-5 h-5" />
-                </div>
-              </Link>
-            </div>
-          </div>
+          <NewProduct />
         </section>
       </div>
     </>

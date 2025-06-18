@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import NavDesktop from "./NavDesktop";
-import NavMobile from "./NavMobile";
-import Search from "./Search";
+import NavDesktop from "../NavDesktop";
+import NavMobile from "../NavMobile";
+import Search from "../Search";
 import { ShoppingCart, User } from "lucide-react";
+import Account from "../Account";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 export default function Header() {
   const categories = [
     {
@@ -40,6 +44,7 @@ export default function Header() {
         "Ghế thư giãn",
       ],
     },
+
     {
       name: "Giường - Nệm",
       path: "/products/giuong-nem",
@@ -55,16 +60,6 @@ export default function Header() {
         "Tủ đầu giường",
         "Tủ kệ giày",
         "Tủ ngăn kéo",
-      ],
-    },
-    {
-      name: "Nội thất văn phòng",
-      path: "/products/noi-that-van-phong",
-      childs: [
-        "Bàn làm việc",
-        "Ghế văn phòng",
-        "Tủ hồ sơ",
-        "Dụng cụ văn phòng",
       ],
     },
     {
@@ -97,14 +92,25 @@ export default function Header() {
       childs: ["Thảm phòng tắm", "Rèm tắm", "Vật dụng phòng tắm"],
     },
   ];
+  const { isCheckLogin } = useSelector((state) => state.auth);
+  const router = useRouter();
+  const routerCart = (e) => {
+    e.preventDefault();
+    if (isCheckLogin) {
+      router.push("/cart");
+    } else {
+      toast.warning("Vui lòng đăng nhập");
+    }
+  };
+
   return (
     <header className="shadow-sm sticky top-0 z-40 bg-main w-screen">
-      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto  py-2 flex items-center justify-around mdc:justify-around xl:justify-between gap-4">
         <div className="mdc:hidden relative z-50">
           <NavMobile categories={categories} />
         </div>
         {/* Logo */}
-        <Link
+        <a
           href="/"
           className="text-2xl font-bold text-white flex items-center gap-2"
         >
@@ -117,27 +123,23 @@ export default function Header() {
             priority
           />
           FNS
-        </Link>
+        </a>
 
         {/* Search Bar */}
         <Search />
 
         {/* Icons */}
         <div className="flex items-center gap-6">
-          <Link
-            href="/cart"
+          <button
+            onClick={routerCart}
             className="flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black"
           >
             <ShoppingCart size={32} className=" mdc:w-5 mdc:h-5" />
             <span className="hidden mdc:block">Giỏ hàng</span>
-          </Link>
-          <Link
-            href="/login"
-            className="flex flex-col items-center text-sm text-white hover:cursor-pointer active:text-black"
-          >
-            <User size={32} className=" mdc:w-5 mdc:h-5" />
-            <span className="hidden mdc:block">Tài khoản</span>
-          </Link>
+          </button>
+          <div className="hidden mdc:block">
+            <Account />
+          </div>
         </div>
       </div>
 

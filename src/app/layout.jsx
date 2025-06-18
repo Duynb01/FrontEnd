@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "@/styles/globals.css";
+import Reload from "@/components/Reload";
 
 export const metadata = {
   title: "Siêu thị nội thất & trang trí Baya",
@@ -16,7 +17,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="flex flex-col min-h-screen">
-        <ReduxProvider>{children}</ReduxProvider>
+        <ReduxProvider>
+          <Reload />
+          {children}
+        </ReduxProvider>
         <ToastContainer
           position="top-right"
           autoClose={3000}

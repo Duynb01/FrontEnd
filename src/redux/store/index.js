@@ -1,8 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import layoutReducer from "./slices/layoutSlice.js";
+import authReducer from "./slices/authSlice.js";
+import checkoutReducer from "./slices/checkoutSlice.js";
+import productReducer from "./slices/productSlice.js";
+import categoryReducer from "./slices/categorySlice.js";
 export const store = configureStore({
   reducer: {
-    layout: layoutReducer,
+    auth: authReducer,
+    checkout: checkoutReducer,
+    product: productReducer,
+    category: categoryReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
 });

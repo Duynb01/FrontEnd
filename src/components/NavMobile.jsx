@@ -2,11 +2,31 @@
 import React from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { X, ChevronDown, Menu } from "lucide-react";
+import {
+  X,
+  ChevronDown,
+  Menu,
+  LogOutIcon,
+  LogInIcon,
+  Loader,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+
+import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { setLogout } from "@/redux/store/slices/authSlice";
+import { toast } from "react-toastify";
+import { logoutUser } from "@/lib/api/apiAuth";
 
 export default function NavMobile({ categories }) {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const isCheckLogin = useSelector((state) => state.auth.isCheckLogin);
+  const userInfo = useSelector((state) => state.auth.userInfo);
   const onShowMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -14,13 +34,35 @@ export default function NavMobile({ categories }) {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await logoutUser();
+      if (res.status === "success") {
+        dispatch(setLogout());
+        localStorage.removeItem("isLogin");
+        toast.success(res.message || "Đăng xuất thành công!");
+        router.push("/");
+        setIsMenuOpen(false);
+      }
+    } catch (e) {
+      toast.error(e.message || "Lỗi Đăng xuất!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogin = () => {
+    router.push("/login");
+  };
   return (
     <>
       <button onClick={onShowMenu}>
         <Menu className="w-8 h-8 text-white" />
       </button>
       <div
-        className={`fixed inset-0 bg-black/30 transition-opacity duration-300 z-40 ${
+        className={`overlay fixed inset-0 bg-black/30 transition-opacity duration-300 z-40 ${
           isMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -35,13 +77,17 @@ export default function NavMobile({ categories }) {
       >
         <div className="flex items-center justify-between ">
           <Link href="/" className="text-3xl font-bold text-main">
-            BAYA
+            FNS
           </Link>
           <button onClick={onShowMenu}>
             <X className="w-6 h-6" />
           </button>
         </div>
-        <nav className="mt-10">
+        <div className="flex items-center gap-4 mt-7 border p-3 rounded-sm">
+          <FontAwesomeIcon icon={faCircleUser} className="text-main w-7 h-7" />
+          <p className=" text-md font-bold">{userInfo?.name || "Tài khoản"}</p>
+        </div>
+        <nav className="my-6">
           <ul className="flex flex-col gap-1">
             {categories.map((category, index) => (
               <React.Fragment key={category.name}>
@@ -86,6 +132,33 @@ export default function NavMobile({ categories }) {
             ))}
           </ul>
         </nav>
+        <div>
+          {isCheckLogin ? (
+            <button
+              className="flex items-center justify-center gap-2 bg-main text-white px-4 py-2 rounded-sm hover:bg-[#960e30] w-full sm:w-auto font-bold"
+              onClick={handleLogout}
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Loader className="w-4 h-4 animate-spin" />
+                  Đăng xuất...
+                </div>
+              ) : (
+                <>
+                  <LogOutIcon />
+                  Đăng xuất
+                </>
+              )}
+            </button>
+          ) : (
+            <button
+              className="flex items-center justify-center gap-2 bg-main text-white px-4 py-2 rounded-sm hover:bg-[#960e30] w-full sm:w-auto font-bold"
+              onClick={handleLogin}
+            >
+              Đăng nhập <LogInIcon />
+            </button>
+          )}
+        </div>
       </div>
     </>
   );
