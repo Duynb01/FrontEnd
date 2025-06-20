@@ -11,10 +11,12 @@ export default function ProductCard({ product }) {
   const price = useCaculatorPrice(product);
   const handleAddToCart = async (e) => {
     e.preventDefault();
-    // const data = await addCart(product);
-    // if (data) {
-    //   toast.success("Thêm vào giỏ hàng thành công!");
-    // }
+    try {
+      await addCart(product);
+      toast.success("Thêm vào giỏ hàng thành công!");
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
   return (
     <div className="group w-full max-w-[14rem] shadow-[0_0_3px_rgb(0,0,0,0.1)] rounded-sm bg-white">
@@ -43,7 +45,7 @@ export default function ProductCard({ product }) {
           <p>{product.supplier}</p>
         </span>
 
-        <h3 className="text-sm font-medium line-clamp-2">
+        <h3 className="text-sm font-medium line-clamp-2 h-[40px]">
           <p>{product.name}</p>
         </h3>
 

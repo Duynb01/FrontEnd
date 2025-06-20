@@ -1,27 +1,45 @@
 "use client";
-import { useState } from "react";
+import { createReview, getReview } from "@/lib/api/apiReview";
+import { User } from "lucide-react";
+import { formatDate } from "@/utils/formatData";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Review({ productId }) {
-  const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState("");
   const [reviews, setReviews] = useState([]);
+  const [data, setData] = useState({
+    content: "",
+    rating: 5,
+  });
 
-  const handleSubmit = () => {
-    if (!comment.trim()) return;
+  const fetchData = async () => {
+    try {
+      const data = await getReview(productId);
+      setReviews(data);
+    } catch (err) {
+      throw err;
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
+  const handleSubmit = async () => {
+    if (!data.content.trim()) return;
     const newReview = {
+      ...data,
       productId,
-      rating,
-      comment,
-      createdAt: new Date(),
     };
-
-    // Tạm thời thêm vào local
-    setReviews((prev) => [...prev, newReview]);
-
-    // Reset form
-    setComment("");
-    setRating(5);
+    try {
+      await createReview(newReview);
+      fetchData();
+    } catch (err) {
+      toast.warning(err.message);
+    }
+    setData({
+      content: "",
+      rating: 5,
+    });
   };
 
   return (
@@ -32,9 +50,9 @@ export default function Review({ productId }) {
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
-            onClick={() => setRating(star)}
+            onClick={() => setData({ ...data, rating: star })}
             className={`text-xl ${
-              star <= rating ? "text-yellow-500" : "text-gray-300"
+              star <= data.rating ? "text-yellow-500" : "text-gray-300"
             }`}
           >
             ★
@@ -43,8 +61,8 @@ export default function Review({ productId }) {
       </div>
 
       <textarea
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
+        value={data.content}
+        onChange={(e) => setData({ ...data, content: e.target.value })}
         className="w-full border p-2 rounded-sm text-sm mb-2"
         placeholder="Viết đánh giá của bạn..."
         rows={3}
@@ -57,17 +75,30 @@ export default function Review({ productId }) {
         Gửi đánh giá
       </button>
 
-      {reviews.length > 0 && (
+      {reviews.length > 0 ? (
         <div className="mt-4">
           <h4 className="text-sm font-medium mb-1">Đánh giá gần đây:</h4>
           {reviews.map((r, i) => (
             <div key={i} className="mb-2 p-2 border rounded-sm bg-gray-50">
-              <div className="text-yellow-500 text-sm">
-                {"★".repeat(r.rating) + "☆".repeat(5 - r.rating)}
+              <div className="flex justify-between">
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-1">
+                    <User />
+                    {r.user}
+                  </div>
+                  <div className="text-yellow-500 text-sm">
+                    {"★".repeat(r.rating) + "☆".repeat(5 - r.rating)}
+                  </div>
+                </div>
+                <div>{formatDate(r.createdAt)}</div>
               </div>
-              <p className="text-sm text-gray-700">{r.comment}</p>
+              <p className="text-sm text-gray-700">{r.content}</p>
             </div>
           ))}
+        </div>
+      ) : (
+        <div className="mt-4">
+          <h4 className="text-md font-medium mb-1">Chưa có đánh giá nào</h4>
         </div>
       )}
     </div>

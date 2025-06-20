@@ -1,8 +1,33 @@
+import { updateProfile } from "@/lib/api/apiUser";
 import { Edit2, Save } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
-export default function ProfileTab() {
+export default function ProfileTab({ userInfo }) {
+  const [dataUser, setUserInfo] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+  useEffect(() => {
+    if (userInfo) setUserInfo(userInfo);
+  }, [userInfo]);
+
+  const handleSaveProfile = async () => {
+    if (isValidPhone(dataUser.phone)) {
+      const data = await updateProfile(dataUser);
+      if (data) {
+        toast.success("Cập nhật thành công");
+      }
+      setIsEditing(false);
+    } else {
+      toast.error("Vui lòng số điện thoại");
+    }
+  };
+
+  const isValidPhone = (phone) => {
+    const check = /^(0|\+84)(3|5|7|8|9)\d{8}$/.test(phone);
+    return check;
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <div className="flex items-center justify-between mb-6">
@@ -43,8 +68,8 @@ export default function ProfileTab() {
           </label>
           <input
             type="text"
-            // value={userInfo.name}
-            // onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
+            value={dataUser.name ?? userInfo.name}
+            onChange={(e) => setUserInfo({ ...dataUser, name: e.target.value })}
             disabled={!isEditing}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
           />
@@ -56,11 +81,11 @@ export default function ProfileTab() {
           </label>
           <input
             type="email"
-            // value={userInfo.email}
-            // onChange={(e) =>
-            //   setUserInfo({ ...userInfo, email: e.target.value })
-            // }
-            disabled={!isEditing}
+            value={dataUser.email ?? userInfo.email}
+            onChange={(e) =>
+              setUserInfo({ ...dataUser, email: e.target.value })
+            }
+            disabled
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
           />
         </div>
@@ -70,26 +95,11 @@ export default function ProfileTab() {
             Số điện thoại
           </label>
           <input
-            type="tel"
-            // value={userInfo.phone}
-            // onChange={(e) =>
-            //   setUserInfo({ ...userInfo, phone: e.target.value })
-            // }
-            disabled={!isEditing}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Ngày sinh
-          </label>
-          <input
-            type="date"
-            // value={userInfo.birthDate}
-            // onChange={(e) =>
-            //   setUserInfo({ ...userInfo, birthDate: e.target.value })
-            // }
+            type="text"
+            value={dataUser.phone || ""}
+            onChange={(e) =>
+              setUserInfo({ ...dataUser, phone: e.target.value })
+            }
             disabled={!isEditing}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
           />
@@ -100,10 +110,10 @@ export default function ProfileTab() {
             Địa chỉ
           </label>
           <textarea
-            // value={userInfo.address}
-            // onChange={(e) =>
-            //   setUserInfo({ ...userInfo, address: e.target.value })
-            // }
+            value={dataUser.address || ""}
+            onChange={(e) =>
+              setUserInfo({ ...dataUser, address: e.target.value })
+            }
             disabled={!isEditing}
             rows={3}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"

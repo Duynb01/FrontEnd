@@ -6,9 +6,10 @@ import "@/styles/globals.css";
 import { useDispatch } from "react-redux";
 import { getProduct } from "@/lib/api/apiProduct";
 import { setProduct } from "@/redux/store/slices/productSlice";
-import { useSelector } from "react-redux";
 import { getCategory } from "@/lib/api/apiCategory";
 import { setCategory } from "@/redux/store/slices/categorySlice";
+import { getVoucher } from "@/lib/api/apiVoucher";
+import { setVoucher } from "@/redux/store/slices/voucherSlice";
 
 export default function BaseLayout({ children }) {
   const dispatch = useDispatch();
@@ -25,8 +26,15 @@ export default function BaseLayout({ children }) {
         dispatch(setCategory(categories));
       }
     };
+    const fetchVoucher = async () => {
+      const vouchers = await getVoucher();
+      if (vouchers) {
+        dispatch(setVoucher(vouchers));
+      }
+    };
     fetchProduct();
     fetchCategory();
+    fetchVoucher();
   }, [dispatch]);
   return (
     <div className="flex flex-col min-h-screen">

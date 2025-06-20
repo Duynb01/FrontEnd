@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { formatPrice } from "@/utils/formatPrice";
+import { formatPrice } from "@/utils/formatData";
 
 export function useCaculatorPrice(product) {
   const [price, setPrice] = useState({});

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   User,
   Lock,
@@ -14,17 +14,31 @@ import {
   Truck,
   CheckCircle,
   Clock,
+  Loader,
 } from "lucide-react";
 import ProfileTab from "@/components/pageAccount/ProfileTab";
 import PasswordTab from "@/components/pageAccount/PasswordTab";
 import OrdersTab from "@/components/pageAccount/OrdersTab";
 import VouchersTab from "@/components/pageAccount/VouchersTab";
+import { getProfileUser } from "@/lib/api/apiUser";
 
-const AccountPage = () => {
+export default function AccountPage() {
+  const [isLoad, setIsLoad] = useState(false);
+  const [userInfo, setData] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getProfileUser();
+      if (data) {
+        setData(data);
+        setIsLoad(true);
+      }
+    };
+    fetchData();
+  }, []);
   const renderTabContent = () => {
     switch (activeTab) {
       case "profile":
-        return <ProfileTab />;
+        return <ProfileTab userInfo={userInfo} />;
       case "password":
         return <PasswordTab />;
       case "vouchers":
@@ -91,11 +105,15 @@ const AccountPage = () => {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3">{renderTabContent()}</div>
+          <div className="lg:col-span-3">
+            {isLoad ? (
+              renderTabContent()
+            ) : (
+              <Loader className="w-4 h-4 animate-spin text-main" />
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default AccountPage;
+}

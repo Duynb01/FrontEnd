@@ -1,5 +1,3 @@
-"use client";
-
 export async function registerUser(payload) {
   try {
     const res = await fetch(
@@ -31,8 +29,9 @@ export async function loginUser(payload) {
       credentials: "include",
       body: JSON.stringify(payload),
     });
-    if (!res.ok) throw new Error(data.message || "Đăng nhập thất bại");
     const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Đăng nhập thất bại");
+
     return data;
   } catch (err) {
     throw err;

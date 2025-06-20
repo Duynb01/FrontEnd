@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import Review from "./Review";
-import Voucher from "./Voucher";
 import ProductCard from "./ProductCard";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
@@ -32,7 +31,7 @@ export default function ProductDetail({ product }) {
 
   const handleAddToCart = async () => {
     if (!isCheckLogin) {
-      toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+      toast.error("Vui lòng đăng nhập!");
     } else {
       const data = await addCart({ ...product, quantity });
       if (data) {
@@ -43,10 +42,7 @@ export default function ProductDetail({ product }) {
 
   const handleBuyNow = () => {
     if (!isCheckLogin) {
-      toast.error("Vui lòng đăng nhập để mua sản phẩm!");
-      setTimeout(() => {
-        router.push("/login");
-      }, 1000);
+      toast.error("Vui lòng đăng nhập!");
     } else {
       console.log("Mua ngay:", product.id, "Số lượng:", quantity);
       router.push("/checkout");
@@ -128,9 +124,6 @@ export default function ProductDetail({ product }) {
               <FontAwesomeIcon icon={faCreditCard} />
               Mua ngay
             </button>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3 mt-4">
-            <Voucher />
           </div>
         </div>
       </div>

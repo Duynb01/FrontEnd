@@ -8,8 +8,6 @@ const checkoutSlice = createSlice({
   reducers: {
     setCartItem: (state, action) => {
       const items = action.payload;
-      console.log("Test: ", items);
-
       items.forEach((item) => {
         const existingItem = state.find((i) => i.id === item.cartItemId);
         if (existingItem) {

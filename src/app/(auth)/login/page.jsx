@@ -3,21 +3,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-
-import Image from "next/image";
 import Link from "next/link";
 import { Loader } from "lucide-react";
 import { toast } from "react-toastify";
 
-import SocialAccount from "@/components/SociaAccount";
 import { loginUser } from "@/lib/api/apiAuth";
 import { validFormData } from "@/utils/isValidData";
 import { setCheckLogin } from "@/redux/store/slices/authSlice";
-
 export default function LoginForm() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const message = "Đăng nhập";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -44,8 +39,6 @@ export default function LoginForm() {
     }
     try {
       const data = await loginUser(formData);
-      console.log(data);
-
       if (data.status === "success") {
         dispatch(setCheckLogin(data.user));
         localStorage.setItem("isLogin", "true");

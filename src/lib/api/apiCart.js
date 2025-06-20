@@ -1,5 +1,3 @@
-"use client";
-
 export async function addCart(payload) {
   try {
     const { id, quantity } = payload;
@@ -14,9 +12,8 @@ export async function addCart(payload) {
         quantity,
       }),
     });
-    if (!res.ok) throw new Error(data.message || "Thêm vào giỏ hàng thất bại");
     const data = await res.json();
-
+    if (!res.ok) throw new Error(data.message || "Thêm vào giỏ hàng thất bại");
     return data;
   } catch (err) {
     throw err;
@@ -55,9 +52,8 @@ export async function updateCart(payload) {
         }),
       }
     );
-    if (!res.ok) throw new Error(data.message || "Chỉnh sửa thất bại");
     const data = await res.json();
-
+    if (!res.ok) throw new Error(data.message || "Chỉnh sửa thất bại");
     return data;
   } catch (err) {
     throw err;
@@ -74,10 +70,8 @@ export async function deleteCart(payload) {
         body: JSON.stringify({ payload }),
       }
     );
-
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Xóa sản phẩm thất bại");
-
     return data;
   } catch (err) {
     throw err;

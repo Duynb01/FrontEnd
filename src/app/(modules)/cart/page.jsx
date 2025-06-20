@@ -24,7 +24,6 @@ export default function CartPage() {
   useEffect(() => {
     fetchCart();
   }, []);
-  console.log(listCart);
 
   // Chọn Sản phẩm
   const handleSelectItem = (id) => {

@@ -1,3 +1,4 @@
+"use client";
 import ProductSuper from "@/components/ProductSuper";
 import Banner from "@/components/Banner";
 import Voucher from "@/components/Voucher";
@@ -5,8 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { CircleChevronRightIcon } from "lucide-react";
 import NewProduct from "@/components/NewProduct";
+import { useEffect, useState } from "react";
+import { getVoucher } from "@/lib/api/apiVoucher";
+import { useSelector } from "react-redux";
 
 export default function Home() {
+  const vouchers = useSelector((state) => state.voucher);
   const categorys = [
     { name: "Phòng khách", img: "/category/category_1_img.jpg" },
     { name: "Phòng ngủ", img: "/category/category_2_img.jpg" },
@@ -145,9 +150,9 @@ export default function Home() {
           </div>
         </section>
         <section className="home-voucher flex flex-wrap pt-0 gap-y-[14px] ">
-          <Voucher />
-          <Voucher />
-          <Voucher />
+          {vouchers.map((voucher, i) => {
+            return <Voucher voucher={voucher} key={i} />;
+          })}
         </section>
         <section className="home-product-2">
           <div className="text-main text-2xl font-bold mb-5 pl-[7px]">

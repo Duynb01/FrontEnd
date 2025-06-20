@@ -1,13 +1,20 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
-export default function Voucher() {
-  const onClickSave = (e) => {
+import { formatExpiryDate } from "@/utils/formatData";
+import { claimVoucher } from "@/lib/api/apiVoucher";
+import { toast } from "react-toastify";
+import { useState } from "react";
+export default function Voucher({ voucher }) {
+  const [isClaimed, setIsClaimed] = useState(false);
+
+  const onClickSave = async (e) => {
     e.preventDefault();
-    const target = e.currentTarget;
-    target.innerText = "đã sao chép";
-    target.classList.add("bg-[#929191]", "disabled");
-    target.classList.remove("bg-main");
+    try {
+      await claimVoucher(voucher.id);
+      setIsClaimed(true);
+    } catch (err) {
+      toast.warning(err.message);
+    }
   };
   return (
     <div className="min-w-[50%] px-[7px] xl:min-w-[25%] ">
@@ -23,23 +30,24 @@ export default function Voucher() {
         </div>
         <div className="w-full p-[10px]">
           <div className="pb-3">
-            <h4 className="font-bold text-sm">Giảm 200.000đ</h4>
-            <p className="text-[12px]">Đơn hàng từ 3 triệu</p>
+            <h4 className="font-bold text-sm">{voucher.name}</h4>
           </div>
           <div className="text-[10px]">
             <p>
               Mã:{" "}
               <span className="font-bold text-[11px] uppercase">
-                vouchert3-200k
+                {voucher.code}
               </span>
             </p>
             <div className="flex items-center justify-between ">
-              <span>HSD: 31/03/2025</span>
+              <span>HSD: {formatExpiryDate(voucher.expiryDate)}</span>
               <button
                 onClick={onClickSave}
-                className="bg-main px-2 py-1 text-white uppercase rounded-full"
+                className={` ${
+                  isClaimed ? "bg-[#929191]" : "bg-main"
+                } px-2 py-1 text-white uppercase rounded-full`}
               >
-                sao chép mã
+                {isClaimed ? "đã sao chép" : "sao chép mã"}
               </button>
             </div>
           </div>

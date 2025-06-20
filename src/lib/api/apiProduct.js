@@ -1,5 +1,3 @@
-"use client";
-
 export async function getProduct() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {

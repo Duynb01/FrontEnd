@@ -14,8 +14,7 @@ export default function Account() {
   const closeRef = useRef(null);
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
-  const isCheckLogin = useSelector((state) => state.auth.isCheckLogin);
-  const userInfo = useSelector((state) => state.auth.userInfo);
+  const { isCheckLogin, userInfo } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
