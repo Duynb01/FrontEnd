@@ -10,31 +10,49 @@ import { getCategory } from "@/lib/api/apiCategory";
 import { setCategory } from "@/redux/store/slices/categorySlice";
 import { getVoucher } from "@/lib/api/apiVoucher";
 import { setVoucher } from "@/redux/store/slices/voucherSlice";
+import { toast } from "react-toastify";
 
 export default function BaseLayout({ children }) {
   const dispatch = useDispatch();
   useEffect(() => {
-    const fetchProduct = async () => {
-      const products = await getProduct();
-      if (products) {
-        dispatch(setProduct(products));
+    // const fetchProduct = async () => {
+    //   const products = await getProduct();
+    //   if (products) {
+    //     dispatch(setProduct(products));
+    //   }
+    // };
+    // const fetchCategory = async () => {
+    //   const categories = await getCategory();
+    //   if (categories) {
+    //     dispatch(setCategory(categories));
+    //   }
+    // };
+    // const fetchVoucher = async () => {
+    //   const vouchers = await getVoucher();
+    //   if (vouchers) {
+    //     dispatch(setVoucher(vouchers));
+    //   }
+    // };
+    // fetchProduct();
+    // fetchCategory();
+    // fetchVoucher();
+
+    const fetchData = async () => {
+      try {
+        const [products, categories, vouchers] = await Promise.all([
+          getProduct(),
+          getCategory(),
+          getVoucher(),
+        ]);
+
+        if (products) dispatch(setProduct(products));
+        if (categories) dispatch(setCategory(categories));
+        if (vouchers) dispatch(setVoucher(vouchers));
+      } catch (error) {
+        toast.error(error.message);
       }
     };
-    const fetchCategory = async () => {
-      const categories = await getCategory();
-      if (categories) {
-        dispatch(setCategory(categories));
-      }
-    };
-    const fetchVoucher = async () => {
-      const vouchers = await getVoucher();
-      if (vouchers) {
-        dispatch(setVoucher(vouchers));
-      }
-    };
-    fetchProduct();
-    fetchCategory();
-    fetchVoucher();
+    fetchData();
   }, [dispatch]);
   return (
     <div className="flex flex-col min-h-screen">

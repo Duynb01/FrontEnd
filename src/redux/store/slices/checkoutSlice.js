@@ -20,5 +20,5 @@ const checkoutSlice = createSlice({
   },
 });
 
-export const { setCartItem } = checkoutSlice.actions;
+export const { setCartItem, setProduct } = checkoutSlice.actions;
 export default checkoutSlice.reducer;

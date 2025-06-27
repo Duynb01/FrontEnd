@@ -122,7 +122,7 @@ export default function Header() {
             className="mx-auto rounded-full  font-bold"
             priority
           />
-          FNS
+          <span className="md:block hidden">FNS</span>
         </a>
 
         {/* Search Bar */}

@@ -9,11 +9,13 @@ import Link from "next/link";
 import Review from "./Review";
 import ProductCard from "./ProductCard";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addCart } from "@/lib/api/apiCart";
+import { setCartItem } from "@/redux/store/slices/checkoutSlice";
 
 export default function ProductDetail({ product }) {
+  const dispatch = useDispatch();
   const router = useRouter();
   const isCheckLogin = useSelector((state) => state.auth.isCheckLogin);
   const listProduct = useSelector((state) => state.product);
@@ -43,10 +45,18 @@ export default function ProductDetail({ product }) {
   const handleBuyNow = () => {
     if (!isCheckLogin) {
       toast.error("Vui lòng đăng nhập!");
-    } else {
-      console.log("Mua ngay:", product.id, "Số lượng:", quantity);
-      router.push("/checkout");
+      return;
     }
+    const payload = {
+      ...product,
+      quantity: quantity,
+    };
+
+    if (JSON.parse(localStorage.getItem("orderList"))) {
+      localStorage.removeItem("orderList");
+    }
+    localStorage.setItem("orderList", JSON.stringify([payload]));
+    router.push("/checkout");
   };
 
   const relatedProducts = listProduct.filter(

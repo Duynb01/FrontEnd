@@ -37,6 +37,7 @@ export default function Account() {
       if (res.status === "success") {
         dispatch(setLogout());
         localStorage.removeItem("isLogin");
+        localStorage.removeItem("orderList");
         toast.success(res.message || "Đăng xuất thành công!");
         setIsLogin(false);
         router.push("/");
@@ -54,6 +55,16 @@ export default function Account() {
       setIsLogin(!isLogin);
     }
   };
+
+  const handleToAccount = () => {
+    const checkLogin = localStorage.getItem("isLogin");
+    if (!checkLogin) {
+      toast.warning("Vui lòng đăng nhập!");
+      return;
+    }
+    router.push("/account");
+  };
+
   return (
     <div className="relative" ref={closeRef}>
       <button
@@ -69,9 +80,9 @@ export default function Account() {
         <div className="absolute top-[3.3rem] -right-9 z-[9999]">
           <ul className="bg-white shadow-md rounded-sm flex flex-col">
             <li className="cursor-pointer  py-[10px] px-4  min-w-[10.25rem] w-full hover:bg-slate-300 ">
-              <Link href="/account" className="block w-full">
+              <button onClick={handleToAccount} className="block w-full">
                 Quản lý tài khoản
-              </Link>
+              </button>
             </li>
             <li className="cursor-pointer  py-[10px] px-4 hover:bg-slate-300 min-w-[10.25rem] w-full ">
               <button

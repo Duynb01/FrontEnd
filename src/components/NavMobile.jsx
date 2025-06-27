@@ -19,7 +19,8 @@ import { setLogout } from "@/redux/store/slices/authSlice";
 import { toast } from "react-toastify";
 import { logoutUser } from "@/lib/api/apiAuth";
 
-export default function NavMobile({ categories }) {
+export default function NavMobile() {
+  const categories = useSelector((state) => state.category);
   const router = useRouter();
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,6 +43,7 @@ export default function NavMobile({ categories }) {
       if (res.status === "success") {
         dispatch(setLogout());
         localStorage.removeItem("isLogin");
+        localStorage.removeItem("orderList");
         toast.success(res.message || "Đăng xuất thành công!");
         router.push("/");
         setIsMenuOpen(false);
@@ -55,6 +57,15 @@ export default function NavMobile({ categories }) {
 
   const handleLogin = () => {
     router.push("/login");
+  };
+
+  const handleToAccount = () => {
+    const checkLogin = localStorage.getItem("isLogin");
+    if (!checkLogin) {
+      toast.warning("Vui lòng đăng nhập!");
+      return;
+    }
+    router.push("/account");
   };
   return (
     <>
@@ -83,10 +94,13 @@ export default function NavMobile({ categories }) {
             <X className="w-6 h-6" />
           </button>
         </div>
-        <div className="flex items-center gap-4 mt-7 border p-3 rounded-sm">
+        <button
+          onClick={handleToAccount}
+          className="flex items-center gap-4 mt-7 border p-3 rounded-sm w-full"
+        >
           <FontAwesomeIcon icon={faCircleUser} className="text-main w-7 h-7" />
           <p className=" text-md font-bold">{userInfo?.name || "Tài khoản"}</p>
-        </div>
+        </button>
         <nav className="my-6">
           <ul className="flex flex-col gap-1">
             {categories.map((category, index) => (
@@ -97,15 +111,15 @@ export default function NavMobile({ categories }) {
                   className="group shadow-[0px_6px_15px_rgb(149,157,165,0.2)] p-3 hover:bg-slate-300"
                 >
                   <Link
-                    href={"#"}
+                    href={`/products/category/${category.slug}`}
                     className=" text-main font-bold text-md flex items-center justify-between"
                   >
                     {category.name}
-                    <ChevronDown
+                    {/* <ChevronDown
                       className={`size-4 text-main transform transition-transform duration-300  ${
                         openIndex === index ? "rotate-180" : ""
                       } `}
-                    />
+                    /> */}
                   </Link>
                 </li>
                 <div
@@ -113,20 +127,22 @@ export default function NavMobile({ categories }) {
                     openIndex === index ? "max-h-96" : "max-h-0"
                   }`}
                 >
-                  <ul>
-                    {category.childs.map((child, index) => (
-                      <li
-                        key={index}
-                        className={`py-[9px] px-[18px] cursor-pointer hover:font-bold ${
-                          index !== category.childs.length - 1
-                            ? "border-b border-gray-200"
-                            : ""
-                        }`}
-                      >
-                        {child}
-                      </li>
-                    ))}
-                  </ul>
+                  {category.child && (
+                    <ul>
+                      {category.childs.map((child, index) => (
+                        <li
+                          key={index}
+                          className={`py-[9px] px-[18px] cursor-pointer hover:font-bold ${
+                            index !== category.childs.length - 1
+                              ? "border-b border-gray-200"
+                              : ""
+                          }`}
+                        >
+                          {child}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </React.Fragment>
             ))}

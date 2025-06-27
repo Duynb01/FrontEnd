@@ -25,7 +25,7 @@ export default function ProductCard({ product }) {
         <div className="relative z-0">
           <Image
             src={product.url}
-            alt=""
+            alt={product.name}
             width={480}
             height={480}
             className="w-full max-h-[180px] object-contain rounded-t-sm transition-transform duration-300 ease-in-out group-hover:scale-105"

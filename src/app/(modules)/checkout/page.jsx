@@ -1,22 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-
-const mockVoucher = [
-  {
-    code: "SALE10",
-    discount: 10, // Giảm giá 10%
-  },
-  {
-    code: "SALE20",
-    discount: 20, // Giảm giá 20%
-  },
-];
+import { validVoucher } from "@/lib/api/apiVoucher";
+import { createOrder } from "@/lib/api/apiOrder";
+import { useRouter } from "next/navigation";
 export default function CheckoutPage() {
-  const mockCartItems = useSelector((state) => state.checkout);
+  const router = useRouter();
+  const [mockCartItems, setMockCartItems] = useState([]);
+  const [paymentMethod, setPaymentMethod] = useState("cod");
+
+  useEffect(() => {
+    const storedItems = localStorage.getItem("orderList");
+    if (storedItems) {
+      setMockCartItems(JSON.parse(storedItems));
+    }
+  }, []);
+
+  // Xử lý Info
   const [shippingInfo, setShippingInfo] = useState({
     name: "",
     phone: "",
@@ -24,36 +26,82 @@ export default function CheckoutPage() {
     city: "",
     note: "",
   });
-
   const handleInputChange = (e) => {
     setShippingInfo({ ...shippingInfo, [e.target.name]: e.target.value });
   };
 
-  const [paymentMethod, setPaymentMethod] = useState("cod");
-
-  const handlePlaceOrder = () => {
-    console.log({ shippingInfo, paymentMethod, mockCartItems });
-    alert("Đặt hàng thành công!");
-  };
-  const [voucherCode, setVoucherCode] = useState("");
-  const [discount, setDiscount] = useState(0);
-
-  const handleApplyVoucher = () => {
-    if (voucherCode === "SALE10") {
-      setDiscount(0.1); // Giảm 10%
-      toast.success("Áp dụng mã giảm giá thành công!");
-    } else {
-      setDiscount(0);
-      toast.warning("Mã giảm giá không hợp lệ!");
+  // Xử lý đặt hàng
+  const handlePlaceOrder = async () => {
+    const items = mockCartItems.map((item) => ({
+      cartItemId: item.cartItemId,
+      productId: item.id,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+    const payload = {
+      items,
+      shippingInfo,
+      method: paymentMethod,
+      voucherCode: voucher.code || null,
+      totalPrice: infoPrice.afterDiscount,
+    };
+    try {
+      await createOrder(payload);
+      toast.success("Đặt hàng thành công!");
+      router.push("/");
+    } catch (err) {
+      toast.warning(err.message);
     }
   };
 
-  const totalBeforeDiscount = mockCartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  // Xử lý voucher
+  const [voucherCode, setVoucherCode] = useState("");
+  const [voucher, setVoucher] = useState({
+    code: null,
+    discount: 0,
+    type: null,
+  });
+  const handleApplyVoucher = async () => {
+    try {
+      const dataVoucher = await validVoucher(voucherCode);
+      setVoucher({
+        code: dataVoucher.code,
+        discount: dataVoucher.discount,
+        type: dataVoucher.type,
+      });
+    } catch (err) {
+      toast.warning(err.message);
+    }
+  };
 
-  const totalK = totalBeforeDiscount - totalBeforeDiscount * discount;
+  // Xử lý Tổng tiền
+  const [infoPrice, setInfoPrice] = useState({
+    beforeDiscount: null,
+    discount: 0,
+    afterDiscount: null,
+  });
+
+  useEffect(() => {
+    if (voucher.code) {
+      calculatePrice(voucher.type, voucher.discount);
+    } else {
+      calculatePrice("No Voucher");
+    }
+  }, [voucher, mockCartItems]);
+  const calculatePrice = (type, discount = 0) => {
+    const beforeDiscount = mockCartItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+    const sales =
+      type === "PERCENT" ? beforeDiscount * (discount / 100) : discount;
+    const afterDiscount = beforeDiscount - sales;
+    setInfoPrice({
+      beforeDiscount,
+      discount: sales,
+      afterDiscount,
+    });
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -109,8 +157,8 @@ export default function CheckoutPage() {
 
         {/* Danh sách sản phẩm */}
         <div className="space-y-4">
-          {mockCartItems.map((item) => (
-            <div key={item.name} className="flex items-center gap-4">
+          {mockCartItems.map((item, i) => (
+            <div key={i} className="flex items-center gap-4">
               <Image
                 width={64}
                 height={64}
@@ -154,20 +202,18 @@ export default function CheckoutPage() {
         <div className="space-y-1 text-sm">
           <div className="flex justify-between">
             <span>Tạm tính:</span>
-            <span>{totalBeforeDiscount.toLocaleString()}₫</span>
+            <span>{infoPrice.beforeDiscount}₫</span>
           </div>
-          {discount > 0 && (
+          {voucher.discount > 0 && (
             <div className="flex justify-between text-green-600">
               <span>Giảm giá:</span>
-              <span>
-                - {(totalBeforeDiscount * discount).toLocaleString()}₫
-              </span>
+              <span>- {infoPrice.discount}₫</span>
             </div>
           )}
         </div>
         <div className="flex justify-between text-lg font-semibold mt-2">
           <span>Tổng cộng:</span>
-          <span>{totalK.toLocaleString()}₫</span>
+          <span>{infoPrice.afterDiscount}₫</span>
         </div>
 
         {/* Phương thức thanh toán */}
@@ -188,9 +234,9 @@ export default function CheckoutPage() {
               <input
                 type="radio"
                 name="payment"
-                value="bank"
-                checked={paymentMethod === "bank"}
-                onChange={() => setPaymentMethod("bank")}
+                value="vnpay"
+                checked={paymentMethod === "vnpay"}
+                onChange={() => setPaymentMethod("vnpay")}
               />
               <span>Thank toán VNPAY</span>
             </label>

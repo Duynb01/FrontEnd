@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 
 export default function Home() {
   const vouchers = useSelector((state) => state.voucher);
+  const products = useSelector((state) => state.product);
   const categorys = [
     { name: "Phòng khách", img: "/category/category_1_img.jpg" },
     { name: "Phòng ngủ", img: "/category/category_2_img.jpg" },
@@ -134,8 +135,10 @@ export default function Home() {
               <Link href="">Sản phẩm nổi bật</Link>
             </h2>
             <div className="flex items-center overflow-x-scroll scrollbar-none scroll-start">
-              {productSuper.map((product, i) => (
-                <ProductSuper key={i} product={product} />
+              {products.slice(0, 5).map((product, i) => (
+                <Link key={i} href={`/products/${product.id}`}>
+                  <ProductSuper product={product} />
+                </Link>
               ))}
             </div>
             <div className="bg-white w-[12.5rem] mx-auto rounded-md overflow-hidden group">
@@ -161,8 +164,10 @@ export default function Home() {
             </h2>
           </div>
           <div className="flex overflow-x-scroll scrollbar-none scroll-start">
-            {productSuper.map((product, i) => (
-              <ProductSuper key={i} product={product} />
+            {products.slice(0, 5).map((product, i) => (
+              <Link key={i} href={`/products/${product.id}`}>
+                <ProductSuper product={product} />
+              </Link>
             ))}
           </div>
         </section>

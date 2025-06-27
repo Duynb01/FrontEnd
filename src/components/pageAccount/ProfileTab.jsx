@@ -1,7 +1,6 @@
 import { updateProfile } from "@/lib/api/apiUser";
 import { Edit2, Save } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 export default function ProfileTab({ userInfo }) {

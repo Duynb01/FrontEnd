@@ -1,21 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  User,
-  Lock,
-  Gift,
-  ShoppingBag,
-  Edit2,
-  Save,
-  Eye,
-  EyeOff,
-  Calendar,
-  Package,
-  Truck,
-  CheckCircle,
-  Clock,
-  Loader,
-} from "lucide-react";
+import { User, Lock, Gift, ShoppingBag, Loader } from "lucide-react";
 import ProfileTab from "@/components/pageAccount/ProfileTab";
 import PasswordTab from "@/components/pageAccount/PasswordTab";
 import OrdersTab from "@/components/pageAccount/OrdersTab";

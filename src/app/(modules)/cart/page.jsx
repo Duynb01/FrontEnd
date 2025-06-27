@@ -1,8 +1,5 @@
 "use client";
-
-import { setCartItem } from "@/redux/store/slices/checkoutSlice";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { getCart, updateCart, deleteCart } from "@/lib/api/apiCart";
 import { toast } from "react-toastify";
@@ -10,7 +7,6 @@ import CartItem from "@/components/CartItem";
 
 export default function CartPage() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const [cartItem, setCartItems] = useState([]);
   const [listCart, setListCart] = useState([]);
 
@@ -50,7 +46,10 @@ export default function CartPage() {
     const selectedOrderItems = listCart.filter((item) =>
       cartItem.includes(item.cartItemId)
     );
-    dispatch(setCartItem(selectedOrderItems));
+    if (JSON.parse(localStorage.getItem("orderList"))) {
+      localStorage.removeItem("orderList");
+    }
+    localStorage.setItem("orderList", JSON.stringify(selectedOrderItems));
     router.push("/checkout");
   };
 

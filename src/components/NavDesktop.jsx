@@ -4,10 +4,7 @@ import { ChevronDown } from "lucide-react";
 import { useSelector } from "react-redux";
 
 export default function NavDesktop() {
-  // console.log(categories);
   const categories = useSelector((state) => state.category);
-  // console.log(category);/
-
   return (
     <>
       <nav className="bg-[#f2f2f2] hidden mdc:block">
