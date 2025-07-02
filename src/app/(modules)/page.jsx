@@ -92,7 +92,7 @@ export default function Home() {
   ];
   return (
     <>
-      <div className="wrapper container">
+      <div className="wrapper container ">
         <section className="home-banner">
           <Banner />
         </section>
@@ -134,7 +134,7 @@ export default function Home() {
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-4 pl-[7px] relative before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:content[''] after:border-main after:rounded-full after:w-2 after:h-2 after:absolute after:border after:animate-pulseSmall">
               <Link href="">Sản phẩm nổi bật</Link>
             </h2>
-            <div className="flex items-center overflow-x-scroll scrollbar-none scroll-start">
+            <div className="flex items-center overflow-x-scroll scrollbar-none scroll-x-start">
               {products.slice(0, 5).map((product, i) => (
                 <Link key={i} href={`/products/${product.id}`}>
                   <ProductSuper product={product} />
@@ -163,7 +163,7 @@ export default function Home() {
               <Link href={""}>Back To School - Up To 60%</Link>
             </h2>
           </div>
-          <div className="flex overflow-x-scroll scrollbar-none scroll-start">
+          <div className="flex overflow-x-scroll scrollbar-none scroll-x-start">
             {products.slice(0, 5).map((product, i) => (
               <Link key={i} href={`/products/${product.id}`}>
                 <ProductSuper product={product} />
@@ -176,7 +176,7 @@ export default function Home() {
             <div className="text-white relative px-[15px] text-right w-1/6">
               <h3 className="text-lg font-bold mb-2">Xu hướng tìm kiếm</h3>
             </div>
-            <div className="relative flex items-center justify-between px-[15px] w-full overflow-x-scroll scrollbar-none scroll-start ">
+            <div className="relative flex items-center justify-between px-[15px] w-full overflow-x-scroll scrollbar-none scroll-x-start ">
               {trendCategorize.map((item, i) => (
                 <div
                   key={i}

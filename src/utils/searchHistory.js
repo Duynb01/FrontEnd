@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+
 // utils/searchHistory.js
 export const saveSearchKeyword = (keyword) => {
   const key = "search_history";
@@ -30,6 +32,21 @@ export const getSearchHistory = () => {
 
 export const clearSearchHistory = () => {
   localStorage.removeItem("search_history");
+};
+
+const formatSearch = (value) => {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+};
+
+export const searchProduct = (value, productList) => {
+  const listProduct = productList.filter((product) => {
+    return formatSearch(product.name).includes(formatSearch(value).trim());
+  });
+
+  return listProduct;
 };
 
 //

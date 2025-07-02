@@ -77,10 +77,17 @@ section {
   z-index: 9999;
 }
 
-.scroll-start {
+.scroll-x-start {
   scroll-snap-type: x mandatory;
 }
-.scroll-start > * {
+.scroll-x-start > * {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.scroll-y-start {
+  scroll-snap-type: y mandatory;
+}
+.scroll-y-start > * {
   scroll-snap-align: start;
   scroll-snap-stop: always;
 }

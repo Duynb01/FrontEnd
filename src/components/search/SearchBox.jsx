@@ -1,14 +1,16 @@
 "use client";
 import { Search as SearchIcon } from "lucide-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { Trash2 } from "lucide-react";
 import {
-  removeSearchKeyword,
   saveSearchKeyword,
   getSearchHistory,
+  searchProduct,
 } from "@/utils/searchHistory";
 import { useRef, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useRouter } from "next/navigation";
+import { setProductWithSearch } from "@/redux/store/slices/searchSlice";
+import SearchContent from "./SearchContent";
 
 export default function Search() {
   const trendCategorize = [
@@ -48,8 +50,15 @@ export default function Search() {
   const [keyword, setKeyword] = useState("");
   const [history, setHistory] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [products, setProduct] = useState([]);
+  const debounceSearch = useDebounce(keyword, 500);
+  const dispatch = useDispatch();
+  const productList = useSelector((state) => state.product);
   const inputRef = useRef(null);
   const searchBoxRef = useRef(null);
+  const router = useRouter();
+
   useEffect(() => {
     setHistory(getSearchHistory());
   }, []);
@@ -60,6 +69,7 @@ export default function Search() {
     }
   }, [isOpen]);
 
+  // Xử lý tắt overlay
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (searchBoxRef.current && !searchBoxRef.current.contains(e.target)) {
@@ -84,26 +94,73 @@ export default function Search() {
     };
   });
 
+  // Xử lý Search
+  const handleInputSearch = (e) => {
+    e.preventDefault();
+    setKeyword(e.target.value);
+  };
+
   const handleSearch = (customKeyword) => {
     const searchTerm = (customKeyword ?? keyword).trim();
-    if (!searchTerm) return;
+    if (!searchTerm) {
+      setIsOpen(false);
+      return;
+    }
 
+    setKeyword(searchTerm);
     inputRef.current?.blur();
+    setIsOpen(false);
+
     saveSearchKeyword(searchTerm);
     setHistory(getSearchHistory());
-    setKeyword(searchTerm);
-    setIsOpen(false);
+
+    const result = searchProduct(searchTerm, productList);
+
+    dispatch(
+      setProductWithSearch({
+        key: searchTerm,
+        products: result,
+      })
+    );
+
+    router.push("/search");
   };
 
   const handleClearHistory = () => {
     localStorage.removeItem("search_history");
     setHistory([]);
   };
+
+  // Xử lý filter name
+  useEffect(() => {
+    setLoading(true);
+    if (!debounceSearch.trim()) {
+      setProduct([]);
+      return;
+    }
+    const timeout = setTimeout(() => {
+      const result = searchProduct(debounceSearch, productList);
+      setProduct(result);
+      setLoading(false);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [debounceSearch, productList]);
+
+  // Xử lý chọn sản phẩm trong box-search
+  const handleChooseProduct = ({ name, id }) => {
+    saveSearchKeyword(name);
+    setHistory(getSearchHistory());
+    setKeyword(name);
+    setIsOpen(false);
+    router.push(`/products/${id}`);
+  };
+
   return (
     <div className="flex-1 max-w-xl relative">
       {isOpen && (
         <div
-          className="fixed inset-0 top-[57px] bg-black/40 z-50"
+          className="fixed inset-0 top-[66px] bg-black/40 z-50"
           onClick={() => setIsOpen(false)}
         ></div>
       )}
@@ -112,7 +169,7 @@ export default function Search() {
           ref={inputRef}
           type="text"
           value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={handleInputSearch}
           onFocus={() => {
             setIsOpen(true);
           }}
@@ -129,48 +186,32 @@ export default function Search() {
         </button>
         {isOpen && (
           <>
-            <div className="search-modal absolute w-full h-[50vh] z-50 transform translate-y-2">
-              <div className="search-content p-1 bg-white h-full flex flex-col gap-2 rounded-sm">
-                <div className="max-h-[60%] flex-grow">
-                  <div className="flex justify-between items-center">
+            <div className="search-modal absolute w-full h-[80vh] z-50 transform ">
+              <div className="search-content p-1 bg-white h-full flex flex-col rounded-sm">
+                <div className="h-[70%] w-full flex-grow overflow-hidden">
+                  <div className="flex justify-between items-center p-2">
                     <h4 className="font-bold">Lịch sử tìm kiếm</h4>
-                    <button onClick={handleClearHistory}>Clear</button>
+                    <button
+                      onClick={handleClearHistory}
+                      className="text-sm text-blue-600 hover:underline"
+                    >
+                      Xoá tất cả
+                    </button>
                   </div>
-                  <div className="search-history flex flex-col items-center">
-                    {history.length === 0 && <p>Chưa có lịch sử tìm kiếm</p>}
-                    <ul className="w-full">
-                      {history.map((item, i) => (
-                        <li
-                          className="group flex items-center justify-between gap-2 cursor-default hover:bg-gray-100 text-black rounded-sm"
-                          key={i}
-                          onClick={() => {
-                            setKeyword(item);
-                            handleSearch(item);
-                          }}
-                        >
-                          <div>
-                            {" "}
-                            <FontAwesomeIcon
-                              icon={faMagnifyingGlass}
-                              className="w-4 h-4 text-gray-400 px-1"
-                            />{" "}
-                            {item}
-                          </div>
-                          <Trash2
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              removeSearchKeyword(item);
-                              setHistory(getSearchHistory());
-                            }}
-                            className="w-4 h-4 text-gray-400 hidden group-hover:block mr-3"
-                          />
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="search-history flex flex-col p-2 h-[28.5rem] overflow-y-scroll scrollbar-none">
+                    <SearchContent
+                      keyword={keyword}
+                      loading={loading}
+                      products={products}
+                      history={history}
+                      handleChooseProduct={handleChooseProduct}
+                      handleSearch={handleSearch}
+                      setHistory={setHistory}
+                    />
                   </div>
                 </div>
-                <div className="h-[40%] flex flex-col gap-2 max-h-full ">
-                  <h4 className="font-bold">Danh Mục Nổi Bật</h4>
+                <div className="h-[30%] flex flex-col  max-h-full bg-white">
+                  <h4 className="font-bold p-2">Danh Mục Nổi Bật</h4>
                   <div className="grid grid-cols-4 grid-rows-2 flex-grow">
                     {trendCategorize.map((item, i) => (
                       <div

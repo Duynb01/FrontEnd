@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import NavDesktop from "../NavDesktop";
 import NavMobile from "../NavMobile";
-import Search from "../Search";
+import Search from "../search/SearchBox";
 import { ShoppingCart, User } from "lucide-react";
 import Account from "../Account";
 import { useSelector } from "react-redux";
@@ -104,7 +104,7 @@ export default function Header() {
   };
 
   return (
-    <header className="shadow-sm sticky top-0 z-40 bg-main w-screen">
+    <header className="shadow-sm top-0 z-40 bg-main w-screen fixed h-[118px]">
       <div className="max-w-7xl mx-auto  py-2 flex items-center justify-around mdc:justify-around xl:justify-between gap-4">
         <div className="mdc:hidden relative z-50">
           <NavMobile categories={categories} />

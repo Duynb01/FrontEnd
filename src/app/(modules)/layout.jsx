@@ -15,28 +15,6 @@ import { toast } from "react-toastify";
 export default function BaseLayout({ children }) {
   const dispatch = useDispatch();
   useEffect(() => {
-    // const fetchProduct = async () => {
-    //   const products = await getProduct();
-    //   if (products) {
-    //     dispatch(setProduct(products));
-    //   }
-    // };
-    // const fetchCategory = async () => {
-    //   const categories = await getCategory();
-    //   if (categories) {
-    //     dispatch(setCategory(categories));
-    //   }
-    // };
-    // const fetchVoucher = async () => {
-    //   const vouchers = await getVoucher();
-    //   if (vouchers) {
-    //     dispatch(setVoucher(vouchers));
-    //   }
-    // };
-    // fetchProduct();
-    // fetchCategory();
-    // fetchVoucher();
-
     const fetchData = async () => {
       try {
         const [products, categories, vouchers] = await Promise.all([
@@ -44,7 +22,6 @@ export default function BaseLayout({ children }) {
           getCategory(),
           getVoucher(),
         ]);
-
         if (products) dispatch(setProduct(products));
         if (categories) dispatch(setCategory(categories));
         if (vouchers) dispatch(setVoucher(vouchers));
@@ -57,7 +34,7 @@ export default function BaseLayout({ children }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pt-[118px]">{children}</main>
       <Footer />
     </div>
   );

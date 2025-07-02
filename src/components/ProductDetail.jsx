@@ -9,13 +9,12 @@ import Link from "next/link";
 import Review from "./Review";
 import ProductCard from "./ProductCard";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addCart } from "@/lib/api/apiCart";
 import { setCartItem } from "@/redux/store/slices/checkoutSlice";
 
 export default function ProductDetail({ product }) {
-  const dispatch = useDispatch();
   const router = useRouter();
   const isCheckLogin = useSelector((state) => state.auth.isCheckLogin);
   const listProduct = useSelector((state) => state.product);

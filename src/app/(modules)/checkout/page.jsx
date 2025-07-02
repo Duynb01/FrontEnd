@@ -6,17 +6,31 @@ import { toast } from "react-toastify";
 import { validVoucher } from "@/lib/api/apiVoucher";
 import { createOrder } from "@/lib/api/apiOrder";
 import { useRouter } from "next/navigation";
+import { getProfileUser } from "@/lib/api/apiUser";
 export default function CheckoutPage() {
   const router = useRouter();
   const [mockCartItems, setMockCartItems] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [data, setData] = useState({});
 
   useEffect(() => {
-    const storedItems = localStorage.getItem("orderList");
-    if (storedItems) {
-      setMockCartItems(JSON.parse(storedItems));
-    }
+    const fetchData = async () => {
+      const data = await getProfileUser();
+      if (data) {
+        setData(data);
+      }
+    };
+    fetchData();
   }, []);
+  useEffect(() => {
+    const { name, phone, address } = data;
+    setShippingInfo((prev) => ({
+      ...prev,
+      name: name,
+      phone: phone,
+      address: address,
+    }));
+  }, [data]);
 
   // Xử lý Info
   const [shippingInfo, setShippingInfo] = useState({
@@ -29,6 +43,12 @@ export default function CheckoutPage() {
   const handleInputChange = (e) => {
     setShippingInfo({ ...shippingInfo, [e.target.name]: e.target.value });
   };
+  useEffect(() => {
+    const storedItems = localStorage.getItem("orderList");
+    if (storedItems) {
+      setMockCartItems(JSON.parse(storedItems));
+    }
+  }, []);
 
   // Xử lý đặt hàng
   const handlePlaceOrder = async () => {
@@ -102,6 +122,7 @@ export default function CheckoutPage() {
       afterDiscount,
     });
   };
+  console.log(shippingInfo);
 
   return (
     <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -113,7 +134,7 @@ export default function CheckoutPage() {
             type="text"
             name="name"
             placeholder="Họ và tên"
-            value={shippingInfo.name}
+            value={shippingInfo.name || ""}
             onChange={handleInputChange}
             className="border rounded-md p-3 w-full"
           />
@@ -121,7 +142,7 @@ export default function CheckoutPage() {
             type="text"
             name="phone"
             placeholder="Số điện thoại"
-            value={shippingInfo.phone}
+            value={shippingInfo.phone || ""}
             onChange={handleInputChange}
             className="border rounded-md p-3 w-full "
           />
@@ -129,7 +150,7 @@ export default function CheckoutPage() {
             type="text"
             name="address"
             placeholder="Địa chỉ"
-            value={shippingInfo.address}
+            value={shippingInfo.address || ""}
             onChange={handleInputChange}
             className="border rounded-lg p-3 w-full md:col-span-2"
           />
@@ -137,14 +158,14 @@ export default function CheckoutPage() {
             type="text"
             name="city"
             placeholder="Tỉnh/Thành phố"
-            value={shippingInfo.city}
+            value={shippingInfo.city || ""}
             onChange={handleInputChange}
             className="border rounded-lg p-3 w-full md:col-span-2"
           />
           <textarea
             name="note"
             placeholder="Ghi chú cho đơn hàng (tuỳ chọn)"
-            value={shippingInfo.note}
+            value={shippingInfo.note || ""}
             onChange={handleInputChange}
             className="border rounded-lg p-3 h-full  md:col-span-2 min-h-[120px]"
           ></textarea>
