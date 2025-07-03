@@ -34,17 +34,14 @@ export default function LoginForm() {
     const errors = validFormData(formData);
     if (errors.length > 0) {
       errors.forEach((error) => toast.error(error));
-      setLoading(false);
-      return;
+      return setLoading(false);
     }
     try {
       const data = await loginUser(formData);
-      if (data.status === "success") {
-        dispatch(setCheckLogin(data.user));
-        localStorage.setItem("isLogin", "true");
-        await router.push("/");
-        toast.success("Đăng nhập thành công!");
-      }
+      dispatch(setCheckLogin(data.user));
+      localStorage.setItem("isLogin", "true");
+      router.push("/");
+      toast.success("Đăng nhập thành công!");
     } catch (err) {
       toast.error(
         err.message || "Đăng nhập thất bại, vui lòng kiểm tra lại thông tin!"
@@ -55,7 +52,10 @@ export default function LoginForm() {
   };
   return (
     <>
-      <form action="" className="flex flex-col gap-4 items-center my-3">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 items-center my-3"
+      >
         <h2 className="uppercase font-bold text-main text-xl">
           đăng nhập hệ thống
         </h2>
@@ -82,7 +82,6 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          onClick={handleSubmit}
           className="w-full  bg-main text-white py-3 px-4 rounded-md font-bold"
         >
           {loading ? (

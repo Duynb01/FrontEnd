@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Loader } from "lucide-react";
 import { toast } from "react-toastify";
@@ -12,7 +11,6 @@ import { registerUser } from "@/lib/api/apiAuth";
 import { validFormData } from "@/utils/isValidData";
 
 export default function LoginForm() {
-  const message = "Đăng ký";
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
@@ -36,8 +34,7 @@ export default function LoginForm() {
 
     if (errors.length > 0) {
       errors.forEach((error) => toast.error(error));
-      setLoading(false);
-      return;
+      return setLoading(false);
     }
     try {
       await registerUser(formData);
@@ -56,7 +53,10 @@ export default function LoginForm() {
 
   return (
     <>
-      <form action="" className="flex flex-col gap-4 items-center my-3">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 items-center my-3"
+      >
         <h2 className="uppercase font-bold text-main text-xl">
           đăng ký tài khoản
         </h2>
@@ -94,7 +94,6 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          onClick={handleSubmit}
           className="w-full  bg-main text-white py-3 px-4 rounded-md font-bold "
         >
           {loading ? (
