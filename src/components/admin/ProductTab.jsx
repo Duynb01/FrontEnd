@@ -8,6 +8,7 @@ import {
   Search,
 } from "lucide-react";
 import React from "react";
+import { formatPrice } from "@/utils/formatData";
 
 export default function ProductTab() {
   const products = [
@@ -15,70 +16,58 @@ export default function ProductTab() {
       id: 1,
       name: "Sofa Da Thật Premium",
       category: "Sofa",
-      price: "₫25,000,000",
+      price: "20000000",
       stock: 12,
       image: "🛋️",
       rating: 4.8,
-      status: "Đang bán",
+      status: "Còn hàng",
     },
     {
       id: 2,
       name: "Bàn Ăn Gỗ Sồi",
       category: "Bàn",
-      price: "₫8,500,000",
+      price: "8500000",
       stock: 8,
       image: "🪑",
       rating: 4.6,
-      status: "Đang bán",
+      status: "Còn hàng",
     },
     {
       id: 3,
       name: "Tủ Quần Áo 3 Cánh",
       category: "Tủ",
-      price: "₫12,000,000",
+      price: "12000000",
       stock: 5,
       image: "🗄️",
       rating: 4.7,
-      status: "Đang bán",
+      status: "Còn hàng",
     },
     {
       id: 4,
       name: "Giường Ngủ Cao Cấp",
       category: "Giường",
-      price: "₫15,500,000",
+      price: "15500000",
       stock: 3,
       image: "🛏️",
       rating: 4.9,
-      status: "Sắp hết",
+      status: "Hết hàng",
     },
     {
       id: 5,
       name: "Bàn Làm Việc",
       category: "Bàn",
-      price: "₫6,200,000",
+      price: "6200000",
       stock: 15,
       image: "🪑",
       rating: 4.5,
-      status: "Đang bán",
+      status: "Còn hàng",
     },
   ];
   const getStatusColor = (status) => {
     switch (status) {
-      case "Đã giao":
+      case "Còn hàng":
         return "bg-green-100 text-green-700";
-      case "Đang giao":
-        return "bg-blue-100 text-blue-700";
-      case "Đang xử lý":
-        return "bg-yellow-100 text-yellow-700";
-      case "Đã hủy":
-        return "bg-red-100 text-red-700";
-      case "Đang bán":
-        return "bg-green-100 text-green-700";
-      case "Sắp hết":
-        return "bg-orange-100 text-orange-700";
-      case "VIP":
-        return "bg-purple-100 text-purple-700";
-      case "Thường":
+      case "Hết hàng":
         return "bg-gray-100 text-gray-700";
       default:
         return "bg-gray-100 text-gray-700";
@@ -141,19 +130,16 @@ export default function ProductTab() {
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Danh mục
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Giá
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Tồn kho
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Đánh giá
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Trạng thái
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Thao tác
                 </th>
               </tr>
@@ -170,53 +156,46 @@ export default function ProductTab() {
                         {product.image}
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-slate-900">
+                        <div className="text-md font-medium text-slate-900">
                           {product.name}
-                        </div>
-                        <div className="text-sm text-slate-500">
-                          ID: {product.id}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                       {product.category}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
-                    {product.price}
+                    <div className="flex items-center justify-center">
+                      {formatPrice(product.price)}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                    {product.stock}
+                    <div className="flex items-center justify-center">
+                      {product.stock}
+                    </div>
                   </td>
+
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                      <span className="ml-1 text-sm text-slate-600">
-                        {product.rating}
+                    <div className="flex items-center justify-center">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${getStatusColor(
+                          product.status
+                        )}`}
+                      >
+                        {product.status}
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-                        product.status
-                      )}`}
-                    >
-                      {product.status}
-                    </span>
-                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center justify-center gap-2">
                       <button className="text-indigo-600 hover:text-indigo-900 p-1 rounded-lg hover:bg-indigo-50 transition-colors">
-                        <Edit className="w-4 h-4" />
+                        <Edit className="w-5 h-5" />
                       </button>
                       <button className="text-red-600 hover:text-red-900 p-1 rounded-lg hover:bg-red-50 transition-colors">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                      <button className="text-slate-600 hover:text-slate-900 p-1 rounded-lg hover:bg-slate-50 transition-colors">
-                        <MoreVertical className="w-4 h-4" />
+                        <Trash2 className="w-5 h-5" />
                       </button>
                     </div>
                   </td>

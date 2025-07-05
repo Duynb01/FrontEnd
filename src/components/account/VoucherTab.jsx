@@ -1,9 +1,10 @@
+"use client";
 import { getMyVoucher } from "@/lib/api/apiVoucher";
 import { formatExpiryDate, formatPrice } from "@/utils/formatData";
 import { Calendar, Gift } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-export default function VouchersTab() {
+export default function VoucherTab() {
   const [myVouchers, setMyVoucher] = useState([]);
   useEffect(() => {
     const fetchData = async () => {

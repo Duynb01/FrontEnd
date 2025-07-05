@@ -6,6 +6,7 @@ import {
   Star,
   Trash2,
   Search,
+  Gift,
 } from "lucide-react";
 import React from "react";
 
@@ -19,7 +20,7 @@ export default function VoucherTab() {
       stock: 12,
       image: "🛋️",
       rating: 4.8,
-      status: "Đang bán",
+      status: "Còn hạn",
     },
     {
       id: 2,
@@ -29,7 +30,7 @@ export default function VoucherTab() {
       stock: 8,
       image: "🪑",
       rating: 4.6,
-      status: "Đang bán",
+      status: "Còn hạn",
     },
     {
       id: 3,
@@ -39,7 +40,7 @@ export default function VoucherTab() {
       stock: 5,
       image: "🗄️",
       rating: 4.7,
-      status: "Đang bán",
+      status: "Còn hạn",
     },
     {
       id: 4,
@@ -49,7 +50,7 @@ export default function VoucherTab() {
       stock: 3,
       image: "🛏️",
       rating: 4.9,
-      status: "Sắp hết",
+      status: "Hết hạn",
     },
     {
       id: 5,
@@ -59,31 +60,20 @@ export default function VoucherTab() {
       stock: 15,
       image: "🪑",
       rating: 4.5,
-      status: "Đang bán",
+      status: "Còn hạn",
     },
   ];
   const getStatusColor = (status) => {
     switch (status) {
-      case "Đã giao":
+      case "Còn hạn":
         return "bg-green-100 text-green-700";
-      case "Đang giao":
-        return "bg-blue-100 text-blue-700";
-      case "Đang xử lý":
-        return "bg-yellow-100 text-yellow-700";
-      case "Đã hủy":
-        return "bg-red-100 text-red-700";
-      case "Đang bán":
-        return "bg-green-100 text-green-700";
-      case "Sắp hết":
-        return "bg-orange-100 text-orange-700";
-      case "VIP":
-        return "bg-purple-100 text-purple-700";
-      case "Thường":
+      case "Hết hạn":
         return "bg-gray-100 text-gray-700";
       default:
         return "bg-gray-100 text-gray-700";
     }
   };
+
   return (
     <div className="space-y-6">
       {/* Products Header */}
@@ -138,10 +128,10 @@ export default function VoucherTab() {
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Hạn
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider ">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider ">
                   Trạng thái
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider flex justify-center">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider ">
                   Thao tác
                 </th>
               </tr>
@@ -154,15 +144,13 @@ export default function VoucherTab() {
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-2xl">
-                        {product.image}
+                      <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <Gift className="w-8 h-8 text-white" />
                       </div>
+
                       <div className="ml-4">
                         <div className="text-sm font-medium text-slate-900">
                           {product.name}
-                        </div>
-                        <div className="text-sm text-slate-500">
-                          ID: {product.id}
                         </div>
                       </div>
                     </div>
@@ -180,21 +168,23 @@ export default function VoucherTab() {
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-                        product.status
-                      )}`}
-                    >
-                      {product.status}
-                    </span>
+                    <div className="flex items-center justify-center">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${getStatusColor(
+                          product.status
+                        )}`}
+                      >
+                        {product.status}
+                      </span>
+                    </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex justify-center ">
-                    <div className="flex items-center space-x-2">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex items-center justify-center gap-2">
                       <button className="text-indigo-600 hover:text-indigo-900 p-1 rounded-lg hover:bg-indigo-50 transition-colors">
-                        <Edit className="w-4 h-4" />
+                        <Edit className="w-5 h-5" />
                       </button>
                       <button className="text-red-600 hover:text-red-900 p-1 rounded-lg hover:bg-red-50 transition-colors">
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-5 h-5" />
                       </button>
                     </div>
                   </td>

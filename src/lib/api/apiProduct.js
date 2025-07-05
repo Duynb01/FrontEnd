@@ -13,7 +13,7 @@ export async function getProduct() {
   }
 }
 
-export async function getOneProduct(params) {
+export async function getProductById(params) {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/products/${params}`,

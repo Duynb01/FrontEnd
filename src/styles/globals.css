@@ -111,3 +111,13 @@ section {
     color-scheme: dark;
   }
 }
+
+.gradient {
+  background: #d94563;
+  background: linear-gradient(
+    90deg,
+    rgba(217, 69, 99, 1) 0%,
+    rgba(230, 46, 77, 1) 50%,
+    rgba(207, 14, 59, 0.98) 100%
+  );
+}

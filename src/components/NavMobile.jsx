@@ -65,6 +65,7 @@ export default function NavMobile() {
       toast.warning("Vui lòng đăng nhập!");
       return;
     }
+    setIsMenuOpen(false);
     router.push("/account");
   };
   return (

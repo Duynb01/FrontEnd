@@ -1,9 +1,10 @@
+"use client";
 import { getOrderByUser } from "@/lib/api/apiOrder";
 import { formatExpiryDate } from "@/utils/formatData";
 import { CheckCircle, Clock, Package, Truck } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-export default function OrdersTab() {
+export default function OrderTab() {
   const [orders, setOrder] = useState([]);
   const [selectStatus, setSelectStatus] = useState("ALL");
   const status = ["DELIVERED", "SHIPPING", "PROCESSING"];

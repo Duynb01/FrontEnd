@@ -1,10 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { User, Lock, Gift, ShoppingBag, Loader } from "lucide-react";
-import ProfileTab from "@/components/pageAccount/ProfileTab";
-import PasswordTab from "@/components/pageAccount/PasswordTab";
-import OrdersTab from "@/components/pageAccount/OrdersTab";
-import VouchersTab from "@/components/pageAccount/VouchersTab";
+import ProfileTab from "@/components/account/ProfileTab";
+import PasswordTab from "@/components/account/PasswordTab";
+import OrderTab from "@/components/account/OrderTab";
+import VoucherTab from "@/components/account/VoucherTab";
+// import {
+//   ProfileTab,
+//   OrderTab,
+//   PasswordTab,
+//   VoucherTab,
+// } from "@/components/account";
 import { getProfileUser } from "@/lib/api/apiUser";
 
 export default function AccountPage() {
@@ -27,11 +33,11 @@ export default function AccountPage() {
       case "password":
         return <PasswordTab />;
       case "vouchers":
-        return <VouchersTab />;
+        return <VoucherTab />;
       case "orders":
-        return <OrdersTab />;
+        return <OrderTab />;
       default:
-        return <ProfileTab />;
+        return <ProfileTab userInfo={userInfo} />;
     }
   };
   const [activeTab, setActiveTab] = useState("profile");

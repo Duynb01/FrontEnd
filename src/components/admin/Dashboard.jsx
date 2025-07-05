@@ -237,35 +237,6 @@ export default function DashboardTab() {
           </div>
         </div>
       </div>
-
-      {/* Quick Actions */}
-      <div className="bg-white rounded-2xl shadow-sm">
-        <div className="p-6 border-b border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-800">
-            Thao tác nhanh
-          </h2>
-        </div>
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button className="flex items-center justify-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105">
-              <Plus className="w-5 h-5 mr-2" />
-              Thêm sản phẩm
-            </button>
-            <button className="flex items-center justify-center p-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105">
-              <Eye className="w-5 h-5 mr-2" />
-              Xem đơn hàng
-            </button>
-            <button className="flex items-center justify-center p-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105">
-              <BarChart3 className="w-5 h-5 mr-2" />
-              Báo cáo
-            </button>
-            <button className="flex items-center justify-center p-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105">
-              <Settings className="w-5 h-5 mr-2" />
-              Cài đặt
-            </button>
-          </div>
-        </div>
-      </div>
     </>
   );
 }

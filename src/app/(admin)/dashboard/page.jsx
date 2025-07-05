@@ -7,29 +7,22 @@ import {
   ShoppingCart,
   Users,
   BarChart3,
-  Settings,
-  Bell,
-  Search,
   Menu,
   X,
-  DollarSign,
-  TrendingUp,
-  Eye,
-  Plus,
-  Filter,
-  Calendar,
-  ArrowUp,
-  ArrowDown,
   Gift,
 } from "lucide-react";
-import DashboardTab from "@/components/admin/Dashboard";
-import ProductTab from "@/components/admin/ProductTab";
-import VoucherTab from "@/components/admin/VoucherTab";
-import OrderTab from "@/components/admin/OrderTab";
-import CustomerTab from "@/components/admin/CustomerTab";
-import AnalyticTab from "@/components/admin/AnalyticTab";
+import {
+  Dashboard,
+  ProductTab,
+  VoucherTab,
+  OrderTab,
+  CustomerTab,
+  AnalyticTab,
+} from "@/components/admin";
 
-const AdminDashboard = () => {
+import Image from "next/image";
+
+export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [title, setTitle] = useState("Dashboard");
@@ -46,7 +39,7 @@ const AdminDashboard = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <DashboardTab />;
+        return <Dashboard />;
       case "products":
         return <ProductTab />;
       case "vouchers":
@@ -58,7 +51,7 @@ const AdminDashboard = () => {
       case "analytics":
         return <AnalyticTab />;
       default:
-        return <DashboardTab />;
+        return <Dashboard />;
     }
   };
 
@@ -78,10 +71,15 @@ const AdminDashboard = () => {
       >
         <div className="flex items-center justify-between p-6 border-b border-slate-200">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <Home className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-slate-800">FurniAdmin</span>
+            <Image
+              src="/logo.svg"
+              width={50}
+              height={50}
+              alt="Logo"
+              className="mx-auto rounded-full  font-bold"
+              priority
+            />
+            <span className="text-xl font-bold text-slate-800">FurAdmin</span>
           </div>
           <button
             onClick={() => setSidebarOpen(false)}
@@ -100,7 +98,7 @@ const AdminDashboard = () => {
                 onClick={() => handleToTab(item.id)}
                 className={`w-full flex items-center px-4 py-3 rounded-xl transition-all duration-200 mb-2 ${
                   activeTab === item.id
-                    ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg transform scale-105"
+                    ? "gradient text-white shadow-lg transform scale-105"
                     : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                 }`}
               >
@@ -145,6 +143,4 @@ const AdminDashboard = () => {
       </div>
     </div>
   );
-};
-
-export default AdminDashboard;
+}

@@ -87,16 +87,8 @@ export default function OrderTab() {
         return "bg-yellow-100 text-yellow-700";
       case "Đã hủy":
         return "bg-red-100 text-red-700";
-      case "Đang bán":
-        return "bg-green-100 text-green-700";
-      case "Sắp hết":
-        return "bg-orange-100 text-orange-700";
-      case "VIP":
-        return "bg-purple-100 text-purple-700";
-      case "Thường":
-        return "bg-gray-100 text-gray-700";
       default:
-        return "bg-gray-100 text-gray-700";
+        return "bg-yellow-100 text-yellow-700";
     }
   };
   return (
@@ -236,9 +228,6 @@ export default function OrderTab() {
                     <div className="text-sm font-medium text-slate-900">
                       {order.id}
                     </div>
-                    <div className="text-sm text-slate-500">
-                      {order.address}
-                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-slate-900">
@@ -255,7 +244,7 @@ export default function OrderTab() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${getStatusColor(
                         order.status
                       )}`}
                     >
@@ -269,13 +258,10 @@ export default function OrderTab() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center space-x-2">
                       <button className="text-indigo-600 hover:text-indigo-900 p-1 rounded-lg hover:bg-indigo-50 transition-colors">
-                        <Eye className="w-4 h-4" />
+                        <Eye className="w-5 h-5" />
                       </button>
                       <button className="text-green-600 hover:text-green-900 p-1 rounded-lg hover:bg-green-50 transition-colors">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button className="text-slate-600 hover:text-slate-900 p-1 rounded-lg hover:bg-slate-50 transition-colors">
-                        <MoreVertical className="w-4 h-4" />
+                        <Edit className="w-5 h-5" />
                       </button>
                     </div>
                   </td>

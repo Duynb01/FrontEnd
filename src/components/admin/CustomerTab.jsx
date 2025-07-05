@@ -42,7 +42,7 @@ export default function CustomerTab() {
       orders: 8,
       spent: "₫125,000,000",
       joined: "2023-03-15",
-      status: "VIP",
+      status: "USER",
     },
     {
       id: 2,
@@ -52,7 +52,7 @@ export default function CustomerTab() {
       orders: 5,
       spent: "₫75,000,000",
       joined: "2023-06-20",
-      status: "Thường",
+      status: "USER",
     },
     {
       id: 3,
@@ -62,7 +62,7 @@ export default function CustomerTab() {
       orders: 12,
       spent: "₫200,000,000",
       joined: "2023-01-10",
-      status: "VIP",
+      status: "USER",
     },
     {
       id: 4,
@@ -72,7 +72,7 @@ export default function CustomerTab() {
       orders: 3,
       spent: "₫45,000,000",
       joined: "2023-09-05",
-      status: "Thường",
+      status: "USER",
     },
     {
       id: 5,
@@ -82,26 +82,14 @@ export default function CustomerTab() {
       orders: 15,
       spent: "₫300,000,000",
       joined: "2022-12-01",
-      status: "VIP",
+      status: "ADMIN",
     },
   ];
   const getStatusColor = (status) => {
     switch (status) {
-      case "Đã giao":
-        return "bg-green-100 text-green-700";
-      case "Đang giao":
-        return "bg-blue-100 text-blue-700";
-      case "Đang xử lý":
-        return "bg-yellow-100 text-yellow-700";
-      case "Đã hủy":
-        return "bg-red-100 text-red-700";
-      case "Đang bán":
-        return "bg-green-100 text-green-700";
-      case "Sắp hết":
-        return "bg-orange-100 text-orange-700";
-      case "VIP":
+      case "ADMIN":
         return "bg-purple-100 text-purple-700";
-      case "Thường":
+      case "USER":
         return "bg-gray-100 text-gray-700";
       default:
         return "bg-gray-100 text-gray-700";
@@ -245,9 +233,12 @@ export default function CustomerTab() {
                   Ngày tham gia
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Trạng thái
+                  Role
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  Trạng thái
+                </th>
+                <th className="px-6 py-4 text-xs font-medium text-slate-500 uppercase tracking-wider flex justify-center">
                   Thao tác
                 </th>
               </tr>
@@ -268,9 +259,6 @@ export default function CustomerTab() {
                       <div className="ml-4">
                         <div className="text-sm font-medium text-slate-900">
                           {customer.name}
-                        </div>
-                        <div className="text-sm text-slate-500">
-                          ID: {customer.id}
                         </div>
                       </div>
                     </div>
@@ -307,15 +295,15 @@ export default function CustomerTab() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex items-center space-x-2">Kích hoạt</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex justify-center">
                     <div className="flex items-center space-x-2">
                       <button className="text-indigo-600 hover:text-indigo-900 p-1 rounded-lg hover:bg-indigo-50 transition-colors">
-                        <Eye className="w-4 h-4" />
+                        <Edit className="w-5 h-5" />
                       </button>
-                      <button className="text-green-600 hover:text-green-900 p-1 rounded-lg hover:bg-green-50 transition-colors">
-                        <Mail className="w-4 h-4" />
-                      </button>
-                      <button className="text-slate-600 hover:text-slate-900 p-1 rounded-lg hover:bg-slate-50 transition-colors">
-                        <MoreVertical className="w-4 h-4" />
+                      <button className="text-red-600 hover:text-red-900 p-1 rounded-lg hover:bg-red-50 transition-colors">
+                        <Trash2 className="w-5 h-5" />
                       </button>
                     </div>
                   </td>

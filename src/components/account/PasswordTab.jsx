@@ -1,4 +1,4 @@
-import { current } from "@reduxjs/toolkit";
+"use client";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";

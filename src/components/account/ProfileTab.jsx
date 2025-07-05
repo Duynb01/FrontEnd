@@ -1,3 +1,4 @@
+"use client";
 import { updateProfile } from "@/lib/api/apiUser";
 import { Edit2, Save } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -6,6 +7,7 @@ import { toast } from "react-toastify";
 export default function ProfileTab({ userInfo }) {
   const [dataUser, setUserInfo] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+
   useEffect(() => {
     if (userInfo) setUserInfo(userInfo);
   }, [userInfo]);

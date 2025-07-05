@@ -4,18 +4,11 @@ import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { useParams } from "next/navigation";
 
-export default function ProductWithCategoryPage() {
-  const pathName = useParams();
+export default function ProductWithCategoryPage({ category }) {
   const listProduct = useSelector((state) => state.product);
-  const listCategory = useSelector((state) => state.category);
-  const nameCategory = listCategory.find(
-    (category) => category.slug === pathName.categoryId
-  )?.name;
-
   const productWithCategory = listProduct.filter((product) => {
-    return product.category === nameCategory;
+    return product.category === category.name;
   });
 
   const [sortOrder, setSortOrder] = useState("default");
@@ -29,7 +22,7 @@ export default function ProductWithCategoryPage() {
     <div className="wrapper-product container">
       <h2 className="text-xl font-bold mb-4 mt-8">
         Danh sách sản phẩm:
-        <span className="ml-2 text-main">{nameCategory}</span>
+        <span className="ml-2 text-main">{category.name}</span>
       </h2>
 
       {/* Bộ lọc */}

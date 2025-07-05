@@ -104,7 +104,7 @@ export default function Header() {
   };
 
   return (
-    <header className="shadow-sm top-0 z-40 bg-main w-screen fixed h-[118px]">
+    <header className="shadow-sm top-0 z-40 bg-main w-screen fixed max-h-[118px]">
       <div className="max-w-7xl mx-auto  py-2 flex items-center justify-around mdc:justify-around xl:justify-between gap-4">
         <div className="mdc:hidden relative z-50">
           <NavMobile categories={categories} />
