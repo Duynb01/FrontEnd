@@ -1,141 +1,93 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  Home,
-  Package,
-  ShoppingCart,
   Users,
-  BarChart3,
-  Bell,
   Search,
-  Menu,
-  X,
-  DollarSign,
   TrendingUp,
-  Eye,
-  Plus,
   Filter,
-  Calendar,
-  ArrowUp,
-  ArrowDown,
   Edit,
   Trash2,
-  MoreVertical,
   Star,
-  MapPin,
   Phone,
   Mail,
   Download,
-  RefreshCw,
   CheckCircle,
   XCircle,
-  Clock,
-  Truck,
 } from "lucide-react";
+import { formatExpiryDate } from "@/utils/formatData";
+import ButtonToggle from "../ButtonToggle";
+import { updateStatus } from "@/lib/api/apiUser";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import Action from "../Action";
 
-export default function CustomerTab() {
-  const customers = [
-    {
-      id: 1,
-      name: "Nguyễn Văn A",
-      email: "nguyenvana@email.com",
-      phone: "0123456789",
-      orders: 8,
-      spent: "₫125,000,000",
-      joined: "2023-03-15",
-      status: "USER",
-    },
-    {
-      id: 2,
-      name: "Trần Thị B",
-      email: "tranthib@email.com",
-      phone: "0987654321",
-      orders: 5,
-      spent: "₫75,000,000",
-      joined: "2023-06-20",
-      status: "USER",
-    },
-    {
-      id: 3,
-      name: "Lê Văn C",
-      email: "levanc@email.com",
-      phone: "0456789123",
-      orders: 12,
-      spent: "₫200,000,000",
-      joined: "2023-01-10",
-      status: "USER",
-    },
-    {
-      id: 4,
-      name: "Phạm Thị D",
-      email: "phamthid@email.com",
-      phone: "0789123456",
-      orders: 3,
-      spent: "₫45,000,000",
-      joined: "2023-09-05",
-      status: "USER",
-    },
-    {
-      id: 5,
-      name: "Hoàng Văn E",
-      email: "hoangvane@email.com",
-      phone: "0321654987",
-      orders: 15,
-      spent: "₫300,000,000",
-      joined: "2022-12-01",
-      status: "ADMIN",
-    },
-  ];
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "ADMIN":
-        return "bg-purple-100 text-purple-700";
-      case "USER":
-        return "bg-gray-100 text-gray-700";
+export default function CustomerTab({ fetchData, users, orders }) {
+  const [isEditing, setIsEditing] = useState(false);
+
+  const quantityOrder = (userId) => {
+    return orders.filter((order) => order.userId === userId).length;
+  };
+  const activeAccount = users.filter((user) => user.active).length;
+
+  // Filter Status
+  const statusOptions = ["Tất cả trạng thái", "Kích hoạt", "Chưa kích hoạt"];
+  const [selectedStatus, setSelectedStatus] = useState("Tất cả trạng thái");
+  const filteredUsers = users.filter((user) => {
+    switch (selectedStatus) {
+      case "Kích hoạt":
+        return user.active;
+      case "Chưa kích hoạt":
+        return !user.active;
       default:
-        return "bg-gray-100 text-gray-700";
+        return true;
+    }
+  });
+
+  // Filter Sort
+  const sortOptions = ["Tên A-Z", "Tên Z-A"];
+  const [sort, setSort] = useState("Sắp xếp");
+  const selectSort = () => {
+    const sorted = [...filteredUsers];
+    switch (sort) {
+      case "Tên A-Z":
+        return sorted.sort((a, b) =>
+          a.name.localeCompare(b.name, "vi", { sensitivity: "base" })
+        );
+      case "Tên Z-A":
+        return sorted.sort((a, b) =>
+          b.name.localeCompare(a.name, "vi", { sensitivity: "base" })
+        );
+      default:
+        return sorted.sort((a, b) =>
+          a.name.localeCompare(b.name, "vi", { sensitivity: "base" })
+        );
     }
   };
+  const roles = ["ADMIN", "USER"];
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case "Đã giao":
-        return <CheckCircle className="w-4 h-4" />;
-      case "Đang giao":
-        return <Truck className="w-4 h-4" />;
-      case "Đang xử lý":
-        return <Clock className="w-4 h-4" />;
-      case "Đã hủy":
-        return <XCircle className="w-4 h-4" />;
-      default:
-        return <Clock className="w-4 h-4" />;
-    }
-  };
+  const statuses = ["Active", "Inactive"];
+
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-6">
       {/* Customers Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-slate-800">
           Quản lý khách hàng
         </h2>
-        <div className="flex items-center space-x-3">
-          <button className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-xl hover:bg-slate-50 transition-colors flex items-center">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Làm mới
-          </button>
-          <button className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center">
-            <Download className="w-5 h-5 mr-2" />
-            Xuất danh sách
-          </button>
-        </div>
+        <button className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center">
+          <Download className="w-5 h-5 mr-2" />
+          Xuất danh sách
+        </button>
       </div>
 
       {/* Customer Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white rounded-xl p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-slate-600">Tổng khách hàng</p>
-              <p className="text-2xl font-bold text-slate-900">2,847</p>
+              <p className="text-2xl font-bold text-slate-900">
+                {users.length}
+              </p>
             </div>
             <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
               <Users className="w-6 h-6 text-blue-600" />
@@ -145,8 +97,10 @@ export default function CustomerTab() {
         <div className="bg-white rounded-xl p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600">Khách VIP</p>
-              <p className="text-2xl font-bold text-purple-600">284</p>
+              <p className="text-sm text-slate-600">Kích hoạt</p>
+              <p className="text-2xl font-bold text-purple-600">
+                {activeAccount}
+              </p>
             </div>
             <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
               <Star className="w-6 h-6 text-purple-600" />
@@ -156,47 +110,59 @@ export default function CustomerTab() {
         <div className="bg-white rounded-xl p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600">Khách mới (tháng)</p>
-              <p className="text-2xl font-bold text-green-600">156</p>
+              <p className="text-sm text-slate-600">Chưa kích hoạt</p>
+              <p className="text-2xl font-bold text-green-600">
+                {users.length - activeAccount}
+              </p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
               <TrendingUp className="w-6 h-6 text-green-600" />
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-6 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-600">Giá trị trung bình</p>
-              <p className="text-2xl font-bold text-orange-600">₫85M</p>
-            </div>
-            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-              <DollarSign className="w-6 h-6 text-orange-600" />
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Customers Filter */}
-      <div className="bg-white rounded-2xl shadow-sm p-6">
+      <div className="bg-white rounded-2xl shadow-sm p-6 ">
         <div className="flex flex-wrap gap-4 items-center">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-2 relative">
             <Filter className="w-5 h-5 text-slate-400" />
-            <select className="border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <option>Tất cả khách hàng</option>
-              <option>Khách VIP</option>
-              <option>Khách thường</option>
-              <option>Khách mới</option>
+            <select
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              className="border border-slate-300 rounded-md px-3 py-2 pr-6 appearance-none"
+            >
+              {statusOptions.map((option) => (
+                <option
+                  key={option}
+                  value={option}
+                  className="block border border-slate-300"
+                >
+                  {option}
+                </option>
+              ))}
             </select>
+            <FontAwesomeIcon
+              icon={faAngleDown}
+              className="w-3 h-3 absolute right-1.5"
+            />
           </div>
-          <div className="flex items-center space-x-2">
-            <select className="border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <option>Sắp xếp theo</option>
-              <option>Tên A-Z</option>
-              <option>Tên Z-A</option>
-              <option>Mới nhất</option>
-              <option>Cũ nhất</option>
+          <div className="flex items-center gap-2 relative">
+            <select
+              className="border border-slate-300 rounded-md px-3 py-2 pr-6 appearance-none "
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+            >
+              <option value={"Sắp xếp"}>Sắp xếp</option>
+              {sortOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
             </select>
+            <FontAwesomeIcon
+              icon={faAngleDown}
+              className="w-3 h-3 absolute right-1.5"
+            />
           </div>
           <div className="flex-1 max-w-md">
             <div className="relative">
@@ -204,7 +170,7 @@ export default function CustomerTab() {
               <input
                 type="text"
                 placeholder="Tìm kiếm khách hàng..."
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg "
               />
             </div>
           </div>
@@ -223,86 +189,102 @@ export default function CustomerTab() {
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Liên hệ
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Đơn hàng
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Đã chi tiêu
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Ngày tham gia
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Role
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Trạng thái
                 </th>
-                <th className="px-6 py-4 text-xs font-medium text-slate-500 uppercase tracking-wider flex justify-center">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Thao tác
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-slate-200">
-              {customers.map((customer) => (
+              {selectSort().map((user) => (
                 <tr
-                  key={customer.id}
+                  key={user.id}
                   className="hover:bg-slate-50 transition-colors"
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
                         <span className="text-white font-medium">
-                          {customer.name.charAt(0)}
+                          {user.name.charAt(0)}
                         </span>
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-slate-900">
-                          {customer.name}
+                          {user.name}
                         </div>
                       </div>
                     </div>
                   </td>
+                  {/* Info */}
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-slate-900 flex items-center">
                       <Mail className="w-4 h-4 mr-1 text-slate-400" />
-                      {customer.email}
+                      {user.email}
                     </div>
                     <div className="text-sm text-slate-500 flex items-center">
                       <Phone className="w-4 h-4 mr-1 text-slate-400" />
-                      {customer.phone}
+                      {user.phone}
                     </div>
                   </td>
+                  {/* Số đơn */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                    {customer.orders}
+                    <div className="text-center">{quantityOrder(user.id)}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
-                    {customer.spent}
-                  </td>
+                  {/* Ngày tạo */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                    {customer.joined}
+                    <div className="text-center">
+                      {formatExpiryDate(user.createdAt)}
+                    </div>
                   </td>
+                  {/* Role */}
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-                        customer.status
-                      )}`}
+                    <div
+                      className={`flex justify-center rounded-full text-xs font-medium`}
                     >
-                      {customer.status === "VIP" && (
-                        <Star className="w-3 h-3 mr-1" />
-                      )}
-                      {customer.status}
-                    </span>
+                      {
+                        <ButtonToggle
+                          data={user}
+                          array={roles}
+                          label="role"
+                          functionApi={updateStatus}
+                        />
+                      }
+                    </div>
                   </td>
+                  {/* Status */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex items-center space-x-2">Kích hoạt</div>
+                    <div
+                      className={`flex justify-center rounded-full text-xs font-medium`}
+                    >
+                      {
+                        <ButtonToggle
+                          data={user}
+                          array={statuses}
+                          label="active"
+                          functionApi={updateStatus}
+                        />
+                      }
+                    </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex justify-center">
-                    <div className="flex items-center space-x-2">
-                      <button className="text-indigo-600 hover:text-indigo-900 p-1 rounded-lg hover:bg-indigo-50 transition-colors">
-                        <Edit className="w-5 h-5" />
-                      </button>
-                      <button className="text-red-600 hover:text-red-900 p-1 rounded-lg hover:bg-red-50 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium ">
+                    <div className="flex items-center justify-center gap-2">
+                      <button
+                        className="text-red-600 hover:text-red-900 p-1 rounded-lg hover:bg-red-50 transition-colors"
+                        onClick={() => {
+                          console.log("Delete user: ", user.id);
+                        }}
+                      >
                         <Trash2 className="w-5 h-5" />
                       </button>
                     </div>

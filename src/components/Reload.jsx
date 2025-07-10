@@ -4,7 +4,10 @@ import { useDispatch } from "react-redux";
 import { setCheckLogin } from "@/redux/store/slices/authSlice";
 import { reloadUser } from "@/lib/api/apiAuth";
 import { Loader } from "lucide-react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 export default function Reload({ children }) {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const isLogin =
@@ -25,8 +28,10 @@ export default function Reload({ children }) {
           dispatch(setCheckLogin(null));
         }
       } catch (error) {
-        console.error("Error during reload:", error);
+        toast.error(error.message);
+        localStorage.removeItem("isLogin");
         dispatch(setCheckLogin(null));
+        router.push("/");
       } finally {
         setLoading(false);
       }

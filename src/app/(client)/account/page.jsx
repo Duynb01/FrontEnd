@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { User, Lock, Gift, ShoppingBag, Loader } from "lucide-react";
+import React, { useState } from "react";
+import { User, Lock, Gift, ShoppingBag } from "lucide-react";
 import ProfileTab from "@/components/account/ProfileTab";
 import PasswordTab from "@/components/account/PasswordTab";
 import OrderTab from "@/components/account/OrderTab";
@@ -11,25 +11,12 @@ import VoucherTab from "@/components/account/VoucherTab";
 //   PasswordTab,
 //   VoucherTab,
 // } from "@/components/account";
-import { getProfileUser } from "@/lib/api/apiUser";
 
 export default function AccountPage() {
-  const [isLoad, setIsLoad] = useState(false);
-  const [userInfo, setData] = useState({});
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getProfileUser();
-      if (data) {
-        setData(data);
-        setIsLoad(true);
-      }
-    };
-    fetchData();
-  }, []);
   const renderTabContent = () => {
     switch (activeTab) {
       case "profile":
-        return <ProfileTab userInfo={userInfo} />;
+        return <ProfileTab />;
       case "password":
         return <PasswordTab />;
       case "vouchers":
@@ -37,7 +24,7 @@ export default function AccountPage() {
       case "orders":
         return <OrderTab />;
       default:
-        return <ProfileTab userInfo={userInfo} />;
+        return <ProfileTab />;
     }
   };
   const [activeTab, setActiveTab] = useState("profile");
@@ -96,13 +83,7 @@ export default function AccountPage() {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3">
-            {isLoad ? (
-              renderTabContent()
-            ) : (
-              <Loader className="w-4 h-4 animate-spin text-main" />
-            )}
-          </div>
+          <div className="lg:col-span-3">{renderTabContent()}</div>
         </div>
       </div>
     </div>

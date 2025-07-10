@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Home,
   Package,
@@ -10,6 +9,7 @@ import {
   Menu,
   X,
   Gift,
+  RefreshCw,
 } from "lucide-react";
 import {
   Dashboard,
@@ -21,8 +21,13 @@ import {
 } from "@/components/admin";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { getUser } from "@/lib/api/apiUser";
+import { getOrder } from "@/lib/api/apiOrder";
+import { toast } from "react-toastify";
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [title, setTitle] = useState("Dashboard");
@@ -47,7 +52,9 @@ export default function AdminDashboard() {
       case "orders":
         return <OrderTab />;
       case "customers":
-        return <CustomerTab />;
+        return (
+          <CustomerTab fetchData={fetchData} users={users} orders={orders} />
+        );
       case "analytics":
         return <AnalyticTab />;
       default:
@@ -61,6 +68,35 @@ export default function AdminDashboard() {
     setTitle(label);
   };
 
+  const [isShow, setIsShow] = useState(false);
+  const handleLogout = () => {
+    setIsShow(!isShow);
+    console.log("Logout clicked");
+  };
+
+  const handleToHome = () => {
+    router.push("/");
+  };
+
+  // Prop to CustomerTab
+  const [users, setUsers] = useState([]);
+  const [orders, setOrder] = useState([]);
+  const fetchData = async () => {
+    try {
+      const [users, orders] = await Promise.all([getUser(), getOrder()]);
+      if (users) setUsers(users);
+      if (orders) setOrder(orders);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const handleRefresh = () => {
+    fetchData();
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Sidebar */}
@@ -70,7 +106,10 @@ export default function AdminDashboard() {
         } lg:translate-x-0`}
       >
         <div className="flex items-center justify-between p-6 border-b border-slate-200">
-          <div className="flex items-center space-x-2">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={handleToHome}
+          >
             <Image
               src="/logo.svg"
               width={50}
@@ -124,9 +163,19 @@ export default function AdminDashboard() {
               </button>
               <h1 className="text-2xl font-bold text-slate-800">{title}</h1>
             </div>
-
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
+            {/* Button */}
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={handleRefresh}
+                className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-md hover:bg-slate-50 transition-colors flex items-center"
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Làm mới
+              </button>
+              <div
+                onClick={handleLogout}
+                className="flex items-center gap-2 border border-slate-300 px-3 py-1 rounded-md cursor-pointer"
+              >
                 <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm font-medium">A</span>
                 </div>
@@ -134,6 +183,16 @@ export default function AdminDashboard() {
                   Admin
                 </span>
               </div>
+              {isShow && (
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md">
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </header>

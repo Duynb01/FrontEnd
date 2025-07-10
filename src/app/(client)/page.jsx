@@ -19,43 +19,7 @@ export default function Home() {
     { name: "Phòng ăn và bếp", img: "/category/category_3_img.jpg" },
     { name: "Phòng làm việc", img: "/category/category_4_img.jpg" },
   ];
-  const productSuper = [
-    {
-      supplier: "anne",
-      name: "Bát ăn cơm gốm sứ ANNE màu ngẫu nhiên H5.7xD11.3",
-      src: "https://product.hstatic.net/200000796751/product/2002527.2_acffaf6d910445b1b29e0593ff392ba5.jpg",
-      price: "45000",
-      discount: "30",
-    },
-    {
-      supplier: "anne",
-      name: "Bát ăn snack gốm sứ ANNE màu ngẫu nhiên H6.5xD11.5",
-      src: "https://product.hstatic.net/200000796751/product/2002535_5b3eede60829490499619fabe5dbd0a9.jpg",
-      price: "55000",
-      discount: "60",
-    },
-    {
-      supplier: "anne",
-      name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
-      src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
-      price: "65000",
-      discount: "30",
-    },
-    {
-      supplier: "anne",
-      name: "Bát ăn snack gốm sứ ANNE màu ngẫu nhiên H6.5xD11.5",
-      src: "https://product.hstatic.net/200000796751/product/2002535_5b3eede60829490499619fabe5dbd0a9.jpg",
-      price: "55000",
-      discount: "60",
-    },
-    {
-      supplier: "anne",
-      name: "Bát canh gốm sứ ANNE màu ngẫu nhiên H10xD21",
-      src: "https://product.hstatic.net/200000796751/product/2002531.1_1f7d224fe4ce45e088a0bc835159b856.jpg",
-      price: "65000",
-      discount: "30",
-    },
-  ];
+
   const trendCategorize = [
     {
       name: "Sofa",
@@ -129,6 +93,7 @@ export default function Home() {
             ))}
           </div>
         </section>
+        {/* Sản phẩm nổi bật */}
         <section className="home-product-1">
           <div className="product-content bg-[#ffeef0] rounded-md py-4 px-2">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-4 pl-[7px] relative before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:content[''] after:border-main after:rounded-full after:w-2 after:h-2 after:absolute after:border after:animate-pulseSmall">
@@ -152,11 +117,15 @@ export default function Home() {
             </div>
           </div>
         </section>
+        {/* Voucher */}
         <section className="home-voucher flex flex-wrap pt-0 gap-y-[14px] ">
-          {vouchers.map((voucher, i) => {
-            return <Voucher voucher={voucher} key={i} />;
-          })}
+          {vouchers
+            .filter((voucher) => voucher.active)
+            .map((item, i) => {
+              return <Voucher voucher={item} key={i} />;
+            })}
         </section>
+        {/* Ưu đãi */}
         <section className="home-product-2">
           <div className="text-main text-2xl font-bold mb-5 pl-[7px]">
             <h2>
@@ -171,6 +140,7 @@ export default function Home() {
             ))}
           </div>
         </section>
+        {/* Xu hướng */}
         <section className="home-trend">
           <div className="trend-content flex items-center px-5 py-[15px] bg-[url('https://theme.hstatic.net/200000796751/1001266995/14/categorize_img.jpg?v=91')] bg-cover bg-no-repeat before:content-[''] before:bg-[rgba(0,0,0,0.35)] before:absolute before:w-full before:h-full before:left-0 before:top-0 relative">
             <div className="text-white relative px-[15px] text-right w-1/6">
@@ -199,6 +169,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+        {/* Sản phẩm */}
         <section className="home-product-3">
           <NewProduct />
         </section>

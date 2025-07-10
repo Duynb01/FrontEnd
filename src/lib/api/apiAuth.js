@@ -57,13 +57,8 @@ export async function reloadUser() {
       method: "GET",
       credentials: "include",
     });
-    if (res.status === 401) {
-      console.log("vÀO ĐÂY ");
-
-      localStorage.removeItem("isLogin");
-      return { status: "unauthenticated" };
-    }
     const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Lỗi! Vui lòng đăng nhập lại");
     return data;
   } catch (err) {
     throw err;

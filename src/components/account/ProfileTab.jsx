@@ -1,16 +1,23 @@
-"use client";
-import { updateProfile } from "@/lib/api/apiUser";
-import { Edit2, Save } from "lucide-react";
+import { getProfileUser, updateProfile } from "@/lib/api/apiUser";
+import { Edit2, Save, Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export default function ProfileTab({ userInfo }) {
-  const [dataUser, setUserInfo] = useState({});
+export default function ProfileTab() {
+  const [isLoad, setIsLoad] = useState(false);
+  const [dataUser, setDataUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if (userInfo) setUserInfo(userInfo);
-  }, [userInfo]);
+    const fetchData = async () => {
+      const data = await getProfileUser();
+      if (data) {
+        setDataUser(data);
+        setIsLoad(true);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleSaveProfile = async () => {
     if (isValidPhone(dataUser.phone)) {
@@ -29,7 +36,7 @@ export default function ProfileTab({ userInfo }) {
     return check;
   };
 
-  return (
+  return isLoad ? (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-900">
@@ -70,9 +77,9 @@ export default function ProfileTab({ userInfo }) {
           <input
             type="text"
             value={dataUser.name ?? userInfo.name}
-            onChange={(e) => setUserInfo({ ...dataUser, name: e.target.value })}
+            onChange={(e) => setDataUser({ ...dataUser, name: e.target.value })}
             disabled={!isEditing}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg  disabled:bg-gray-50 disabled:text-gray-500"
           />
         </div>
 
@@ -84,10 +91,10 @@ export default function ProfileTab({ userInfo }) {
             type="email"
             value={dataUser.email ?? userInfo.email}
             onChange={(e) =>
-              setUserInfo({ ...dataUser, email: e.target.value })
+              setDataUser({ ...dataUser, email: e.target.value })
             }
             disabled
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg  disabled:bg-gray-50 disabled:text-gray-500"
           />
         </div>
 
@@ -99,10 +106,10 @@ export default function ProfileTab({ userInfo }) {
             type="text"
             value={dataUser.phone || ""}
             onChange={(e) =>
-              setUserInfo({ ...dataUser, phone: e.target.value })
+              setDataUser({ ...dataUser, phone: e.target.value })
             }
             disabled={!isEditing}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg  disabled:bg-gray-50 disabled:text-gray-500"
           />
         </div>
 
@@ -113,14 +120,16 @@ export default function ProfileTab({ userInfo }) {
           <textarea
             value={dataUser.address || ""}
             onChange={(e) =>
-              setUserInfo({ ...dataUser, address: e.target.value })
+              setDataUser({ ...dataUser, address: e.target.value })
             }
             disabled={!isEditing}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg  disabled:bg-gray-50 disabled:text-gray-500"
           />
         </div>
       </div>
     </div>
+  ) : (
+    <Loader className="w-4 h-4 animate-spin text-main" />
   );
 }

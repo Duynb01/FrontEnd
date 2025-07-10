@@ -29,3 +29,19 @@ export async function getOrderByUser() {
     throw err;
   }
 }
+
+export async function getOrder() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    if (!res.ok)
+      throw new Error(data.message || "Lấy danh sách đơn hàng thất bại");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}

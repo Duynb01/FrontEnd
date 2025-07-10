@@ -1,81 +1,63 @@
+import { formatDateType, formatExpiryDate } from "@/utils/formatData";
 import {
   Edit,
   Filter,
-  MoreVertical,
   Plus,
-  Star,
   Trash2,
   Search,
   Gift,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import ButtonToggle from "../ButtonToggle";
+import { getVoucher, updateVoucher } from "@/lib/api/apiVoucher";
+import { toast } from "react-toastify";
 
 export default function VoucherTab() {
-  const products = [
-    {
-      id: 1,
-      name: "Sofa Da Thật Premium",
-      category: "Sofa",
-      price: "₫25,000,000",
-      stock: 12,
-      image: "🛋️",
-      rating: 4.8,
-      status: "Còn hạn",
-    },
-    {
-      id: 2,
-      name: "Bàn Ăn Gỗ Sồi",
-      category: "Bàn",
-      price: "₫8,500,000",
-      stock: 8,
-      image: "🪑",
-      rating: 4.6,
-      status: "Còn hạn",
-    },
-    {
-      id: 3,
-      name: "Tủ Quần Áo 3 Cánh",
-      category: "Tủ",
-      price: "₫12,000,000",
-      stock: 5,
-      image: "🗄️",
-      rating: 4.7,
-      status: "Còn hạn",
-    },
-    {
-      id: 4,
-      name: "Giường Ngủ Cao Cấp",
-      category: "Giường",
-      price: "₫15,500,000",
-      stock: 3,
-      image: "🛏️",
-      rating: 4.9,
-      status: "Hết hạn",
-    },
-    {
-      id: 5,
-      name: "Bàn Làm Việc",
-      category: "Bàn",
-      price: "₫6,200,000",
-      stock: 15,
-      image: "🪑",
-      rating: 4.5,
-      status: "Còn hạn",
-    },
-  ];
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Còn hạn":
-        return "bg-green-100 text-green-700";
-      case "Hết hạn":
-        return "bg-gray-100 text-gray-700";
-      default:
-        return "bg-gray-100 text-gray-700";
+  // Call Api Full Voucher
+  const [vouchers, setVouchers] = useState([]);
+  const fetchVoucher = async () => {
+    try {
+      const data = await getVoucher();
+      setVouchers(data);
+    } catch (err) {
+      toast.error(err.message);
     }
   };
+  useEffect(() => {
+    fetchVoucher();
+  }, []);
 
+  // Button Toggle
+  const statuses = ["Active", "Inactive"];
+
+  // Fix Edit Date
+  const [editingId, setEditingId] = useState(null);
+  const [date, setDate] = useState("");
+
+  const handleEdit = (voucher) => {
+    setEditingId(voucher.id);
+    setDate(formatDateType(voucher.expiryDate));
+  };
+  const handleSave = async (voucher) => {
+    const payload = {
+      id: voucher.id,
+      edit: { expiryDate: formatDateType(date) },
+    };
+    try {
+      await updateVoucher(payload);
+      toast.success("Cập nhật Voucher thành công");
+      fetchVoucher();
+    } catch (error) {
+      toast.error(error.message || "Cập nhật Voucher thất bại");
+    } finally {
+      setEditingId("");
+      setDate("");
+    }
+  };
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 ">
       {/* Products Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-slate-800">Quản lý Voucher</h2>
@@ -92,9 +74,8 @@ export default function VoucherTab() {
             <Filter className="w-5 h-5 text-slate-400" />
             <select className="border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
               <option>Tất cả trạng thái</option>
-              <option>Đang bán</option>
-              <option>Sắp hết</option>
-              <option>Hết hàng</option>
+              <option>Kích hoạt</option>
+              <option>Chưa kích hoạt</option>
             </select>
           </div>
           <div className="flex-1 max-w-md">
@@ -119,28 +100,28 @@ export default function VoucherTab() {
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Voucher
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                {/* <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Mã
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Ngày tạo
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                </th> */}
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Hạn
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider ">
+                {/* <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider ">
                   Trạng thái
-                </th>
+                </th> */}
                 <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider ">
                   Thao tác
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-slate-200">
-              {products.map((product) => (
+              {vouchers.map((voucher) => (
                 <tr
-                  key={product.id}
-                  className="hover:bg-slate-50 transition-colors"
+                  key={voucher.id}
+                  className="hover:bg-slate-50 transition-colors group"
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -150,42 +131,84 @@ export default function VoucherTab() {
 
                       <div className="ml-4">
                         <div className="text-sm font-medium text-slate-900">
-                          {product.name}
+                          {voucher.name}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      {product.category}
-                    </span>
+                    <div className="flex items-center justify-center py-0.5 text-sm font-medium">
+                      {voucher.code}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
-                    {product.price}
+                    <div className="flex items-center justify-center">
+                      {formatExpiryDate(voucher.createdAt)}
+                    </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                    {product.stock}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                    <div className="flex items-center justify-center">
+                      <input
+                        type="date"
+                        value={
+                          editingId === voucher.id
+                            ? date
+                            : formatDateType(voucher.expiryDate)
+                        }
+                        min={formatDateType(voucher.createdAt)}
+                        onChange={(e) => setDate(e.target.value)}
+                        disabled={editingId !== voucher.id}
+                        className={`w-[7rem] p-1  ${
+                          editingId === voucher.id && "border border-slate-300"
+                        }`}
+                      />
+                    </div>
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center justify-center">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${getStatusColor(
-                          product.status
-                        )}`}
-                      >
-                        {product.status}
-                      </span>
+                    <div
+                      className={`flex justify-center rounded-full text-xs font-medium`}
+                    >
+                      <ButtonToggle
+                        data={voucher}
+                        array={statuses}
+                        label="active"
+                        functionApi={updateVoucher}
+                      />
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center justify-center gap-2">
-                      <button className="text-indigo-600 hover:text-indigo-900 p-1 rounded-lg hover:bg-indigo-50 transition-colors">
-                        <Edit className="w-5 h-5" />
-                      </button>
-                      <button className="text-red-600 hover:text-red-900 p-1 rounded-lg hover:bg-red-50 transition-colors">
-                        <Trash2 className="w-5 h-5" />
-                      </button>
+                      {editingId !== voucher.id ? (
+                        <>
+                          <button
+                            className="text-indigo-600 hover:text-indigo-900 p-1 rounded-lg hover:bg-indigo-50 transition-colors"
+                            onClick={() => handleEdit(voucher)}
+                          >
+                            <Edit className="w-5 h-5" />
+                          </button>
+                          <button className="text-red-600 hover:text-red-900 p-1 rounded-lg hover:bg-red-50 transition-colors">
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => handleSave(voucher)}
+                            className="text-green-600 hover:text-green-900 p-1 rounded-lg hover:bg-green-50 transition-colors"
+                          >
+                            <CheckCircle className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEditingId(null);
+                            }}
+                            className="text-gray-600 hover:text-gray-900 p-1 rounded-lg hover:bg-gray-50 transition-colors"
+                          >
+                            <XCircle className="w-5 h-5" />
+                          </button>
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>

@@ -16,4 +16,8 @@ const formatExpiryDate = (data) => {
   return dayjs(data).format("DD/MM/YYYY");
 };
 
-export { formatPrice, formatDate, formatExpiryDate };
+const formatDateType = (data) => {
+  return dayjs(data).format("YYYY-MM-DD");
+};
+
+export { formatPrice, formatDate, formatExpiryDate, formatDateType };

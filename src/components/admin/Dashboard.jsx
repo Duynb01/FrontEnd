@@ -1,12 +1,8 @@
 import {
   ArrowDown,
   ArrowUp,
-  BarChart3,
   DollarSign,
-  Eye,
   Package,
-  Plus,
-  Settings,
   ShoppingCart,
   Users,
 } from "lucide-react";

@@ -77,3 +77,26 @@ export async function updatePassword(payload) {
     throw err;
   }
 }
+
+export async function updateStatus(payload) {
+  const { id, edit } = payload;
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/status/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(edit),
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Chỉnh sửa thất bại");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
