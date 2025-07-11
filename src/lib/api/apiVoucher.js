@@ -88,3 +88,46 @@ export async function updateVoucher(payload) {
     throw err;
   }
 }
+export async function createVoucher(payload) {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vouchers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        name: payload.name,
+        code: payload.code.toUpperCase(),
+        discount: Number(payload.discount),
+        type: payload.type.toUpperCase(),
+        startDate: payload.startDate,
+        expiryDate: payload.expiryDate,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Tạo mới thất bại");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+export async function deleteVoucher(id) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Xóa thất bại");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}

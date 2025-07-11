@@ -1,4 +1,3 @@
-export { default as AnalyticTab } from "./AnalyticTab";
 export { default as CustomerTab } from "./CustomerTab";
 export { default as Dashboard } from "./Dashboard";
 export { default as OrderTab } from "./OrderTab";

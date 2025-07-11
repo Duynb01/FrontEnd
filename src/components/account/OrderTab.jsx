@@ -1,13 +1,13 @@
 "use client";
 import { getOrderByUser } from "@/lib/api/apiOrder";
 import { formatExpiryDate } from "@/utils/formatData";
-import { CheckCircle, Clock, Package, Truck } from "lucide-react";
+import { CheckCircle, Clock, Package, Truck, XCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 export default function OrderTab() {
   const [orders, setOrder] = useState([]);
   const [selectStatus, setSelectStatus] = useState("ALL");
-  const status = ["DELIVERED", "SHIPPING", "PROCESSING"];
+  const status = ["DELIVERED", "SHIPPING", "PROCESSING", "CANCELLED"];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +20,7 @@ export default function OrderTab() {
   const filteredStatus = orders.filter((order) =>
     selectStatus === "ALL" ? true : order.status === selectStatus
   );
+  console.log(filteredStatus);
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -29,6 +30,8 @@ export default function OrderTab() {
         return <Truck className="w-5 h-5 text-blue-500" />;
       case "PROCESSING":
         return <Clock className="w-5 h-5 text-yellow-500" />;
+      case "CANCELLED":
+        return <XCircle className="w-5 h-5 text-red-500" />;
       default:
         return <Package className="w-5 h-5 text-gray-500" />;
     }
@@ -40,10 +43,12 @@ export default function OrderTab() {
         return "Tất cả trạng thái";
       case "DELIVERED":
         return "Đã giao hàng";
-      case "SHIPPING":
+      case "SHIPPED":
         return "Đang giao hàng";
       case "PROCESSING":
         return "Đang xử lý";
+      case "CANCELLED":
+        return "Đã hủy";
       default:
         return "Chưa xác định";
     }
@@ -53,10 +58,12 @@ export default function OrderTab() {
     switch (status) {
       case "DELIVERED":
         return "text-green-600 bg-green-50";
-      case "SHIPPING":
+      case "SHIPPED":
         return "text-blue-600 bg-blue-50";
       case "PROCESSING":
         return "text-yellow-600 bg-yellow-50";
+      case "CANCELLED":
+        return "text-red-600 bg-red-50";
       default:
         return "text-gray-600 bg-gray-50";
     }
@@ -104,7 +111,7 @@ export default function OrderTab() {
                   {order.total.toLocaleString()}₫
                 </div>
                 <div className="text-sm text-gray-600">
-                  {formatExpiryDate(order.createAt)}
+                  {formatExpiryDate(order.createdAt)}
                 </div>
               </div>
             </div>

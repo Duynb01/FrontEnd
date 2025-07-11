@@ -9,69 +9,13 @@ import {
 } from "lucide-react";
 import React from "react";
 import { formatPrice } from "@/utils/formatData";
+import ButtonToggle from "../ButtonToggle";
+import Image from "next/image";
 
-export default function ProductTab() {
-  const products = [
-    {
-      id: 1,
-      name: "Sofa Da Thật Premium",
-      category: "Sofa",
-      price: "20000000",
-      stock: 12,
-      image: "🛋️",
-      rating: 4.8,
-      status: "Còn hàng",
-    },
-    {
-      id: 2,
-      name: "Bàn Ăn Gỗ Sồi",
-      category: "Bàn",
-      price: "8500000",
-      stock: 8,
-      image: "🪑",
-      rating: 4.6,
-      status: "Còn hàng",
-    },
-    {
-      id: 3,
-      name: "Tủ Quần Áo 3 Cánh",
-      category: "Tủ",
-      price: "12000000",
-      stock: 5,
-      image: "🗄️",
-      rating: 4.7,
-      status: "Còn hàng",
-    },
-    {
-      id: 4,
-      name: "Giường Ngủ Cao Cấp",
-      category: "Giường",
-      price: "15500000",
-      stock: 3,
-      image: "🛏️",
-      rating: 4.9,
-      status: "Hết hàng",
-    },
-    {
-      id: 5,
-      name: "Bàn Làm Việc",
-      category: "Bàn",
-      price: "6200000",
-      stock: 15,
-      image: "🪑",
-      rating: 4.5,
-      status: "Còn hàng",
-    },
-  ];
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Còn hàng":
-        return "bg-green-100 text-green-700";
-      case "Hết hàng":
-        return "bg-gray-100 text-gray-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
+export default function ProductTab({ fetchData, products }) {
+  const statuses = ["Active", "Inactive"];
+  const test = () => {
+    console.log("hello");
   };
   return (
     <div className="space-y-6">
@@ -127,14 +71,14 @@ export default function ProductTab() {
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Sản phẩm
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Danh mục
                 </th>
                 <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Giá
                 </th>
                 <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Tồn kho
+                  Số lượng
                 </th>
                 <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Trạng thái
@@ -150,43 +94,52 @@ export default function ProductTab() {
                   key={product.id}
                   className="hover:bg-slate-50 transition-colors"
                 >
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-4 ">
                     <div className="flex items-center">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-2xl">
-                        {product.image}
+                      <div className="w-14 h-14 bg-slate-100 rounded-lg flex items-center justify-center text-2xl">
+                        <Image
+                          src={product.url}
+                          alt={product.name}
+                          width={480}
+                          height={480}
+                          className=" object-contain"
+                        />
                       </div>
-                      <div className="ml-4">
-                        <div className="text-md font-medium text-slate-900">
+                      <div className="ml-4 ">
+                        <div className="text-md font-medium text-slate-900 max-w-sm">
                           {product.name}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                    <span className="block text-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                       {product.category}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
-                    <div className="flex items-center justify-center">
+                    <div className="text-center">
                       {formatPrice(product.price)}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                    <div className="flex items-center justify-center">
+                    <div className="text-center justify-center">
                       {product.stock}
                     </div>
                   </td>
 
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center justify-center">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${getStatusColor(
-                          product.status
-                        )}`}
-                      >
-                        {product.status}
-                      </span>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div
+                      className={`flex justify-center rounded-full text-xs font-medium`}
+                    >
+                      {
+                        <ButtonToggle
+                          data={product}
+                          array={statuses}
+                          label="active"
+                          functionApi={test}
+                        />
+                      }
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">

@@ -1,11 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import {
   Home,
   Package,
   ShoppingCart,
   Users,
-  BarChart3,
   Menu,
   X,
   Gift,
@@ -17,7 +16,6 @@ import {
   VoucherTab,
   OrderTab,
   CustomerTab,
-  AnalyticTab,
 } from "@/components/admin";
 
 import Image from "next/image";
@@ -25,6 +23,8 @@ import { useRouter } from "next/navigation";
 import { getUser } from "@/lib/api/apiUser";
 import { getOrder } from "@/lib/api/apiOrder";
 import { toast } from "react-toastify";
+import { getVoucher } from "@/lib/api/apiVoucher";
+import { getProduct } from "@/lib/api/apiProduct";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -38,25 +38,32 @@ export default function AdminDashboard() {
     { id: "vouchers", label: "Voucher", icon: Gift },
     { id: "orders", label: "Đơn hàng", icon: ShoppingCart },
     { id: "customers", label: "Khách hàng", icon: Users },
-    { id: "analytics", label: "Thống kê", icon: BarChart3 },
   ];
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <Dashboard />;
+        return (
+          <Dashboard
+            users={data.users}
+            orders={data.orders}
+            products={data.products}
+          />
+        );
       case "products":
-        return <ProductTab />;
+        return <ProductTab fetchData={fetchVoucher} products={data.products} />;
       case "vouchers":
-        return <VoucherTab />;
+        return <VoucherTab fetchData={fetchVoucher} vouchers={data.vouchers} />;
       case "orders":
-        return <OrderTab />;
+        return <OrderTab fetchData={fetchOrder} orders={data.orders} />;
       case "customers":
         return (
-          <CustomerTab fetchData={fetchData} users={users} orders={orders} />
+          <CustomerTab
+            fetchData={fetchUser}
+            users={data.users}
+            orders={data.orders}
+          />
         );
-      case "analytics":
-        return <AnalyticTab />;
       default:
         return <Dashboard />;
     }
@@ -78,25 +85,59 @@ export default function AdminDashboard() {
     router.push("/");
   };
 
-  // Prop to CustomerTab
-  const [users, setUsers] = useState([]);
-  const [orders, setOrder] = useState([]);
-  const fetchData = async () => {
+  // Prop to Tab
+  const [data, setData] = useState({
+    users: [],
+    orders: [],
+    vouchers: [],
+    products: [],
+  });
+  const fetchUser = async () => {
     try {
-      const [users, orders] = await Promise.all([getUser(), getOrder()]);
-      if (users) setUsers(users);
-      if (orders) setOrder(orders);
+      const users = await getUser();
+      if (users) setData((prev) => ({ ...prev, users: users }));
     } catch (error) {
       toast.error(error.message);
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
-  const handleRefresh = () => {
-    fetchData();
+  const fetchVoucher = async () => {
+    try {
+      const vouchers = await getVoucher();
+      if (vouchers) setData((prev) => ({ ...prev, vouchers: vouchers }));
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  const fetchOrder = async () => {
+    try {
+      const orders = await getOrder();
+      if (orders) setData((prev) => ({ ...prev, orders: orders }));
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  const fetchProduct = async () => {
+    try {
+      const products = await getProduct();
+      if (products) setData((prev) => ({ ...prev, products: products }));
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
+  useEffect(() => {
+    fetchUser();
+    fetchOrder();
+    fetchVoucher();
+    fetchProduct();
+  }, []);
+
+  const handleRefresh = () => {
+    fetchUser();
+    fetchOrder();
+    fetchVoucher();
+    fetchProduct();
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Sidebar */}

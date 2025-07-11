@@ -21,8 +21,6 @@ import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import Action from "../Action";
 
 export default function CustomerTab({ fetchData, users, orders }) {
-  const [isEditing, setIsEditing] = useState(false);
-
   const quantityOrder = (userId) => {
     return orders.filter((order) => order.userId === userId).length;
   };
@@ -128,7 +126,10 @@ export default function CustomerTab({ fetchData, users, orders }) {
           <div className="flex items-center gap-2 relative">
             <Filter className="w-5 h-5 text-slate-400" />
             <select
-              onChange={(e) => setSelectedStatus(e.target.value)}
+              onChange={(e) => {
+                setSelectedStatus(e.target.value);
+                fetchData();
+              }}
               className="border border-slate-300 rounded-md px-3 py-2 pr-6 appearance-none"
             >
               {statusOptions.map((option) => (
