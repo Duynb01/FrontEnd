@@ -8,7 +8,7 @@ import {
   ShoppingCart,
   Users,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function DashboardTab({ users, orders, products }) {
   const totalRevenue = orders.reduce((total, item) => total + item.total, 0);

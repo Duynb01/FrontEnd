@@ -1,7 +1,7 @@
 export async function addCart(payload) {
   try {
     const { id, quantity } = payload;
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/carts/add`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/carts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

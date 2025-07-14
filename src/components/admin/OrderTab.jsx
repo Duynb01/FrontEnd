@@ -119,19 +119,7 @@ export default function OrderTab({ fetchData, orders }) {
   return (
     <div className="space-y-6">
       {/* Orders Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-slate-800">Quản lý đơn hàng</h2>
-        <div className="flex items-center space-x-3">
-          <button className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-xl hover:bg-slate-50 transition-colors flex items-center">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Làm mới
-          </button>
-          <button className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center">
-            <Download className="w-5 h-5 mr-2" />
-            Xuất Excel
-          </button>
-        </div>
-      </div>
+      <h2 className="text-2xl font-bold text-slate-800">Quản lý đơn hàng</h2>
 
       {/* Orders Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

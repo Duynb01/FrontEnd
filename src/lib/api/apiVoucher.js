@@ -30,7 +30,7 @@ export async function getMyVoucher() {
 export async function claimVoucher(payload) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/vouchers/claim/${payload}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${payload}/claim`,
       {
         method: "POST",
         headers: {

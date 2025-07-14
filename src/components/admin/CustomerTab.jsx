@@ -12,6 +12,8 @@ import {
   Download,
   CheckCircle,
   XCircle,
+  UserRoundX,
+  UserRoundCheck,
 } from "lucide-react";
 import { formatExpiryDate } from "@/utils/formatData";
 import ButtonToggle from "../ButtonToggle";
@@ -67,15 +69,8 @@ export default function CustomerTab({ fetchData, users, orders }) {
   return (
     <div className="flex flex-col gap-6">
       {/* Customers Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-slate-800">
-          Quản lý khách hàng
-        </h2>
-        <button className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center">
-          <Download className="w-5 h-5 mr-2" />
-          Xuất danh sách
-        </button>
-      </div>
+
+      <h2 className="text-2xl font-bold text-slate-800">Quản lý khách hàng</h2>
 
       {/* Customer Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -96,12 +91,12 @@ export default function CustomerTab({ fetchData, users, orders }) {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-slate-600">Kích hoạt</p>
-              <p className="text-2xl font-bold text-purple-600">
+              <p className="text-2xl font-bold text-green-600">
                 {activeAccount}
               </p>
             </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-              <Star className="w-6 h-6 text-purple-600" />
+            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+              <UserRoundCheck className="w-6 h-6 text-green-600" />
             </div>
           </div>
         </div>
@@ -109,12 +104,12 @@ export default function CustomerTab({ fetchData, users, orders }) {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-slate-600">Chưa kích hoạt</p>
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-2xl font-bold text-orange-600">
                 {users.length - activeAccount}
               </p>
             </div>
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-green-600" />
+            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+              <UserRoundX className="w-6 h-6 text-orange-600" />
             </div>
           </div>
         </div>
