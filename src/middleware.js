@@ -6,7 +6,7 @@ export async function middleware(request) {
   if (!token) return NextResponse.redirect(new URL("/", request.url));
 
   try {
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const secret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET);
     const { payload } = await jwtVerify(token, secret);
 
     if (payload.role !== "ADMIN") {

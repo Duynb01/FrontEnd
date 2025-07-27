@@ -38,8 +38,6 @@ export default function LoginForm() {
     }
     try {
       const data = await loginUser(formData);
-      console.log(data);
-
       dispatch(setCheckLogin(data.user));
       localStorage.setItem("isLogin", "true");
       router.push("/");

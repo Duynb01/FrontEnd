@@ -1,10 +1,8 @@
+import { api } from "@/utils/wrapApi";
+
 export async function getVoucher() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vouchers`, {
-      method: "GET",
-      credentials: "include",
-    });
-
+    const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/vouchers`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Lấy Voucher thất bại");
     return data;
@@ -15,10 +13,7 @@ export async function getVoucher() {
 
 export async function getMyVoucher() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vouchers/me`, {
-      method: "GET",
-      credentials: "include",
-    });
+    const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/vouchers/me`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Lấy Voucher thất bại");
     return data;
@@ -29,17 +24,10 @@ export async function getMyVoucher() {
 
 export async function claimVoucher(payload) {
   try {
-    const res = await fetch(
+    const res = await api.post(
       `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${payload}/claim`,
       {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          voucherId: payload,
-        }),
+        voucherId: payload,
       }
     );
     const data = await res.json();
@@ -52,12 +40,8 @@ export async function claimVoucher(payload) {
 
 export async function validVoucher(payload) {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${payload}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
+    const res = await api.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${payload}`
     );
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Xác thực Voucher thất bại");
@@ -70,16 +54,9 @@ export async function validVoucher(payload) {
 export async function updateVoucher(payload) {
   const { id, edit } = payload;
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/vouchers/status/${id}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(edit),
-      }
+    const res = await api.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${id}`,
+      edit
     );
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Chỉnh sửa thất bại");
@@ -90,20 +67,13 @@ export async function updateVoucher(payload) {
 }
 export async function createVoucher(payload) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vouchers`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        name: payload.name,
-        code: payload.code.toUpperCase(),
-        discount: Number(payload.discount),
-        type: payload.type.toUpperCase(),
-        startDate: payload.startDate,
-        expiryDate: payload.expiryDate,
-      }),
+    const res = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/vouchers`, {
+      name: payload.name,
+      code: payload.code.toUpperCase(),
+      discount: Number(payload.discount),
+      type: payload.type.toUpperCase(),
+      startDate: payload.startDate,
+      expiryDate: payload.expiryDate,
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Tạo mới thất bại");
@@ -114,15 +84,8 @@ export async function createVoucher(payload) {
 }
 export async function deleteVoucher(id) {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      }
+    const res = await api.delete(
+      `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${id}`
     );
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Xóa thất bại");

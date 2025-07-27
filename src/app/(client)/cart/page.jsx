@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getCart, updateCart, deleteCart } from "@/lib/api/apiCart";
+import { getCart, updateCart, removeItemCart } from "@/lib/api/apiCart";
 import { toast } from "react-toastify";
 import CartItem from "@/components/CartItem";
 
@@ -55,7 +55,7 @@ export default function CartPage() {
 
   // Xóa sản phẩm khỏi Cart
   const handleDeleteItem = async (id) => {
-    const data = await deleteCart(id);
+    const data = await removeItemCart(id);
     if (data) {
       toast.success("Xóa thành công!");
       fetchCart();

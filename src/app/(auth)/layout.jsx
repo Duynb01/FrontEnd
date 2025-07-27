@@ -4,15 +4,6 @@ import Image from "next/image";
 import SocialAccount from "@/components/SociaAccount";
 import { usePathname } from "next/navigation";
 export default function AuthLayout({ children }) {
-  const pathName = usePathname();
-  let message;
-
-  if (pathName === "/login") {
-    message = "Đăng nhập";
-  } else {
-    message = "Đăng ký";
-  }
-
   return (
     <>
       <div className="w-[30rem] mx-auto my-7 px-5 py-5 border rounded-sm flex flex-col">
@@ -27,7 +18,7 @@ export default function AuthLayout({ children }) {
         </a>
         {children}
         <div>
-          <SocialAccount message={message} />
+          <SocialAccount />
         </div>
       </div>
     </>

@@ -4,7 +4,6 @@ import {
   Filter,
   Plus,
   Trash2,
-  Search,
   Gift,
   CheckCircle,
   XCircle,

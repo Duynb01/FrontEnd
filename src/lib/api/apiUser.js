@@ -1,10 +1,8 @@
+import { api } from "@/utils/wrapApi";
+
 export async function getUser() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
-      method: "GET",
-      credentials: "include",
-    });
-
+    const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/users`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Lấy danh sách thất bại");
     return data;
@@ -15,10 +13,7 @@ export async function getUser() {
 
 export async function getProfileUser() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
-      method: "GET",
-      credentials: "include",
-    });
+    const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/users/me`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Lấy thông tin thất bại");
     return data;
@@ -29,19 +24,12 @@ export async function getProfileUser() {
 
 export async function updateProfile(payload) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
+    const res = await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
+      infoDto: {
+        name: payload.name,
+        phone: payload.phone,
+        address: payload.address,
       },
-      credentials: "include",
-      body: JSON.stringify({
-        infoDto: {
-          name: payload.name,
-          phone: payload.phone,
-          address: payload.address,
-        },
-      }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Chỉnh sửa thất bại");
@@ -52,18 +40,11 @@ export async function updateProfile(payload) {
 }
 export async function updatePassword(payload) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
+    const res = await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
+      passwordDto: {
+        oldPassword: payload.currentPassword,
+        newPassword: payload.newPassword,
       },
-      credentials: "include",
-      body: JSON.stringify({
-        passwordDto: {
-          oldPassword: payload.currentPassword,
-          newPassword: payload.newPassword,
-        },
-      }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Chỉnh sửa thất bại");
@@ -75,18 +56,10 @@ export async function updatePassword(payload) {
 
 export async function updateStatus(payload) {
   const { id, edit } = payload;
-
   try {
-    const res = await fetch(
+    const res = await api.patch(
       `${process.env.NEXT_PUBLIC_API_URL}/users/${id}/status`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(edit),
-      }
+      edit
     );
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Chỉnh sửa thất bại");

@@ -79,28 +79,27 @@ export default function Account() {
       {isLogin && (
         <div className="absolute top-[3.3rem] -right-9 z-[9999]">
           <ul className="bg-white shadow-md rounded-sm flex flex-col">
-            <li className="cursor-pointer  py-[10px] px-4  min-w-[10.25rem] w-full hover:bg-slate-300 ">
-              <button onClick={handleToAccount} className="block w-full">
-                Quản lý tài khoản
-              </button>
+            <li
+              onClick={handleToAccount}
+              className="cursor-pointer  py-[10px] px-4  min-w-[10.25rem] w-full hover:bg-slate-300 "
+            >
+              Quản lý tài khoản
             </li>
-            <li className="cursor-pointer  py-[10px] px-4 hover:bg-slate-300 min-w-[10.25rem] w-full ">
-              <button
-                onClick={handleLogout}
-                className="flex items-center justify-center gap-2 w-full sm:w-auto "
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <Loader className="w-4 h-4 animate-spin" />
-                    Đăng xuất...
-                  </div>
-                ) : (
-                  <>
-                    <LogOutIcon />
-                    Đăng xuất
-                  </>
-                )}
-              </button>
+            <li
+              onClick={handleLogout}
+              className=" flex items-center justify-center gap-2 cursor-pointer  py-[10px] px-4 hover:bg-slate-300 min-w-[10.25rem] w-full "
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Loader className="w-4 h-4 animate-spin" />
+                  Đăng xuất...
+                </div>
+              ) : (
+                <>
+                  <LogOutIcon />
+                  Đăng xuất
+                </>
+              )}
             </li>
           </ul>
         </div>

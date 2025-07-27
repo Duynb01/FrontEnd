@@ -1,13 +1,10 @@
+import { api } from "@/utils/wrapApi";
+
 export async function getReview(payload) {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/reviews/product/${payload}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
+    const res = await api.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/reviews/${payload}`
     );
-
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Lấy đánh giá thất bại");
     return data;
@@ -18,17 +15,10 @@ export async function getReview(payload) {
 
 export async function createReview(payload) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        content: payload.content,
-        rating: payload.rating,
-        productId: payload.productId,
-      }),
+    const res = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/reviews`, {
+      content: payload.content,
+      rating: payload.rating,
+      productId: payload.productId,
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Lấy sản phẩm thất bại");

@@ -2,16 +2,10 @@ import React, { useState } from "react";
 import {
   Users,
   Search,
-  TrendingUp,
   Filter,
-  Edit,
   Trash2,
-  Star,
   Phone,
   Mail,
-  Download,
-  CheckCircle,
-  XCircle,
   UserRoundX,
   UserRoundCheck,
 } from "lucide-react";
@@ -20,7 +14,6 @@ import ButtonToggle from "../ButtonToggle";
 import { updateStatus } from "@/lib/api/apiUser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import Action from "../Action";
 
 export default function CustomerTab({ fetchData, users, orders }) {
   const quantityOrder = (userId) => {
