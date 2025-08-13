@@ -1,10 +1,19 @@
-import React from "react";
+import { getOrderById } from "@/lib/api/apiOrder";
+import { calculatePrice, validateVoucher } from "@/utils/discountVoucher";
+import { formatPrice } from "@/utils/formatData";
+import {
+  CheckCircle,
+  Clock,
+  Loader,
+  Package,
+  Truck,
+  XCircle,
+} from "lucide-react";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-export default function OrderDetail({
-  dataOrder,
-  handleCloseDetail,
-  infoVoucher,
-}) {
+export default function OrderDetail({ orderId, handleCloseDetail }) {
   const getStatusIcon = (status) => {
     switch (status) {
       case "DELIVERED":
@@ -51,6 +60,35 @@ export default function OrderDetail({
         return "text-gray-600 bg-gray-50";
     }
   };
+
+  const [dataOrder, setDataOrder] = useState({});
+  const [infoVoucher, setInfoVoucher] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchDataOrder = async () => {
+      try {
+        setLoading(true);
+        const data = await getOrderById(orderId);
+        setDataOrder(data);
+        const voucher = await validateVoucher(data.voucherCode);
+        setInfoVoucher(voucher);
+      } catch (err) {
+        toast.warning(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDataOrder();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-10">
+        <Loader className="w-4 h-4 animate-spin text-main" />
+      </div>
+    );
+  }
 
   return (
     <div className=" order-detail bg-white w-full inset-0 py-4 min-h-max">
@@ -111,7 +149,7 @@ export default function OrderDetail({
                   Phương thức thanh toán
                 </th>
                 <td className="border px-4 py-3 w-full">
-                  {dataOrder.Payment.method === "cod"
+                  {dataOrder?.Payment?.method === "cod"
                     ? "Thanh toán khi nhận hàng (COD)"
                     : "Thanh toán VNPay"}
                 </td>
@@ -124,7 +162,7 @@ export default function OrderDetail({
       <div className="mb-4">
         <div className="flex items-center justify-between px-5 py-2 font-medium text-[1.25rem] bg-blue-100 ">
           <p>Chi tiết sản phẩm</p>
-          <p>{dataOrder.items.length} sản phẩm</p>
+          <p>{dataOrder.items?.length || 0} sản phẩm</p>
         </div>
         <div className="px-5 py-4">
           <table className="min-w-full border border-gray-300 bg-white table-auto">
@@ -207,7 +245,7 @@ export default function OrderDetail({
                   Tổng tiền thanh toán
                 </th>
                 <td className="border px-4 py-3 w-full">
-                  {dataOrder.total.toLocaleString()}₫
+                  {dataOrder?.total?.toLocaleString()}₫
                 </td>
               </tr>
             </tbody>
