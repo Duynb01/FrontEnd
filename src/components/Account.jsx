@@ -2,6 +2,7 @@
 
 import { logoutUser } from "@/lib/api/apiAuth";
 import { setLogout } from "@/redux/store/slices/authSlice";
+import { deleteProfile } from "@/redux/store/slices/userSlice";
 import { Loader, LogOutIcon, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -14,7 +15,8 @@ export default function Account() {
   const closeRef = useRef(null);
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
-  const { isCheckLogin, userInfo } = useSelector((state) => state.auth);
+  const { isCheckLogin } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -36,6 +38,7 @@ export default function Account() {
       const res = await logoutUser();
       if (res.status === "success") {
         dispatch(setLogout());
+        dispatch(deleteProfile());
         localStorage.removeItem("isLogin");
         localStorage.removeItem("orderList");
         toast.success(res.message || "Đăng xuất thành công!");

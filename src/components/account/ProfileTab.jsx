@@ -1,23 +1,21 @@
-import { getProfileUser, updateProfile } from "@/lib/api/apiUser";
+import { updateProfile } from "@/lib/api/apiUser";
 import { Edit2, Save, Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-export default function ProfileTab() {
-  const [isLoad, setIsLoad] = useState(false);
+export default function ProfileTab({ profile }) {
+  const { userInfo } = useSelector((state) => state.user);
   const [dataUser, setDataUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getProfileUser();
-      if (data) {
-        setDataUser(data);
-        setIsLoad(true);
-      }
-    };
-    fetchData();
-  }, []);
+    setDataUser({
+      name: profile.name || "",
+      email: profile.email || "",
+      phone: profile.phone || "",
+      address: profile.address || "",
+    });
+  }, [profile]);
 
   const handleSaveProfile = async () => {
     if (isValidPhone(dataUser.phone)) {
@@ -30,13 +28,12 @@ export default function ProfileTab() {
       toast.error("Vui lòng số điện thoại");
     }
   };
-
   const isValidPhone = (phone) => {
     const check = /^(0|\+84)(3|5|7|8|9)\d{8}$/.test(phone);
     return check;
   };
 
-  return isLoad ? (
+  return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-900">
@@ -129,7 +126,5 @@ export default function ProfileTab() {
         </div>
       </div>
     </div>
-  ) : (
-    <Loader className="w-4 h-4 animate-spin text-main" />
   );
 }

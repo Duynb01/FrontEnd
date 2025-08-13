@@ -24,11 +24,11 @@ export async function refreshToken(url, options = {}) {
   if (refreshRes.ok) {
     return await fetch(url, defaultOptions);
   } else {
-    // // await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
-    // //   method: "POST",
-    // //   credentials: "include",
-    // // });
-    // // window.location.href = "/login";
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+    window.location.href = "/";
     throw new Error();
   }
 }

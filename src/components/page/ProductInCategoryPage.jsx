@@ -19,7 +19,7 @@ export default function ProductWithCategoryPage({ category }) {
   });
 
   return (
-    <div className="wrapper-product container">
+    <div className="wrapper-product container ">
       <h2 className="text-xl font-bold mb-4 mt-8">
         Danh sách sản phẩm:
         <span className="ml-2 text-main">{category.name}</span>
@@ -39,7 +39,7 @@ export default function ProductWithCategoryPage({ category }) {
         </select>
       </div>
       {/* Danh sách sản phẩm */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4  pb-4">
         {sortedProducts.length === 0 ? (
           <p className="col-span-full text-gray-500">Không có sản phẩm nào.</p>
         ) : (

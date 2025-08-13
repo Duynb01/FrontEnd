@@ -35,3 +35,17 @@ export async function getOrder() {
     throw err;
   }
 }
+
+export async function getOrderById(id) {
+  try {
+    const res = await api.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`
+    );
+    const data = await res.json();
+    if (!res.ok)
+      throw new Error(data.message || "Lấy thông tin đơn hàng thất bại");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}

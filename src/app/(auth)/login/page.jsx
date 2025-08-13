@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { loginUser } from "@/lib/api/apiAuth";
 import { validFormData } from "@/utils/isValidData";
 import { setCheckLogin } from "@/redux/store/slices/authSlice";
+import { setProfile } from "@/redux/store/slices/userSlice";
 export default function LoginForm() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -38,7 +39,8 @@ export default function LoginForm() {
     }
     try {
       const data = await loginUser(formData);
-      dispatch(setCheckLogin(data.user));
+      dispatch(setCheckLogin());
+      dispatch(setProfile(data.user));
       localStorage.setItem("isLogin", "true");
       router.push("/");
       toast.success("Đăng nhập thành công!");

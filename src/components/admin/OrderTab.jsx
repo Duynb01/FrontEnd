@@ -96,7 +96,7 @@ export default function OrderTab({ fetchData, orders }) {
     switch (status) {
       case "DELIVERED":
         return "Đã giao";
-      case "SHIPPED":
+      case "SHIPPING":
         return "Đang giao";
       case "PROCESSING":
         return "Đang xử lý";

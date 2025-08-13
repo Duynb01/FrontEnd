@@ -1,10 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import { User, Lock, Gift, ShoppingBag } from "lucide-react";
+
 import ProfileTab from "@/components/account/ProfileTab";
 import PasswordTab from "@/components/account/PasswordTab";
 import OrderTab from "@/components/account/OrderTab";
 import VoucherTab from "@/components/account/VoucherTab";
+import { getProfileUser } from "@/lib/api/apiUser";
+import { getMyVoucher } from "@/lib/api/apiVoucher";
+import { getOrderByUser } from "@/lib/api/apiOrder";
 // import {
 //   ProfileTab,
 //   OrderTab,
@@ -12,19 +18,21 @@ import VoucherTab from "@/components/account/VoucherTab";
 //   VoucherTab,
 // } from "@/components/account";
 
-export default function AccountPage() {
+export default function AccountPage({}) {
+  const searchParams = useSearchParams();
+
   const renderTabContent = () => {
     switch (activeTab) {
       case "profile":
-        return <ProfileTab />;
+        return <ProfileTab profile={data.profile} />;
       case "password":
         return <PasswordTab />;
       case "vouchers":
-        return <VoucherTab />;
+        return <VoucherTab vouchers={data.vouchers} />;
       case "orders":
-        return <OrderTab />;
+        return <OrderTab orders={data.orders} />;
       default:
-        return <ProfileTab />;
+        return <ProfileTab profile={data.profile} />;
     }
   };
   const [activeTab, setActiveTab] = useState("profile");
@@ -34,6 +42,38 @@ export default function AccountPage() {
     { id: "vouchers", label: "Voucher của tôi", icon: Gift },
     { id: "orders", label: "Đơn hàng của tôi", icon: ShoppingBag },
   ];
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", activeTab);
+    if (activeTab === "orders") {
+      params.set("limit", "3");
+    } else {
+      params.delete("limit");
+    }
+    window.history.replaceState(null, "", `account?${params.toString()}`);
+  }, [activeTab]);
+
+  const [data, setData] = useState({
+    profile: [],
+    vouchers: [],
+    orders: [],
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [profile, vouchers, orders] = await Promise.all([
+          getProfileUser(),
+          getMyVoucher(),
+          getOrderByUser(),
+        ]);
+        setData({ profile, vouchers, orders });
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <div className="h-full bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

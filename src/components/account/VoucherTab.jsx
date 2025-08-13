@@ -1,21 +1,8 @@
 "use client";
-import { getMyVoucher } from "@/lib/api/apiVoucher";
 import { formatExpiryDate, formatPrice } from "@/utils/formatData";
 import { Calendar, Gift } from "lucide-react";
-import React, { useEffect, useState } from "react";
 
-export default function VoucherTab() {
-  const [myVouchers, setMyVoucher] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getMyVoucher();
-      if (data) {
-        setMyVoucher(data);
-      }
-    };
-    fetchData();
-  }, []);
-
+export default function VoucherTab({ vouchers }) {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">
@@ -23,7 +10,7 @@ export default function VoucherTab() {
       </h2>
 
       <div className="space-y-4">
-        {myVouchers.map((voucher) => (
+        {vouchers.map((voucher) => (
           <div
             key={voucher.id}
             className={`border rounded-lg p-4 ${

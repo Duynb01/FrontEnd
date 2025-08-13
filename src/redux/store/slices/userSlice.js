@@ -9,11 +9,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setProfile: (state, action) => {
-      if (action.payload) {
-        state.userInfo = action.payload;
-      } else {
-        state.userInfo = null;
-      }
+      state.userInfo = action.payload || null;
     },
     deleteProfile: (state) => {
       state.userInfo = null;

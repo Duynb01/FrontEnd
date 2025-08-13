@@ -1,5 +1,5 @@
 import ProductWithCategoryPage from "@/components/page/ProductInCategoryPage";
-import { getCategory, getCategoryById } from "@/lib/api/apiCategory";
+import { getCategoryById } from "@/lib/api/apiCategory";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;

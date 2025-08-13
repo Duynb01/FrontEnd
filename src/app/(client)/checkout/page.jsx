@@ -37,7 +37,6 @@ export default function CheckoutPage() {
     name: "",
     phone: "",
     address: "",
-    city: "",
     note: "",
   });
   const handleInputChange = (e) => {
@@ -60,7 +59,7 @@ export default function CheckoutPage() {
     }));
     const payload = {
       items,
-      shippingInfo,
+      info: shippingInfo,
       method: paymentMethod,
       voucherCode: voucher.code || null,
       totalPrice: infoPrice.afterDiscount,
@@ -122,7 +121,6 @@ export default function CheckoutPage() {
       afterDiscount,
     });
   };
-  console.log(shippingInfo);
 
   return (
     <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -151,14 +149,6 @@ export default function CheckoutPage() {
             name="address"
             placeholder="Địa chỉ"
             value={shippingInfo.address || ""}
-            onChange={handleInputChange}
-            className="border rounded-lg p-3 w-full md:col-span-2"
-          />
-          <input
-            type="text"
-            name="city"
-            placeholder="Tỉnh/Thành phố"
-            value={shippingInfo.city || ""}
             onChange={handleInputChange}
             className="border rounded-lg p-3 w-full md:col-span-2"
           />
@@ -199,6 +189,8 @@ export default function CheckoutPage() {
             </div>
           ))}
         </div>
+
+        {/* Thông tin giảm giá */}
         <div className="space-y-1">
           <label htmlFor="voucher" className="text-sm font-medium">
             Mã giảm giá
@@ -259,7 +251,7 @@ export default function CheckoutPage() {
                 checked={paymentMethod === "vnpay"}
                 onChange={() => setPaymentMethod("vnpay")}
               />
-              <span>Thank toán VNPAY</span>
+              <span>Thanh toán VNPAY</span>
             </label>
           </div>
         </div>
