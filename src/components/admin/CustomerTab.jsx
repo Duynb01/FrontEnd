@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Users,
   Search,
@@ -15,7 +15,28 @@ import { updateStatus } from "@/lib/api/apiUser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
-export default function CustomerTab({ fetchData, users, orders }) {
+export default function CustomerTab({ fetchUser, fetchOrder }) {
+  const [data, setData] = useState({
+    users: [],
+    orders: [],
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const users = await fetchUser();
+        const orders = await fetchOrder();
+        if (users) setData((prev) => ({ ...prev, users: users }));
+        if (orders) setData((prev) => ({ ...prev, orders: orders }));
+      } catch (error) {
+        toast.error("Failed to fetch data");
+      }
+    };
+    fetchData();
+  }, []);
+
+  const { users, orders } = data;
+
   const quantityOrder = (userId) => {
     return orders.filter((order) => order.userId === userId).length;
   };
@@ -116,7 +137,7 @@ export default function CustomerTab({ fetchData, users, orders }) {
             <select
               onChange={(e) => {
                 setSelectedStatus(e.target.value);
-                fetchData();
+                fetchUser();
               }}
               className="border border-slate-300 rounded-md px-3 py-2 pr-6 appearance-none"
             >

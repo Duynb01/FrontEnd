@@ -1,18 +1,23 @@
-import {
-  Edit,
-  Filter,
-  MoreVertical,
-  Plus,
-  Star,
-  Trash2,
-  Search,
-} from "lucide-react";
-import React from "react";
+import { Edit, Filter, Plus, Trash2, Search } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { formatPrice } from "@/utils/formatData";
 import ButtonToggle from "../ButtonToggle";
 import Image from "next/image";
 
-export default function ProductTab({ fetchData, products }) {
+export default function ProductTab({ fetchProduct }) {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchProduct();
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   const statuses = ["Active", "Inactive"];
   const test = () => {
     console.log("hello");
@@ -102,7 +107,7 @@ export default function ProductTab({ fetchData, products }) {
                           alt={product.name}
                           width={480}
                           height={480}
-                          className=" object-contain"
+                          className=" object-contain max-w-14 max-h-14"
                         />
                       </div>
                       <div className="ml-4 ">

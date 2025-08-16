@@ -92,6 +92,29 @@ section {
   scroll-snap-stop: always;
 }
 
+.overlay2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay-content {
+  position: absolute;
+  z-index: 1001;
+  top: 67%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
 @keyframes pulseSmall {
   0% {
     transform: scale(0);

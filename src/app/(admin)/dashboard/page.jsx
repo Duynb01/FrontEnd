@@ -1,5 +1,6 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import {
   Home,
   Package,
@@ -19,7 +20,7 @@ import {
 } from "@/components/admin";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getUser } from "@/lib/api/apiUser";
 import { getOrder } from "@/lib/api/apiOrder";
 import { toast } from "react-toastify";
@@ -29,8 +30,10 @@ import { getProduct } from "@/lib/api/apiProduct";
 export default function AdminDashboard() {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("dashboard");
   const [title, setTitle] = useState("Dashboard");
+  const searchParams = useSearchParams();
+  const currentTab = searchParams.get("tab") || "dashboard";
+  const [activeTab, setActiveTab] = useState(currentTab);
 
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: Home },
@@ -45,29 +48,35 @@ export default function AdminDashboard() {
       case "dashboard":
         return (
           <Dashboard
-            users={data.users}
-            orders={data.orders}
-            products={data.products}
+            fetchUser={fetchUser}
+            fetchOrder={fetchOrder}
+            fetchProduct={fetchProduct}
           />
         );
       case "products":
-        return <ProductTab fetchData={fetchVoucher} products={data.products} />;
+        return <ProductTab fetchProduct={fetchProduct} />;
       case "vouchers":
-        return <VoucherTab fetchData={fetchVoucher} vouchers={data.vouchers} />;
+        return <VoucherTab fetchVoucher={fetchVoucher} />;
       case "orders":
-        return <OrderTab fetchData={fetchOrder} orders={data.orders} />;
+        return <OrderTab fetchOrder={fetchOrder} />;
       case "customers":
+        return <CustomerTab fetchUser={fetchUser} fetchOrder={fetchOrder} />;
+      default:
         return (
-          <CustomerTab
-            fetchData={fetchUser}
-            users={data.users}
-            orders={data.orders}
+          <Dashboard
+            fetchUser={fetchUser}
+            fetchOrder={fetchOrder}
+            fetchProduct={fetchProduct}
           />
         );
-      default:
-        return <Dashboard />;
     }
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", activeTab);
+    window.history.replaceState(null, "", `dashboard?${params.toString()}`);
+  }, [activeTab]);
 
   const handleToTab = (tab) => {
     setActiveTab(tab);
@@ -86,16 +95,10 @@ export default function AdminDashboard() {
   };
 
   // Prop to Tab
-  const [data, setData] = useState({
-    users: [],
-    orders: [],
-    vouchers: [],
-    products: [],
-  });
   const fetchUser = async () => {
     try {
       const users = await getUser();
-      if (users) setData((prev) => ({ ...prev, users: users }));
+      return users;
     } catch (error) {
       toast.error(error.message);
     }
@@ -103,7 +106,7 @@ export default function AdminDashboard() {
   const fetchVoucher = async () => {
     try {
       const vouchers = await getVoucher();
-      if (vouchers) setData((prev) => ({ ...prev, vouchers: vouchers }));
+      return vouchers;
     } catch (error) {
       toast.error(error.message);
     }
@@ -111,7 +114,7 @@ export default function AdminDashboard() {
   const fetchOrder = async () => {
     try {
       const orders = await getOrder();
-      if (orders) setData((prev) => ({ ...prev, orders: orders }));
+      return orders;
     } catch (error) {
       toast.error(error.message);
     }
@@ -119,18 +122,11 @@ export default function AdminDashboard() {
   const fetchProduct = async () => {
     try {
       const products = await getProduct();
-      if (products) setData((prev) => ({ ...prev, products: products }));
+      return products;
     } catch (error) {
       toast.error(error.message);
     }
   };
-
-  useEffect(() => {
-    fetchUser();
-    fetchOrder();
-    fetchVoucher();
-    fetchProduct();
-  }, []);
 
   const handleRefresh = () => {
     fetchUser();
@@ -156,7 +152,7 @@ export default function AdminDashboard() {
               width={50}
               height={50}
               alt="Logo"
-              className="mx-auto rounded-full  font-bold"
+              className="mx-auto rounded-full font-bold"
               priority
             />
             <span className="text-xl font-bold text-slate-800">FurAdmin</span>

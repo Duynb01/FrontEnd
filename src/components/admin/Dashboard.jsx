@@ -10,7 +10,31 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-export default function DashboardTab({ users, orders, products }) {
+export default function DashboardTab({ fetchUser, fetchOrder, fetchProduct }) {
+  const [data, setData] = useState({
+    users: [],
+    orders: [],
+    products: [],
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const users = await fetchUser();
+        const orders = await fetchOrder();
+        const products = await fetchProduct();
+        if (users) setData((prev) => ({ ...prev, users: users }));
+        if (orders) setData((prev) => ({ ...prev, orders: orders }));
+        if (products) setData((prev) => ({ ...prev, products: products }));
+      } catch (error) {
+        toast.error("Failed to fetch data");
+      }
+    };
+    fetchData();
+  }, []);
+
+  const { users, orders, products } = data;
+
   const totalRevenue = orders.reduce((total, item) => total + item.total, 0);
   const totalOrder = orders.length;
   const totalProduct = products.length;

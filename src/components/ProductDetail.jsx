@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addCart } from "@/lib/api/apiCart";
-import { setCartItem } from "@/redux/store/slices/checkoutSlice";
+import { Undo2 } from "lucide-react";
 
 export default function ProductDetail({ product }) {
   const router = useRouter();
@@ -61,9 +61,21 @@ export default function ProductDetail({ product }) {
   const relatedProducts = listProduct.filter(
     (p) => p.category === product.category && p.id !== product.id
   );
-
+  const handleBack = () => {
+    router.back();
+  };
   return (
-    <div className="space-y-10 p-4">
+    <div className=" container flex flex-col gap-4 p-4">
+      <div>
+        <button
+          onClick={handleBack}
+          className="flex  items-center gap-1 border rounded-full px-3 py-2 hover:bg-gray-100"
+        >
+          <Undo2 className="text-main" />
+          Quay lại
+        </button>
+      </div>
+
       {/* Phần chi tiết sản phẩm */}
       <div className="flex flex-col md:flex-row gap-6 bg-white shadow-sm p-4 rounded-sm">
         <div className="w-full md:w-1/2 flex justify-center items-center">
@@ -72,15 +84,13 @@ export default function ProductDetail({ product }) {
             alt={product.name}
             width={500}
             height={500}
-            className="w-full max-w-sm object-contain rounded-sm"
+            className="w-full max-w-sm max-h-[24rem] object-contain rounded-sm"
           />
         </div>
 
         <div className="w-full md:w-1/2 flex flex-col gap-4">
           <h1 className="text-2xl font-bold">{product.name}</h1>
-          <p className="text-gray-600 text-sm">
-            Số lượng: {product.stock} sản phẩm
-          </p>
+          <p className="text-gray-600 text-sm">Số lượng: {product.stock}</p>
 
           <div className="flex items-center gap-3 text-lg">
             Giá:

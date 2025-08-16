@@ -1,8 +1,37 @@
 "use client";
+import { getMyVoucher } from "@/lib/api/apiVoucher";
 import { formatExpiryDate, formatPrice } from "@/utils/formatData";
-import { Calendar, Gift } from "lucide-react";
+import { Calendar, Gift, Loader } from "lucide-react";
+import { useEffect, useState } from "react";
 
-export default function VoucherTab({ vouchers }) {
+export default function VoucherTab() {
+  const [vouchers, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchVouchers = async () => {
+      try {
+        setLoading(true);
+        const response = await getMyVoucher();
+        setOrders(response);
+      } catch (error) {
+        console.error("Failed to fetch vouchers:", error);
+      } finally {
+        const timeOut = setTimeout(() => {
+          setLoading(false);
+        }, 200);
+        return () => clearTimeout(timeOut);
+      }
+    };
+    fetchVouchers();
+  }, []);
+  if (loading) {
+    return (
+      <div className="flex justify-center py-10">
+        <Loader className="w-4 h-4 animate-spin text-main" />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">

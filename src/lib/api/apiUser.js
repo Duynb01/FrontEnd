@@ -11,9 +11,9 @@ export async function getUser() {
   }
 }
 
-export async function getProfileUser() {
+export async function getProfileUser(id) {
   try {
-    const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/users/me`);
+    const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/users/${id}`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Lấy thông tin thất bại");
     return data;

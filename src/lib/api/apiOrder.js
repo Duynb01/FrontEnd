@@ -1,5 +1,5 @@
 import { api } from "@/utils/wrapApi";
-export async function createOrder(payload) {
+async function createOrder(payload) {
   try {
     const res = await api.post(
       `${process.env.NEXT_PUBLIC_API_URL}/orders`,
@@ -13,7 +13,7 @@ export async function createOrder(payload) {
   }
 }
 
-export async function getOrderByUser() {
+async function getOrderByUser() {
   try {
     const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/orders/me`);
     const data = await res.json();
@@ -24,7 +24,7 @@ export async function getOrderByUser() {
   }
 }
 
-export async function getOrder() {
+async function getOrder() {
   try {
     const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/orders`);
     const data = await res.json();
@@ -36,7 +36,7 @@ export async function getOrder() {
   }
 }
 
-export async function getOrderById(id) {
+async function getOrderById(id) {
   try {
     const res = await api.get(
       `${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`
@@ -49,3 +49,40 @@ export async function getOrderById(id) {
     throw err;
   }
 }
+
+async function cancelOrder(id) {
+  try {
+    const res = await api.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/orders/${id}/cancel`
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Hủy đơn hàng thất bại");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function updateOrderStatus(id, status) {
+  try {
+    const res = await api.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`,
+      { status }
+    );
+    const data = await res.json();
+    if (!res.ok)
+      throw new Error(data.message || "Cập nhật trạng thái thất bại");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export {
+  createOrder,
+  getOrderByUser,
+  getOrder,
+  getOrderById,
+  cancelOrder,
+  updateOrderStatus,
+};

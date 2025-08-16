@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import { User, Lock, Gift, ShoppingBag } from "lucide-react";
 
@@ -20,22 +20,23 @@ import { getOrderByUser } from "@/lib/api/apiOrder";
 
 export default function AccountPage({}) {
   const searchParams = useSearchParams();
+  const currentTab = searchParams.get("tab") || "profile";
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "profile":
-        return <ProfileTab profile={data.profile} />;
+        return <ProfileTab />;
       case "password":
         return <PasswordTab />;
       case "vouchers":
-        return <VoucherTab vouchers={data.vouchers} />;
+        return <VoucherTab />;
       case "orders":
-        return <OrderTab orders={data.orders} />;
+        return <OrderTab />;
       default:
-        return <ProfileTab profile={data.profile} />;
+        return <ProfileTab />;
     }
   };
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState(currentTab);
   const tabs = [
     { id: "profile", label: "Thông tin cá nhân", icon: User },
     { id: "password", label: "Đổi mật khẩu", icon: Lock },
@@ -54,28 +55,8 @@ export default function AccountPage({}) {
     window.history.replaceState(null, "", `account?${params.toString()}`);
   }, [activeTab]);
 
-  const [data, setData] = useState({
-    profile: [],
-    vouchers: [],
-    orders: [],
-  });
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [profile, vouchers, orders] = await Promise.all([
-          getProfileUser(),
-          getMyVoucher(),
-          getOrderByUser(),
-        ]);
-        setData({ profile, vouchers, orders });
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-    fetchData();
-  }, []);
   return (
-    <div className="h-full bg-gray-50 py-8">
+    <div className="h-full bg-gray-50 pb-3 pt-2">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">

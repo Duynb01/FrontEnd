@@ -1,21 +1,34 @@
-import { updateProfile } from "@/lib/api/apiUser";
+"use client";
+
+import { getProfileUser, updateProfile } from "@/lib/api/apiUser";
 import { Edit2, Save, Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-export default function ProfileTab({ profile }) {
-  const { userInfo } = useSelector((state) => state.user);
+export default function ProfileTab() {
+  const user = useSelector((state) => state.user.userInfo);
+  const { id, name, email } = user;
   const [dataUser, setDataUser] = useState({});
+  const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {
-    setDataUser({
-      name: profile.name || "",
-      email: profile.email || "",
-      phone: profile.phone || "",
-      address: profile.address || "",
-    });
-  }, [profile]);
+    const fetchDataProfile = async () => {
+      try {
+        setLoading(true);
+        const response = await getProfileUser(id);
+        setDataUser(response);
+      } catch (error) {
+        console.error("Failed to fetch profile:", error);
+      } finally {
+        const timeOut = setTimeout(() => {
+          setLoading(false);
+        }, 200);
+        return () => clearTimeout(timeOut);
+      }
+    };
+    fetchDataProfile();
+  }, []);
 
   const handleSaveProfile = async () => {
     if (isValidPhone(dataUser.phone)) {
@@ -32,6 +45,14 @@ export default function ProfileTab({ profile }) {
     const check = /^(0|\+84)(3|5|7|8|9)\d{8}$/.test(phone);
     return check;
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-10">
+        <Loader className="w-4 h-4 animate-spin text-main" />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -73,7 +94,7 @@ export default function ProfileTab({ profile }) {
           </label>
           <input
             type="text"
-            value={dataUser.name ?? userInfo.name}
+            value={dataUser.name ?? name}
             onChange={(e) => setDataUser({ ...dataUser, name: e.target.value })}
             disabled={!isEditing}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg  disabled:bg-gray-50 disabled:text-gray-500"
@@ -86,7 +107,7 @@ export default function ProfileTab({ profile }) {
           </label>
           <input
             type="email"
-            value={dataUser.email ?? userInfo.email}
+            value={dataUser.email ?? email}
             onChange={(e) =>
               setDataUser({ ...dataUser, email: e.target.value })
             }

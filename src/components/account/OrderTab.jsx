@@ -1,24 +1,48 @@
 "use client";
-import { getOrderById } from "@/lib/api/apiOrder";
-import { calculatePrice, validateVoucher } from "@/utils/discountVoucher";
-import { formatExpiryDate, formatPrice } from "@/utils/formatData";
+import { formatExpiryDate } from "@/utils/formatData";
 import {
   CheckCircle,
-  CircleChevronRightIcon,
   Clock,
+  Loader,
   Package,
   Truck,
   XCircle,
 } from "lucide-react";
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import OrderDetail from "../OrderDetail";
+import { getOrderByUser } from "@/lib/api/apiOrder";
 
-export default function OrderTab({ orders }) {
+export default function OrderTab() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const limit = Number(searchParams.get("limit"));
+  const [quantity, setQuantity] = useState(limit);
+  const [orders, setOrders] = useState([]);
   const [selectStatus, setSelectStatus] = useState("ALL");
+  const [loading, setLoading] = useState(false);
+  const [orderId, setOrderId] = useState("");
+  const [isShowDetail, setIsShowDetail] = useState(false);
   const status = ["DELIVERED", "SHIPPING", "PROCESSING", "CANCELLED"];
+
+  const fetchDataOrder = async () => {
+    try {
+      setLoading(true);
+      const response = await getOrderByUser();
+      setOrders(response);
+    } catch (error) {
+      console.error("Failed to fetch orders:", error);
+    } finally {
+      const timeOut = setTimeout(() => {
+        setLoading(false);
+      }, 200);
+      return () => clearTimeout(timeOut);
+    }
+  };
+
+  useEffect(() => {
+    fetchDataOrder();
+  }, []);
 
   const filteredStatus = orders.filter((order) =>
     selectStatus === "ALL" ? true : order.status === selectStatus
@@ -70,13 +94,10 @@ export default function OrderTab({ orders }) {
         return "text-gray-600 bg-gray-50";
     }
   };
-  const searchParams = useSearchParams();
-  const limit = Number(searchParams.get("limit"));
-  const [quantity, setQuantity] = useState(limit);
+
   useEffect(() => {
     setQuantity(limit);
   }, [limit]);
-  const router = useRouter();
   const handleShowMore = () => {
     const newLimit =
       quantity + 5 > filteredStatus.length
@@ -102,16 +123,21 @@ export default function OrderTab({ orders }) {
     setQuantity(3);
   };
 
-  const [orderId, setOrderId] = useState("");
-  const [isShowDetail, setIsShowDetail] = useState(false);
   const handleShowDetail = (id) => {
     setIsShowDetail(true);
     setOrderId(id);
-    console.log(id);
   };
   const handleCloseDetail = () => {
     setIsShowDetail(false);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-10">
+        <Loader className="w-4 h-4 animate-spin text-main" />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -168,6 +194,8 @@ export default function OrderTab({ orders }) {
                   <OrderDetail
                     orderId={orderId}
                     handleCloseDetail={handleCloseDetail}
+                    fetchData={fetchDataOrder}
+                    type="Tab"
                   />
                 ) : (
                   <div className="border-t pt-3">

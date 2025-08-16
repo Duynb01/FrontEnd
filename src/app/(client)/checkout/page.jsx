@@ -7,7 +7,10 @@ import { validVoucher } from "@/lib/api/apiVoucher";
 import { createOrder } from "@/lib/api/apiOrder";
 import { useRouter } from "next/navigation";
 import { getProfileUser } from "@/lib/api/apiUser";
+import { useSelector } from "react-redux";
 export default function CheckoutPage() {
+  const user = useSelector((state) => state.user.userInfo);
+  const { id } = user;
   const router = useRouter();
   const [mockCartItems, setMockCartItems] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState("cod");
@@ -15,7 +18,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getProfileUser();
+      const data = await getProfileUser(id);
       if (data) {
         setData(data);
       }
@@ -65,9 +68,8 @@ export default function CheckoutPage() {
       totalPrice: infoPrice.afterDiscount,
     };
     try {
-      await createOrder(payload);
-      toast.success("Đặt hàng thành công!");
-      router.push("/");
+      const { orderId } = await createOrder(payload);
+      router.push(`/order?orderId=${orderId}`);
     } catch (err) {
       toast.warning(err.message);
     }

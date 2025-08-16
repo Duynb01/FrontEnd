@@ -10,13 +10,26 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import ButtonToggle from "../ButtonToggle";
-import { deleteVoucher, getVoucher, updateVoucher } from "@/lib/api/apiVoucher";
+import { deleteVoucher, updateVoucher } from "@/lib/api/apiVoucher";
 import { toast } from "react-toastify";
 import CreateVoucherBox from "../CreateVoucherBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
-export default function VoucherTab({ fetchData, vouchers }) {
+export default function VoucherTab({ fetchVoucher }) {
+  const fetchData = async () => {
+    try {
+      const data = await fetchVoucher();
+      setVouchers(data);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    }
+  };
+  const [vouchers, setVouchers] = useState([]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchVoucher]);
+
   // Button Toggle
   const statuses = ["Active", "Inactive"];
 
@@ -102,7 +115,7 @@ export default function VoucherTab({ fetchData, vouchers }) {
               {
                 <CreateVoucherBox
                   onClick={handleOffBox}
-                  fetchVoucher={fetchData}
+                  fetchVoucher={fetchVoucher}
                 />
               }
             </div>
@@ -118,7 +131,7 @@ export default function VoucherTab({ fetchData, vouchers }) {
             <select
               onChange={(e) => {
                 setSelectedStatus(e.target.value);
-                fetchData();
+                fetchVoucher();
               }}
               className="border border-slate-300 rounded-md px-3 py-2 pr-6 appearance-none"
             >

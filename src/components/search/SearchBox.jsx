@@ -11,9 +11,10 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useRouter } from "next/navigation";
 import { setProductWithSearch } from "@/redux/store/slices/searchSlice";
 import SearchContent from "./SearchContent";
+import Image from "next/image";
 
 export default function Search() {
-  const trendCategorize = [
+  const trendSearch = [
     {
       name: "Sofa",
       scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_1_img.jpg?v=91",
@@ -126,6 +127,7 @@ export default function Search() {
     router.push("/search");
   };
 
+  // Xử lý xoá lịch sử tìm kiếm
   const handleClearHistory = () => {
     localStorage.removeItem("search_history");
     setHistory([]);
@@ -156,6 +158,19 @@ export default function Search() {
     router.push(`/products/${id}`);
   };
 
+  // Xử lý click vào tìm kiếm nổi bật
+  const handleClickTrendSearch = (name) => {
+    const result = searchProduct(name, productList);
+    dispatch(
+      setProductWithSearch({
+        key: name,
+        products: result,
+      })
+    );
+
+    router.push("/search");
+    setIsOpen(false);
+  };
   return (
     <div className="flex-1 max-w-xl relative">
       {isOpen && (
@@ -211,16 +226,19 @@ export default function Search() {
                   </div>
                 </div>
                 <div className="h-[30%] flex flex-col  max-h-full bg-white">
-                  <h4 className="font-bold p-2">Danh Mục Nổi Bật</h4>
+                  <h4 className="font-bold p-2">Tìm kiếm nổi bật</h4>
                   <div className="grid grid-cols-4 grid-rows-2 flex-grow">
-                    {trendCategorize.map((item, i) => (
+                    {trendSearch.map((item, i) => (
                       <div
                         key={i}
+                        onClick={() => handleClickTrendSearch(item.name)}
                         className="flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 rounded-sm"
                       >
-                        <img
+                        <Image
                           src={item.scr}
                           alt={item.name}
+                          width={48}
+                          height={48}
                           className="w-12 h-12 object-cover rounded-sm"
                         />
                         <span className="text-sm text-gray-500">

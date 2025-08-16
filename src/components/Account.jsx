@@ -65,6 +65,7 @@ export default function Account() {
       toast.warning("Vui lòng đăng nhập!");
       return;
     }
+    setIsLogin(false);
     router.push("/account");
   };
 

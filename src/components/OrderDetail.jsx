@@ -1,4 +1,4 @@
-import { getOrderById } from "@/lib/api/apiOrder";
+import { getOrderById, cancelOrder } from "@/lib/api/apiOrder";
 import { calculatePrice, validateVoucher } from "@/utils/discountVoucher";
 import { formatPrice } from "@/utils/formatData";
 import {
@@ -13,7 +13,12 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export default function OrderDetail({ orderId, handleCloseDetail }) {
+export default function OrderDetail({
+  orderId,
+  handleCloseDetail = () => {},
+  fetchData = () => {},
+  type = "Page",
+}) {
   const getStatusIcon = (status) => {
     switch (status) {
       case "DELIVERED":
@@ -81,6 +86,16 @@ export default function OrderDetail({ orderId, handleCloseDetail }) {
     };
     fetchDataOrder();
   }, []);
+
+  const handleCancelOrder = async (id) => {
+    try {
+      await cancelOrder(id);
+      fetchData();
+      toast.success("Đơn hàng đã được hủy thành công.");
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   if (loading) {
     return (
@@ -218,7 +233,7 @@ export default function OrderDetail({ orderId, handleCloseDetail }) {
         </div>
       </div>
       {/* Order Sumary */}
-      <div className=" mb-4">
+      <div>
         <p className="px-5 py-2 font-medium text-[1.25rem] bg-blue-100 ">
           Tổng quan đơn hàng
         </p>
@@ -253,25 +268,26 @@ export default function OrderDetail({ orderId, handleCloseDetail }) {
         </div>
       </div>
       {/* Button Close */}
-      <div className="flex justify-center gap-4">
-        {dataOrder.status === "PROCESSING" && (
+      {type === "Tab" && (
+        <div className="flex justify-center mt-4 gap-4">
+          {dataOrder.status === "PROCESSING" && (
+            <button
+              className=" capitalize border px-2 py-1 rounded-sm text-sm text-red-600 hover:text-red-800"
+              onClick={() => {
+                handleCancelOrder(dataOrder.id);
+              }}
+            >
+              Hủy đơn
+            </button>
+          )}
           <button
-            className=" capitalize border px-2 py-1 rounded-sm text-sm text-red-600 hover:text-red-800"
-            onClick={() => {
-              // Handle cancel order logic here
-              toast.warning("Chức năng hủy đơn hàng chưa được triển khai.");
-            }}
+            className=" capitalize border px-2 py-1 rounded-sm text-sm"
+            onClick={handleCloseDetail}
           >
-            Hủy đơn
+            đóng
           </button>
-        )}
-        <button
-          className=" capitalize border px-2 py-1 rounded-sm text-sm"
-          onClick={handleCloseDetail}
-        >
-          đóng
-        </button>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

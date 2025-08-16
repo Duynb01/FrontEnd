@@ -27,7 +27,7 @@ export default function ProductSuper({ product }) {
               width={480}
               height={480}
               alt={product.name}
-              className="w-full object-contain rounded-t-sm transition-transform duration-300 ease-in-out group-hover:scale-105"
+              className="w-full max-h-[247px]  object-contain rounded-t-sm transition-transform duration-300 ease-in-out group-hover:scale-105"
             />
           </div>
           {product.discount && (
