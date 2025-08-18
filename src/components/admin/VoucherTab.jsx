@@ -218,23 +218,21 @@ export default function VoucherTab({ fetchVoucher }) {
                       {formatExpiryDate(voucher.startDate)}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
-                    <div className="flex items-center justify-center">
-                      <input
-                        type="date"
-                        value={
-                          editingId === voucher.id
-                            ? date
-                            : formatDateType(voucher.expiryDate)
-                        }
-                        min={formatDateType(voucher.startDate)}
-                        onChange={(e) => setDate(e.target.value)}
-                        disabled={editingId !== voucher.id}
-                        className={`w-[7rem] p-1  ${
-                          editingId === voucher.id && "border border-slate-300"
-                        }`}
-                      />
-                    </div>
+                  <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-slate-900">
+                    <input
+                      type="date"
+                      value={
+                        editingId === voucher.id
+                          ? date
+                          : formatDateType(voucher.expiryDate)
+                      }
+                      min={formatDateType(voucher.startDate)}
+                      onChange={(e) => setDate(e.target.value)}
+                      disabled={editingId !== voucher.id}
+                      className={`w-[7rem] p-1 text-center ${
+                        editingId === voucher.id && "border border-slate-300"
+                      }`}
+                    />
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap">

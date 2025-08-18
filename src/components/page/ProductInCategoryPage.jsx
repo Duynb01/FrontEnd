@@ -21,7 +21,7 @@ export default function ProductWithCategoryPage({ category }) {
   return (
     <div className="wrapper-product container ">
       <h2 className="text-xl font-bold mb-4 mt-8">
-        Danh sách sản phẩm:
+        Danh mục sản phẩm:
         <span className="ml-2 text-main">{category.name}</span>
       </h2>
 

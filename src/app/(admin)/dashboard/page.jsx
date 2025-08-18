@@ -26,6 +26,9 @@ import { getOrder } from "@/lib/api/apiOrder";
 import { toast } from "react-toastify";
 import { getVoucher } from "@/lib/api/apiVoucher";
 import { getProduct } from "@/lib/api/apiProduct";
+import { useDispatch } from "react-redux";
+import { getCategory } from "@/lib/api/apiCategory";
+import { setCategory } from "@/redux/store/slices/categorySlice";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -34,6 +37,7 @@ export default function AdminDashboard() {
   const searchParams = useSearchParams();
   const currentTab = searchParams.get("tab") || "dashboard";
   const [activeTab, setActiveTab] = useState(currentTab);
+  const dispatch = useDispatch();
 
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: Home },
@@ -71,6 +75,18 @@ export default function AdminDashboard() {
         );
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const categories = await getCategory();
+        if (categories) dispatch(setCategory(categories));
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());

@@ -3,6 +3,7 @@ import { getProductById } from "@/lib/api/apiProduct";
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
+
   const product = await getProductById(id);
   return {
     title: product?.name || "Không tìm thấy sản phẩm",

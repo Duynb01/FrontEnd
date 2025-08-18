@@ -8,6 +8,7 @@ import { createOrder } from "@/lib/api/apiOrder";
 import { useRouter } from "next/navigation";
 import { getProfileUser } from "@/lib/api/apiUser";
 import { useSelector } from "react-redux";
+import { createPayment, createVNPayPayment } from "@/lib/api/apiPayment";
 export default function CheckoutPage() {
   const user = useSelector((state) => state.user.userInfo);
   const { id } = user;
@@ -69,7 +70,19 @@ export default function CheckoutPage() {
     };
     try {
       const { orderId } = await createOrder(payload);
+      if (payload.method === "vnpay") {
+        const data = await createVNPayPayment(
+          orderId,
+          payload.method,
+          payload.totalPrice
+        );
+        window.location.href = data.url;
+        return;
+      } else if (payload.method === "cod") {
+        await createPayment(orderId, payload.method, payload.totalPrice);
+      }
       router.push(`/order?orderId=${orderId}`);
+      toast.success("Đặt hàng thành công!");
     } catch (err) {
       toast.warning(err.message);
     }

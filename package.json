@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@react-oauth/google": "^0.12.2",
     "@reduxjs/toolkit": "^2.7.0",
+    "@tinymce/tinymce-react": "^6.3.0",
     "dayjs": "^1.11.13",
     "jose": "^6.0.11",
     "jwt-decode": "^4.0.0",
@@ -25,7 +26,8 @@
     "react-datepicker": "^8.4.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "tinymce": "^8.0.2"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",

@@ -264,7 +264,7 @@ export default function OrderTab({ fetchOrder }) {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-center">
-                        {order.Payment.method.toUpperCase()}
+                        {order.Payment?.method.toUpperCase()}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
