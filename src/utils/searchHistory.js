@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-
 // utils/searchHistory.js
 export const saveSearchKeyword = (keyword) => {
   const key = "search_history";

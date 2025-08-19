@@ -20,6 +20,7 @@ async function loginUser(payload) {
       payload
     );
     const data = await res.json();
+    localStorage.setItem("access_token", data.access_token);
     if (!res.ok) throw new Error(data.message || "Đăng nhập thất bại");
     return data;
   } catch (err) {
@@ -33,6 +34,7 @@ async function logoutUser() {
       `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`
     );
     const data = await res.json();
+    localStorage.removeItem("access_token");
     return data;
   } catch (err) {
     throw err;
@@ -57,6 +59,7 @@ async function loginGoogle(payload) {
       { token: payload }
     );
     const data = await res.json();
+    localStorage.setItem("access_token", data.access_token);
     if (!res.ok) throw new Error(data.message || "Đăng nhập thất bại");
     return data;
   } catch (err) {
