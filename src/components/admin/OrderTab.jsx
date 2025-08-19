@@ -1,13 +1,11 @@
 "use client";
-import { updateOrderStatus } from "@/lib/api/apiOrder";
+import { getOrder, updateOrderStatus } from "@/lib/api/apiOrder";
 import { formatExpiryDate, formatPrice } from "@/utils/formatData";
 import {
-  Calendar,
   CheckCircle,
   Clock,
   Eye,
   Filter,
-  Search,
   ShoppingCart,
   Truck,
   XCircle,
@@ -15,12 +13,12 @@ import {
 import { useEffect, useState } from "react";
 import OrderDetail from "../OrderDetail";
 
-export default function OrderTab({ fetchOrder }) {
+export default function OrderTab() {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const orders = await fetchOrder();
+        const orders = await getOrder();
         setOrders(orders);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -176,7 +174,7 @@ export default function OrderTab({ fetchOrder }) {
 
         {/* Orders Filter */}
         <div className="bg-white rounded-2xl shadow-sm p-6">
-          <div className="flex flex-wrap gap-4 items-center">
+          <div>
             <div className="flex items-center space-x-2">
               <Filter className="w-5 h-5 text-slate-400" />
               <select className="border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -186,23 +184,6 @@ export default function OrderTab({ fetchOrder }) {
                 <option>Đã giao</option>
                 <option>Đã hủy</option>
               </select>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Calendar className="w-5 h-5 text-slate-400" />
-              <input
-                type="date"
-                className="border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-            <div className="flex-1 max-w-md">
-              <div className="relative">
-                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm đơn hàng..."
-                  className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
             </div>
           </div>
         </div>

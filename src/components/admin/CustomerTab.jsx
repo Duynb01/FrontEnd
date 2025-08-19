@@ -11,27 +11,29 @@ import {
 } from "lucide-react";
 import { formatExpiryDate } from "@/utils/formatData";
 import ButtonToggle from "../ButtonToggle";
-import { updateStatus } from "@/lib/api/apiUser";
+import { getUser, updateStatus } from "@/lib/api/apiUser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { getOrder } from "@/lib/api/apiOrder";
+import { searchProduct } from "@/utils/searchHistory";
 
-export default function CustomerTab({ fetchUser, fetchOrder }) {
+export default function CustomerTab() {
   const [data, setData] = useState({
     users: [],
     orders: [],
   });
 
+  const fetchData = async () => {
+    try {
+      const users = await getUser();
+      const orders = await getOrder();
+      if (users) setData((prev) => ({ ...prev, users: users }));
+      if (orders) setData((prev) => ({ ...prev, orders: orders }));
+    } catch (error) {
+      toast.error("Failed to fetch data");
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const users = await fetchUser();
-        const orders = await fetchOrder();
-        if (users) setData((prev) => ({ ...prev, users: users }));
-        if (orders) setData((prev) => ({ ...prev, orders: orders }));
-      } catch (error) {
-        toast.error("Failed to fetch data");
-      }
-    };
     fetchData();
   }, []);
 
@@ -76,8 +78,22 @@ export default function CustomerTab({ fetchUser, fetchOrder }) {
         );
     }
   };
-  const roles = ["ADMIN", "USER"];
 
+  // Filter Search
+  const [keyword, setKeyword] = useState("");
+  const [listUser, setListUser] = useState([]);
+  const handleInputSearch = (e) => {
+    setKeyword(e.target.value);
+  };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const result = searchProduct(keyword, selectSort());
+      setListUser(result);
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, [keyword, selectSort()]);
+
+  const roles = ["ADMIN", "USER"];
   const statuses = ["Active", "Inactive"];
 
   return (
@@ -137,7 +153,7 @@ export default function CustomerTab({ fetchUser, fetchOrder }) {
             <select
               onChange={(e) => {
                 setSelectedStatus(e.target.value);
-                fetchUser();
+                fetchData();
               }}
               className="border border-slate-300 rounded-md px-3 py-2 pr-6 appearance-none"
             >
@@ -180,6 +196,8 @@ export default function CustomerTab({ fetchUser, fetchOrder }) {
               <input
                 type="text"
                 placeholder="Tìm kiếm khách hàng..."
+                value={keyword}
+                onChange={handleInputSearch}
                 className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg "
               />
             </div>
@@ -217,7 +235,7 @@ export default function CustomerTab({ fetchUser, fetchOrder }) {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-slate-200">
-              {selectSort().map((user) => (
+              {listUser.map((user) => (
                 <tr
                   key={user.id}
                   className="hover:bg-slate-50 transition-colors"

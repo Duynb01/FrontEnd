@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import NavDesktop from "../NavDesktop";
-import NavMobile from "../NavMobile";
+import NavDesktop from "./NavDesktop";
+import NavMobile from "./NavMobile";
 import Search from "../search/SearchBox";
 import { ShoppingCart, User } from "lucide-react";
-import Account from "../Account";
+import ButtonAccount from "../ButtonAccount";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -138,7 +138,7 @@ export default function Header() {
             <span className="hidden mdc:block">Giỏ hàng</span>
           </button>
           <div className="hidden mdc:block">
-            <Account />
+            <ButtonAccount />
           </div>
         </div>
       </div>

@@ -2,7 +2,6 @@
 import "@/styles/globals.css";
 import Image from "next/image";
 import SocialAccount from "@/components/SociaAccount";
-import { usePathname } from "next/navigation";
 export default function AuthLayout({ children }) {
   return (
     <>

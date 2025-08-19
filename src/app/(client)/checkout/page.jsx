@@ -129,7 +129,9 @@ export default function CheckoutPage() {
     );
     const sales =
       type === "PERCENT" ? beforeDiscount * (discount / 100) : discount;
-    const afterDiscount = beforeDiscount - sales;
+    const afterDiscount =
+      beforeDiscount - sales > 0 ? beforeDiscount - sales : 1;
+
     setInfoPrice({
       beforeDiscount,
       discount: sales,

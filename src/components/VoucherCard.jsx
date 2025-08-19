@@ -4,7 +4,7 @@ import { formatExpiryDate } from "@/utils/formatData";
 import { claimVoucher } from "@/lib/api/apiVoucher";
 import { toast } from "react-toastify";
 import { useState } from "react";
-export default function Voucher({ voucher }) {
+export default function VoucherCard({ voucher }) {
   const [isClaimed, setIsClaimed] = useState(false);
 
   const onClickSave = async (e) => {

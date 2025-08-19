@@ -20,7 +20,7 @@ export default function ProductDescription({ value = "", onChange }) {
           plugins: "lists link table code",
           toolbar:
             "undo redo | bold italic underline strikethrough | " +
-            "bullist numlist | link table | removeformat | code",
+            "bullist numlist | link table | forecolor | removeformat | code",
           placeholder: "Nhập mô tả sản phẩm...",
         }}
       />

@@ -7,19 +7,21 @@ import {
   Gift,
   CheckCircle,
   XCircle,
+  Search,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import ButtonToggle from "../ButtonToggle";
-import { deleteVoucher, updateVoucher } from "@/lib/api/apiVoucher";
+import { deleteVoucher, getVoucher, updateVoucher } from "@/lib/api/apiVoucher";
 import { toast } from "react-toastify";
 import CreateVoucherBox from "../CreateVoucherBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { searchProduct } from "@/utils/searchHistory";
 
-export default function VoucherTab({ fetchVoucher }) {
+export default function VoucherTab() {
   const fetchData = async () => {
     try {
-      const data = await fetchVoucher();
+      const data = await getVoucher();
       setVouchers(data);
     } catch (error) {
       console.error("Failed to fetch products:", error);
@@ -28,7 +30,7 @@ export default function VoucherTab({ fetchVoucher }) {
   const [vouchers, setVouchers] = useState([]);
   useEffect(() => {
     fetchData();
-  }, [fetchVoucher]);
+  }, []);
 
   // Button Toggle
   const statuses = ["Active", "Inactive"];
@@ -88,6 +90,20 @@ export default function VoucherTab({ fetchVoucher }) {
     }
   });
 
+  // Filter Search
+  const [keyword, setKeyword] = useState("");
+  const [listVoucher, setListVoucher] = useState([]);
+  const handleInputSearch = (e) => {
+    setKeyword(e.target.value);
+  };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const result = searchProduct(keyword, filteredVoucher);
+      setListVoucher(result);
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, [keyword, filteredVoucher]);
+
   return (
     <div className="space-y-6 relative">
       {/* Products Header */}
@@ -115,7 +131,7 @@ export default function VoucherTab({ fetchVoucher }) {
               {
                 <CreateVoucherBox
                   onClick={handleOffBox}
-                  fetchVoucher={fetchVoucher}
+                  fetchVoucher={fetchData}
                 />
               }
             </div>
@@ -131,7 +147,7 @@ export default function VoucherTab({ fetchVoucher }) {
             <select
               onChange={(e) => {
                 setSelectedStatus(e.target.value);
-                fetchVoucher();
+                fetchData();
               }}
               className="border border-slate-300 rounded-md px-3 py-2 pr-6 appearance-none"
             >
@@ -151,14 +167,16 @@ export default function VoucherTab({ fetchVoucher }) {
             />
           </div>
           <div className="flex-1 max-w-md">
-            {/* <div className="relative">
+            <div className="relative">
               <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
                 placeholder="Tìm kiếm sản phẩm..."
+                value={keyword}
+                onChange={handleInputSearch}
                 className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
@@ -190,7 +208,7 @@ export default function VoucherTab({ fetchVoucher }) {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-slate-200">
-              {filteredVoucher.map((voucher) => (
+              {listVoucher.map((voucher) => (
                 <tr
                   key={voucher.id}
                   className="hover:bg-slate-50 transition-colors group"

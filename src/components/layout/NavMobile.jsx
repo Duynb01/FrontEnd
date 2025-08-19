@@ -2,14 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import Link from "next/link";
-import {
-  X,
-  ChevronDown,
-  Menu,
-  LogOutIcon,
-  LogInIcon,
-  Loader,
-} from "lucide-react";
+import { X, Menu, LogOutIcon, LogInIcon, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -18,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { setLogout } from "@/redux/store/slices/authSlice";
 import { toast } from "react-toastify";
 import { logoutUser } from "@/lib/api/apiAuth";
+import { deleteProfile } from "@/redux/store/slices/userSlice";
 
 export default function NavMobile() {
   const categories = useSelector((state) => state.category);
@@ -26,8 +20,8 @@ export default function NavMobile() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
   const [loading, setLoading] = useState(false);
-  const isCheckLogin = useSelector((state) => state.auth.isCheckLogin);
-  const userInfo = useSelector((state) => state.auth.userInfo);
+  const { isCheckLogin } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.user);
   const onShowMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -42,6 +36,7 @@ export default function NavMobile() {
       const res = await logoutUser();
       if (res.status === "success") {
         dispatch(setLogout());
+        dispatch(deleteProfile());
         localStorage.removeItem("isLogin");
         localStorage.removeItem("orderList");
         toast.success(res.message || "Đăng xuất thành công!");
@@ -60,8 +55,7 @@ export default function NavMobile() {
   };
 
   const handleToAccount = () => {
-    const checkLogin = localStorage.getItem("isLogin");
-    if (!checkLogin) {
+    if (!isCheckLogin) {
       toast.warning("Vui lòng đăng nhập!");
       return;
     }
@@ -97,7 +91,7 @@ export default function NavMobile() {
         </div>
         <button
           onClick={handleToAccount}
-          className="flex items-center gap-4 mt-7 border p-3 rounded-sm w-full"
+          className="flex items-center gap-4 mt-7 border p-3 rounded-sm w-full hover:bg-slate-100"
         >
           <FontAwesomeIcon icon={faCircleUser} className="text-main w-7 h-7" />
           <p className=" text-md font-bold">{userInfo?.name || "Tài khoản"}</p>
@@ -109,7 +103,7 @@ export default function NavMobile() {
                 <li
                   key={index}
                   onClick={() => toggleCategory(index)}
-                  className="group shadow-[0px_6px_15px_rgb(149,157,165,0.2)] p-3 hover:bg-slate-300"
+                  className="group shadow-[0px_6px_15px_rgb(149,157,165,0.2)] p-3 hover:bg-slate-100"
                 >
                   <Link
                     href={`/products/category/${category.slug}`}

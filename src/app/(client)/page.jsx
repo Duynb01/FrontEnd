@@ -1,24 +1,40 @@
 "use client";
 import ProductSuper from "@/components/ProductSuper";
 import Banner from "@/components/Banner";
-import Voucher from "@/components/Voucher";
+import VoucherCard from "@/components/VoucherCard";
 import Image from "next/image";
 import Link from "next/link";
 import { CircleChevronRightIcon } from "lucide-react";
 import NewProduct from "@/components/NewProduct";
 import { useEffect, useState } from "react";
-import { getVoucher } from "@/lib/api/apiVoucher";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { searchProduct } from "@/utils/searchHistory";
+import { useRouter } from "next/navigation";
+import { setProductWithSearch } from "@/redux/store/slices/searchSlice";
 
 export default function Home() {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const vouchers = useSelector((state) => state.voucher);
   const products = useSelector((state) => state.product);
+
   const categorys = [
     { name: "Phòng khách", img: "/category/category_1_img.jpg" },
     { name: "Phòng ngủ", img: "/category/category_2_img.jpg" },
     { name: "Phòng ăn và bếp", img: "/category/category_3_img.jpg" },
     { name: "Phòng làm việc", img: "/category/category_4_img.jpg" },
   ];
+  const handleSearchTrend = (name) => {
+    const result = searchProduct(name, products);
+    dispatch(
+      setProductWithSearch({
+        key: name,
+        products: result,
+      })
+    );
+
+    router.push("/search");
+  };
 
   const trendCategorize = [
     {
@@ -122,7 +138,7 @@ export default function Home() {
           {vouchers
             .filter((voucher) => voucher.active)
             .map((item, i) => {
-              return <Voucher voucher={item} key={i} />;
+              return <VoucherCard voucher={item} key={i} />;
             })}
         </section>
         {/* Ưu đãi */}
@@ -149,8 +165,11 @@ export default function Home() {
             <div className="relative flex items-center justify-between px-[15px] w-full overflow-x-scroll scrollbar-none scroll-x-start ">
               {trendCategorize.map((item, i) => (
                 <div
+                  onClick={() => {
+                    handleSearchTrend(item.name);
+                  }}
                   key={i}
-                  className="flex flex-col items-center justify-center px-[15px]"
+                  className="flex flex-col items-center justify-center px-[15px] cursor-pointer"
                 >
                   <div className="w-[90px] h-[90px] bg-white rounded-full p-[10px]">
                     <Image

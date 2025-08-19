@@ -1,6 +1,5 @@
 import { api } from "@/utils/wrapApi";
-
-export async function registerUser(payload) {
+async function registerUser(payload) {
   try {
     const res = await api.post(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
@@ -14,7 +13,7 @@ export async function registerUser(payload) {
   }
 }
 
-export async function loginUser(payload) {
+async function loginUser(payload) {
   try {
     const res = await api.post(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
@@ -28,7 +27,7 @@ export async function loginUser(payload) {
   }
 }
 
-export async function logoutUser() {
+async function logoutUser() {
   try {
     const res = await api.post(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`
@@ -40,7 +39,7 @@ export async function logoutUser() {
   }
 }
 
-export async function reloadUser() {
+async function reloadUser() {
   try {
     const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/reload`);
     const data = await res.json();
@@ -51,7 +50,7 @@ export async function reloadUser() {
   }
 }
 
-export async function loginGoogle(payload) {
+async function loginGoogle(payload) {
   try {
     const res = await api.post(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/google`,
@@ -64,3 +63,45 @@ export async function loginGoogle(payload) {
     throw err;
   }
 }
+
+async function forgotPassword(email) {
+  try {
+    const res = await api.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password`,
+      { email }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Error");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function resetPassword(params) {
+  try {
+    const res = await api.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password`,
+      {
+        email: params.email,
+        token: params.token,
+        newPassword: params.newPassword,
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Error");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  loginGoogle,
+  reloadUser,
+  forgotPassword,
+  resetPassword,
+};

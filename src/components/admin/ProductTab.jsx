@@ -7,19 +7,24 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ButtonToggle from "../ButtonToggle";
 import Image from "next/image";
 import CreateProductBox from "../CreateProductBox";
-import { updateProduct, deleteProduct } from "@/lib/api/apiProduct";
+import { updateProduct, deleteProduct, getProduct } from "@/lib/api/apiProduct";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useDebounce } from "@/hooks/useDebounce";
+import { searchProduct } from "@/utils/searchHistory";
 
-export default function ProductTab({ fetchProduct }) {
+export default function ProductTab() {
   const [products, setProducts] = useState([]);
   const statuses = ["Active", "Inactive"];
+
+  // Lấy dữ liệu
   const fetchData = async () => {
     try {
-      const data = await fetchProduct();
+      const data = await getProduct();
       setProducts(data);
     } catch (error) {
       console.error("Failed to fetch products:", error);
@@ -27,13 +32,15 @@ export default function ProductTab({ fetchProduct }) {
   };
   useEffect(() => {
     fetchData();
-  }, [fetchProduct]);
+  }, []);
 
   const [editingId, setEditingId] = useState(null);
   const [data, setData] = useState({
     price: "0",
     stock: "0",
   });
+
+  // Xử lý thao tác
 
   const handleEdit = (product) => {
     setEditingId(product.id);
@@ -69,10 +76,37 @@ export default function ProductTab({ fetchProduct }) {
     }
   };
 
+  // Bật tắt CreateProductBox
   const [isOpen, setIsOpen] = useState(false);
   const handleOffBox = () => {
     setIsOpen(false);
   };
+
+  // filter category
+  const [categoryCurrent, setCategoryCurrent] = useState("ALL");
+  const categories = useSelector((state) => state.category);
+  const productWithCategory = useMemo(() => {
+    return products.filter((product) => {
+      return categoryCurrent === "ALL"
+        ? true
+        : product.category === categoryCurrent;
+    });
+  }, [products, categoryCurrent]);
+
+  // filter search
+  const [keyword, setKeyword] = useState("");
+  const [listProduct, setListProduct] = useState([]);
+  const handleInputSearch = (e) => {
+    setKeyword(e.target.value);
+  };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const result = searchProduct(keyword, productWithCategory);
+      setListProduct(result);
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, [keyword, productWithCategory]);
+
   return (
     <div className="space-y-6">
       {/* Products Header */}
@@ -101,7 +135,7 @@ export default function ProductTab({ fetchProduct }) {
               {
                 <CreateProductBox
                   onClick={handleOffBox}
-                  fetchProduct={fetchProduct}
+                  fetchProduct={fetchData}
                 />
               }
             </div>
@@ -114,20 +148,19 @@ export default function ProductTab({ fetchProduct }) {
         <div className="flex flex-wrap gap-4 items-center">
           <div className="flex items-center space-x-2">
             <Filter className="w-5 h-5 text-slate-400" />
-            <select className="border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <option>Tất cả danh mục</option>
-              <option>Sofa</option>
-              <option>Bàn</option>
-              <option>Tủ</option>
-              <option>Giường</option>
-            </select>
-          </div>
-          <div className="flex items-center space-x-2">
-            <select className="border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <option>Tất cả trạng thái</option>
-              <option>Đang bán</option>
-              <option>Sắp hết</option>
-              <option>Hết hàng</option>
+            <select
+              value={categoryCurrent}
+              onChange={(e) => setCategoryCurrent(e.target.value)}
+              className="border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value={"ALL"}>Tất cả danh mục</option>
+              {categories.map((category, i) => {
+                return (
+                  <option key={i} value={category.name}>
+                    {category.name}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div className="flex-1 max-w-md">
@@ -136,6 +169,8 @@ export default function ProductTab({ fetchProduct }) {
               <input
                 type="text"
                 placeholder="Tìm kiếm sản phẩm..."
+                value={keyword}
+                onChange={handleInputSearch}
                 className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
@@ -170,7 +205,7 @@ export default function ProductTab({ fetchProduct }) {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-slate-200">
-              {products.map((product) => (
+              {listProduct.map((product) => (
                 <tr
                   key={product.id}
                   className="hover:bg-slate-50 transition-colors"

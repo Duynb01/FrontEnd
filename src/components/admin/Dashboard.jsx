@@ -1,31 +1,36 @@
+import { getOrder } from "@/lib/api/apiOrder";
+import { getProduct } from "@/lib/api/apiProduct";
+import { getUser } from "@/lib/api/apiUser";
 import { formatPrice } from "@/utils/formatData";
-import {
-  ArrowDown,
-  ArrowUp,
-  BarChart3,
-  DollarSign,
-  Package,
-  ShoppingCart,
-  Users,
-} from "lucide-react";
+import { getMonthRevenue, getPerformance } from "@/lib/api/apiAnalytic";
+import { DollarSign, Package, ShoppingCart, Users } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import RevenueChart from "../RevenueChart";
+import { toast } from "react-toastify";
 
-export default function DashboardTab({ fetchUser, fetchOrder, fetchProduct }) {
+export default function DashboardTab() {
   const [data, setData] = useState({
     users: [],
     orders: [],
     products: [],
+    performances: [],
+    revenues: [],
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const users = await fetchUser();
-        const orders = await fetchOrder();
-        const products = await fetchProduct();
+        const users = await getUser();
+        const orders = await getOrder();
+        const products = await getProduct();
+        const performances = await getPerformance();
+        const revenues = await getMonthRevenue();
         if (users) setData((prev) => ({ ...prev, users: users }));
         if (orders) setData((prev) => ({ ...prev, orders: orders }));
         if (products) setData((prev) => ({ ...prev, products: products }));
+        if (performances)
+          setData((prev) => ({ ...prev, performances: performances }));
+        if (revenues) setData((prev) => ({ ...prev, revenues: revenues }));
       } catch (error) {
         toast.error("Failed to fetch data");
       }
@@ -33,9 +38,64 @@ export default function DashboardTab({ fetchUser, fetchOrder, fetchProduct }) {
     fetchData();
   }, []);
 
-  const { users, orders, products } = data;
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Đã giao":
+        return "bg-green-100 text-green-700";
+      case "Đang giao":
+        return "bg-blue-100 text-blue-700";
+      case "Đang xử lý":
+        return "bg-yellow-100 text-yellow-700";
+      case "Đã hủy":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-yellow-100 text-yellow-700";
+    }
+  };
+  const getNameStatus = (status) => {
+    switch (status) {
+      case "DELIVERED":
+        return "Đã giao";
+      case "SHIPPING":
+        return "Đang giao";
+      case "PROCESSING":
+        return "Đang xử lý";
+      case "CANCELLED":
+        return "Đã hủy";
+      default:
+        return "Đang xử lý";
+    }
+  };
+  const getColor = (categoryId) => {
+    switch (categoryId) {
+      case 1:
+        return "bg-pink-500";
+      case 2:
+        return "bg-blue-500";
+      case 3:
+        return "bg-yellow-500";
+      case 4:
+        return "bg-teal-500";
+      case 5:
+        return "bg-purple-500";
+      case 6:
+        return "bg-orange-500";
+      case 7:
+        return "bg-red-500";
+      case 8:
+        return "bg-gray-500";
+      default:
+        return "bg-gray-200";
+    }
+  };
 
-  const totalRevenue = orders.reduce((total, item) => total + item.total, 0);
+  const { users, orders, products } = data;
+  const totalRevenue = orders.reduce((total, item) => {
+    if (item.status === "DELIVERED" || item.Payment.method === "vnpay") {
+      return total + item.total;
+    }
+    return total;
+  }, 0);
   const totalOrder = orders.length;
   const totalProduct = products.length;
   const totalUser = users.length;
@@ -65,37 +125,7 @@ export default function DashboardTab({ fetchUser, fetchOrder, fetchProduct }) {
       color: "bg-gradient-to-r from-green-500 to-green-600",
     },
   ];
-  const recentOrders = [
-    {
-      id: "#12345",
-      customer: "Nguyễn Văn A",
-      product: "Sofa Da Thật",
-      amount: "₫25,000,000",
-      status: "Đang xử lý",
-    },
-    {
-      id: "#12346",
-      customer: "Trần Thị B",
-      product: "Bàn Ăn Gỗ Sồi",
-      amount: "₫8,500,000",
-      status: "Đã giao",
-    },
-    {
-      id: "#12347",
-      customer: "Lê Văn C",
-      product: "Tủ Quần Áo",
-      amount: "₫12,000,000",
-      status: "Đang giao",
-    },
-    {
-      id: "#12348",
-      customer: "Phạm Thị D",
-      product: "Giường Ngủ",
-      amount: "₫15,500,000",
-      status: "Đã giao",
-    },
-  ];
-
+  const recentOrders = orders.slice(0, 4);
   return (
     <>
       {/* Stats Cards */}
@@ -156,30 +186,28 @@ export default function DashboardTab({ fetchUser, fetchOrder, fetchProduct }) {
                         <Package className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <p className="font-medium text-slate-900">{order.id}</p>
+                        <p className="font-medium text-slate-900">
+                          {order.code}
+                        </p>
                         <p className="text-sm text-slate-600">
-                          {order.customer}
+                          {order?.user?.name}
                         </p>
                       </div>
                     </div>
                     <p className="text-sm text-slate-600 mt-2">
-                      {order.product}
+                      {order?.items.length} sản phẩm
                     </p>
                   </div>
                   <div className="text-right">
                     <p className="font-semibold text-slate-900">
-                      {order.amount}
+                      {formatPrice(order.total)}
                     </p>
                     <span
-                      className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                        order.status === "Đã giao"
-                          ? "bg-green-100 text-green-700"
-                          : order.status === "Đang giao"
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}
+                      className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                        getNameStatus(order.status)
+                      )}`}
                     >
-                      {order.status}
+                      {getNameStatus(order.status)}
                     </span>
                   </div>
                 </div>
@@ -189,51 +217,27 @@ export default function DashboardTab({ fetchUser, fetchOrder, fetchProduct }) {
         </div>
 
         {/* Top Products */}
-
         <div className="bg-white rounded-2xl shadow-sm p-6">
           <h3 className="text-lg font-semibold text-slate-800 mb-6">
             Hiệu suất theo danh mục
           </h3>
           <div className="space-y-4">
-            {[
-              {
-                name: "Sofa",
-                revenue: "₫180M",
-                percentage: 85,
-                color: "bg-blue-500",
-              },
-              {
-                name: "Bàn",
-                revenue: "₫120M",
-                percentage: 70,
-                color: "bg-green-500",
-              },
-              {
-                name: "Tủ",
-                revenue: "₫95M",
-                percentage: 60,
-                color: "bg-purple-500",
-              },
-              {
-                name: "Giường",
-                revenue: "₫147M",
-                percentage: 80,
-                color: "bg-orange-500",
-              },
-            ].map((category, index) => (
+            {data.performances.map((category, index) => (
               <div key={index} className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-slate-700">
-                    {category.name}
+                    {category.categoryName}
                   </span>
                   <span className="text-sm font-semibold text-slate-900">
-                    {category.revenue}
+                    {formatPrice(category.totalRevenue)}
                   </span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2">
                   <div
-                    className={`h-2 rounded-full ${category.color}`}
-                    style={{ width: `${category.percentage}%` }}
+                    className={`h-2 rounded-full ${getColor(
+                      category.categoryId
+                    )}`}
+                    style={{ width: `${category.revenuePercent}%` }}
                   ></div>
                 </div>
               </div>
@@ -248,22 +252,13 @@ export default function DashboardTab({ fetchUser, fetchOrder, fetchProduct }) {
           </h3>
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
-              <div className="w-3 h-3 bg-indigo-500 rounded-full mr-2"></div>
+              <div className="w-3 h-3 bg-indigo-500  mr-2"></div>
               <span className="text-sm text-slate-600">Doanh thu</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
-              <span className="text-sm text-slate-600">Lợi nhuận</span>
             </div>
           </div>
         </div>
         <div className="h-80 bg-slate-50 rounded-xl flex items-center justify-center">
-          <div className="text-center">
-            <BarChart3 className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-            <p className="text-slate-600">
-              Biểu đồ doanh thu sẽ được hiển thị ở đây
-            </p>
-          </div>
+          <RevenueChart data={data.revenues} />
         </div>
       </div>
     </>

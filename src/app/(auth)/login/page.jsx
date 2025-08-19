@@ -52,6 +52,9 @@ export default function LoginForm() {
       setLoading(false);
     }
   };
+  const forgetPassword = () => {
+    router.push("/forgot-password");
+  };
   return (
     <>
       <form
@@ -98,14 +101,15 @@ export default function LoginForm() {
       </form>
       <div></div>
       {/* Quên mật khẩu Sẽ suy nghĩ thêm sau*/}
-      {/* <div className="text-right">
-          <button
-            type="button"
-            className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
-          >
-            Quên mật khẩu?
-          </button>
-        </div> */}
+      <div className="text-right">
+        <button
+          type="button"
+          onClick={forgetPassword}
+          className="text-sm  hover:text-main transition-colors"
+        >
+          Quên mật khẩu?
+        </button>
+      </div>
 
       {/* Toggle to Register */}
       <div className="text-center">

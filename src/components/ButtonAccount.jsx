@@ -4,13 +4,12 @@ import { logoutUser } from "@/lib/api/apiAuth";
 import { setLogout } from "@/redux/store/slices/authSlice";
 import { deleteProfile } from "@/redux/store/slices/userSlice";
 import { Loader, LogOutIcon, User } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-export default function Account() {
+export default function ButtonAccount() {
   const router = useRouter();
   const closeRef = useRef(null);
   const dispatch = useDispatch();
