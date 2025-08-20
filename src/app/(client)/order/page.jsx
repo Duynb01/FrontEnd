@@ -103,7 +103,7 @@ export default function OrderPage({ searchParams }) {
   }
 
   return (
-    <div className=" order-detail bg-white w-[60%]  pb-4 pt-14 mx-auto ">
+    <div className=" order-detail bg-white md:w-[80%] xl:w-[60%]  pb-4 pt-14 mx-auto ">
       {/* Header */}
       <div className="flex flex-col pb-10 items-center gap-2 font-semibold text-gray-900 ">
         <CircleCheckBig className="text-green-600 w-20 h-20" />
@@ -159,7 +159,7 @@ export default function OrderPage({ searchParams }) {
                 </th>
                 <td className="border px-4 py-3 ">
                   <div
-                    className={` max-w-[20%] flex items-center justify-center gap-2 px-5 py-1 rounded-sm text-md font-medium ${getStatusColor(
+                    className={`max-w-[50%] md:max-w-[45%] lg:max-w-[30%] flex items-center justify-center gap-2 px-5 py-1 rounded-sm text-md font-medium ${getStatusColor(
                       dataOrder.status
                     )}`}
                   >
@@ -203,7 +203,7 @@ export default function OrderPage({ searchParams }) {
               {Array.isArray(dataOrder.items) &&
                 dataOrder.items.map((item, i) => (
                   <tr key={i}>
-                    <td className="border border-gray-300 px-4 py-2 text-center flex items-center ">
+                    <td className="border border-gray-300 px-4 py-2 text-center flex items-center gap-1">
                       <Image
                         width={64}
                         height={64}
@@ -211,7 +211,7 @@ export default function OrderPage({ searchParams }) {
                         alt={item.name}
                         className="w-16 h-16 rounded object-cover"
                       />
-                      {item.name}
+                      <p>{item.name}</p>
                     </td>
                     <td className="border border-gray-300 px-4 py-2 text-center">
                       {formatPrice(item.price)}
