@@ -1,4 +1,4 @@
-import ReduxProvider from "@/redux/Provider";
+import ReduxProvider from "@/redux/Provider.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/styles/globals.css";
