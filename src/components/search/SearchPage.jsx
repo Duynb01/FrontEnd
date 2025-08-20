@@ -4,6 +4,8 @@ import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import NavButton from "../NavButton";
+import { List } from "lucide-react";
 
 export default function SearchPage() {
   const { key, products } = useSelector((state) => state.search);
@@ -16,10 +18,20 @@ export default function SearchPage() {
 
   return (
     <div className="wrapper-product container">
-      <h2 className="text-xl font-bold mb-4 mt-8">
-        Tìm kiếm sản phẩm:
-        <span className="ml-2 text-main">{key}</span>
-      </h2>
+      <div className="my-4">
+        <NavButton
+          classProp="mb-4"
+          data={{
+            Icon: List,
+            path: "/products",
+            title: "Tất cả sản phẩm",
+          }}
+        />
+        <h2 className="text-xl font-bold">
+          Tìm kiếm sản phẩm:
+          <span className="ml-2 text-main">{key}</span>
+        </h2>
+      </div>
 
       {/* Bộ lọc */}
       <div className="flex flex-wrap items-center gap-4 mb-6">

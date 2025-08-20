@@ -12,6 +12,7 @@ import { setLogout } from "@/redux/store/slices/authSlice";
 import { toast } from "react-toastify";
 import { logoutUser } from "@/lib/api/apiAuth";
 import { deleteProfile } from "@/redux/store/slices/userSlice";
+import Image from "next/image";
 
 export default function NavMobile() {
   const categories = useSelector((state) => state.category);
@@ -82,8 +83,19 @@ export default function NavMobile() {
         }`}
       >
         <div className="flex items-center justify-between ">
-          <Link href="/" className="text-3xl font-bold text-main">
-            FNS
+          <Link
+            href="/"
+            className=" flex items-center  gap-2 text-3xl font-bold text-main"
+          >
+            <Image
+              src="/logo.svg"
+              width={50}
+              height={50}
+              alt="Logo"
+              className="mx-auto rounded-full  font-bold"
+              priority
+            />
+            <span className="">FNS</span>
           </Link>
           <button onClick={onShowMenu}>
             <X className="w-6 h-6" />

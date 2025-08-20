@@ -19,7 +19,7 @@ export default function ProductCard({ product }) {
     }
   };
   return (
-    <div className="group w-full max-w-[14rem] shadow-[0_0_3px_rgb(0,0,0,0.1)] rounded-sm bg-white">
+    <div className="group max-h-min w-full max-w-[14rem] shadow-[0_0_3px_rgb(0,0,0,0.1)] rounded-sm bg-white">
       {/* Hình ảnh */}
       <div className="p-[5px] relative">
         <div className="relative z-0">
@@ -28,7 +28,8 @@ export default function ProductCard({ product }) {
             alt={product.name}
             width={480}
             height={480}
-            className="w-full max-h-[180px] object-contain rounded-t-sm transition-transform duration-300 ease-in-out group-hover:scale-105"
+            priority
+            className="w-full h-[180px] object-contain rounded-t-sm transition-transform duration-300 ease-in-out group-hover:scale-105"
           />
         </div>
 

@@ -7,8 +7,10 @@ import { DollarSign, Package, ShoppingCart, Users } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import RevenueChart from "../RevenueChart";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function DashboardTab() {
+  const router = useRouter();
   const [data, setData] = useState({
     users: [],
     orders: [],
@@ -168,9 +170,12 @@ export default function DashboardTab() {
               <h2 className="text-lg font-semibold text-slate-800">
                 Đơn hàng gần đây
               </h2>
-              <button className="text-indigo-600 hover:text-indigo-700 font-medium text-sm">
+              <a
+                href="/dashboard?tab=orders"
+                className="text-indigo-600 hover:text-indigo-700 font-medium text-sm"
+              >
                 Xem tất cả
-              </button>
+              </a>
             </div>
           </div>
           <div className="p-6">

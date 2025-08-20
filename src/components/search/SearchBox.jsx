@@ -40,11 +40,11 @@ export default function Search() {
       scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_6_img.jpg?v=91",
     },
     {
-      name: "Lọ hoa",
+      name: "Bình hoa",
       scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_7_img.jpg?v=91",
     },
     {
-      name: "Khung ảnh",
+      name: "Khung tranh",
       scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_8_img.jpg?v=91",
     },
   ];
@@ -172,14 +172,17 @@ export default function Search() {
     setIsOpen(false);
   };
   return (
-    <div className="flex-1 max-w-xl relative">
+    <div className="max-w-xl  relative">
       {isOpen && (
         <div
           className="fixed inset-0 top-[66px] bg-black/40 z-50"
           onClick={() => setIsOpen(false)}
         ></div>
       )}
-      <div ref={searchBoxRef}>
+      <div
+        ref={searchBoxRef}
+        className=" relative w-[24rem] sm:w-[30rem]  mdc:w-[36rem]"
+      >
         <input
           ref={inputRef}
           type="text"
@@ -189,7 +192,7 @@ export default function Search() {
             setIsOpen(true);
           }}
           placeholder="Tìm kiếm sản phẩm..."
-          className="text-gray font-medium w-full border border-gray-300 rounded-md px-4 py-2 bg-white focus:outline-none focus:ring-1 "
+          className=" text-gray font-medium w-full border border-gray-300 rounded-md px-4 py-2 bg-white focus:outline-none focus:ring-1 "
         />
         <button
           onClick={() => {

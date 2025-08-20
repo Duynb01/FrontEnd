@@ -31,6 +31,7 @@ export default function Banner() {
               alt={`Banner ${i + 1}`}
               width={1920}
               height={1080}
+              priority
               className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
                 i === index ? "opacity-100 z-10" : "opacity-0 z-0"
               }`}

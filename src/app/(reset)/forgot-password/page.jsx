@@ -1,6 +1,7 @@
 "use client";
+import NavButton from "@/components/NavButton";
 import { forgotPassword } from "@/lib/api/apiAuth";
-import { Loader } from "lucide-react";
+import { Home, Loader } from "lucide-react";
 import React, { useState } from "react";
 
 export default function ForgotPasswordPage() {
@@ -21,9 +22,15 @@ export default function ForgotPasswordPage() {
       setLoading(false);
     }
   };
+  const data = {
+    Icon: Home,
+    path: "/",
+    title: "Trang chủ",
+  };
   return (
     <div>
-      <div className="max-w-lg mt-40 mx-auto p-6 bg-white rounded-lg shadow">
+      <NavButton back={true} classProp={"my-20 ml-20"} data={data} />
+      <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow">
         <h1 className="text-xl font-bold mb-4">Quên mật khẩu</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input

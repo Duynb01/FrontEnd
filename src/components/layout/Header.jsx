@@ -11,87 +11,6 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 export default function Header() {
-  const categories = [
-    {
-      name: "Sofa - ghế thư giãn",
-      path: "sofa-ghe-thu-gian",
-      childs: ["Sofa", "Ghế thư giãn", "Đệm ngồi"],
-    },
-    {
-      name: "Bàn",
-      path: "/products/ban",
-      childs: [
-        "Bàn ăn",
-        "Bàn trà",
-        "Bàn làm việc",
-        "Bàn học",
-        "Bàn trang điểm",
-        "Bàn góc",
-        "Bàn ngoài trời",
-        "Bộ bàn ghế đá",
-      ],
-    },
-    {
-      name: "Ghế",
-      path: "/products/ghe",
-      childs: [
-        "Ghế ăn",
-        "Ghế đôn",
-        "Ghế văn phòng",
-        "Ghế làm việc",
-        "Ghế trẻ em",
-        "Ghế học",
-        "Ghế thư giãn",
-      ],
-    },
-
-    {
-      name: "Giường - Nệm",
-      path: "/products/giuong-nem",
-      childs: ["Giường ngủ", "Nệm", "Nệm Yoga"],
-    },
-    {
-      name: "Tủ - Kệ",
-      path: "/products/tu-ke",
-      childs: [
-        "Tủ quần áo",
-        "Kệ tivi",
-        "Kệ sách",
-        "Tủ đầu giường",
-        "Tủ kệ giày",
-        "Tủ ngăn kéo",
-      ],
-    },
-    {
-      name: "Trang trí",
-      path: "/products/trang-tri",
-      childs: [
-        "Lọ hoa - Bình hoa",
-        "Gương treo tường",
-        "Gương đứng",
-        "Nến thơm",
-        "Đồng hồ",
-      ],
-    },
-    {
-      name: "Nhà bếp",
-      path: "/products/nha-bep",
-      childs: [
-        "Tô - Chén - Đĩa",
-        "Bộ ly cốc",
-        "Ấm trà - Bộ ấm trà",
-        "Dụng cụ nấu nướng",
-        "Giá đỡ - Dụng cụ đựng",
-        "Khăn trải bàn",
-        "Găng tay - Tạp dề",
-      ],
-    },
-    {
-      name: "Phòng tắm",
-      path: "/products/phong-tam",
-      childs: ["Thảm phòng tắm", "Rèm tắm", "Vật dụng phòng tắm"],
-    },
-  ];
   const { isCheckLogin } = useSelector((state) => state.auth);
   const router = useRouter();
   const routerCart = (e) => {
@@ -107,12 +26,12 @@ export default function Header() {
     <header className="shadow-sm top-0 z-40 bg-main w-screen fixed max-h-[118px]">
       <div className="max-w-7xl mx-auto  py-2 flex items-center justify-around mdc:justify-around xl:justify-between gap-4">
         <div className="mdc:hidden relative z-50">
-          <NavMobile categories={categories} />
+          <NavMobile />
         </div>
         {/* Logo */}
         <a
           href="/"
-          className="text-2xl font-bold text-white flex items-center gap-2"
+          className="text-2xl font-bold text-white  items-center gap-2 mdc:flex hidden"
         >
           <Image
             src="/logo.svg"
@@ -122,7 +41,7 @@ export default function Header() {
             className="mx-auto rounded-full  font-bold"
             priority
           />
-          <span className="md:block hidden">FNS</span>
+          <span className="">FNS</span>
         </a>
 
         {/* Search Bar */}
@@ -145,7 +64,7 @@ export default function Header() {
 
       {/* Menu chính */}
       <div>
-        <NavDesktop categories={categories} />
+        <NavDesktop />
       </div>
     </header>
   );

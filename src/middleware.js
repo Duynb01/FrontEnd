@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 export async function middleware(request) {
-  const token = request.headers.get("authorization")?.split(" ")[1];
-  console.log("Check token: ", token);
-  if (!token) {
-    // console.log("Vào đây");
+  // const token = request.cookies.get("access_token")?.value;
+  const token = request.nextUrl.searchParams.get("token");
+  // const test = localStorage.getItem("access_token");
 
+  // console.log("Check token1: ", token);
+  // console.log("Check token2: ", test);
+  if (!token) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

@@ -3,22 +3,17 @@
 import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 import NavButton from "../NavButton";
 import { List } from "lucide-react";
 
-export default function ProductWithCategoryPage({ category }) {
-  const listProduct = useSelector((state) => state.product);
-  const productWithCategory = listProduct.filter((product) => {
-    return product.category === category.name;
-  });
-
+export default function ProductRoomStylePage({ room, products }) {
   const [sortOrder, setSortOrder] = useState("default");
-  const sortedProducts = [...productWithCategory].sort((a, b) => {
+  const sortedProducts = [...products].sort((a, b) => {
     if (sortOrder === "low-to-high") return a.price - b.price;
     if (sortOrder === "high-to-low") return b.price - a.price;
     return 0;
   });
+
   return (
     <div className="wrapper-product container ">
       <div className="my-4">
@@ -30,9 +25,8 @@ export default function ProductWithCategoryPage({ category }) {
             title: "Tất cả sản phẩm",
           }}
         />
-        <h2 className="text-xl font-bold ">
-          Danh mục sản phẩm:
-          <span className="ml-2 text-main">{category.name}</span>
+        <h2 className="text-xl font-bold">
+          <span className="ml-2 text-main">{room}</span>
         </h2>
       </div>
 

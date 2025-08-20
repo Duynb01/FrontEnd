@@ -177,7 +177,7 @@ export default function CreateProductBox({ onClick, fetchProduct }) {
           className="mt-4 mx-auto w-[20%] text-center bg-main text-white py-2 rounded hover:bg-discount"
         >
           {isLoading ? (
-            <div className="flex justify-center py-10">
+            <div className="flex justify-center">
               <Loader className="w-4 h-4 animate-spin text-white" />
             </div>
           ) : (

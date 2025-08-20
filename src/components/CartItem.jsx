@@ -2,7 +2,7 @@
 
 import { faPenToSquare, faSave } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Trash2 } from "lucide-react";
+import { Trash2, XCircle } from "lucide-react";
 import { useState } from "react";
 
 export default function CartItem({
@@ -48,34 +48,39 @@ export default function CartItem({
           ) : (
             <span>{item.quantity}</span>
           )}
-
-          {/* <div className="flex flex-col">
-            <button>
-              <FontAwesomeIcon icon={faCaretSquareUp} className="w-4 h-4" />
-            </button>
-            <button>
-              <FontAwesomeIcon icon={faCaretSquareUp} className="w-4 h-4" />
-            </button>
-          </div> */}
         </div>
       </div>
       <div className="gap-3 flex items-center absolute top-5 right-3">
         {isEditing ? (
-          <button onClick={handleSave}>
-            <FontAwesomeIcon icon={faSave} className="w-5 h-5 text-green-600" />
-          </button>
+          <>
+            <button onClick={handleSave}>
+              <FontAwesomeIcon
+                icon={faSave}
+                className="w-5 h-5 text-green-600"
+              />
+            </button>
+            <button
+              onClick={() => {
+                setIsEditing(false);
+              }}
+            >
+              <XCircle className="w-5 h-5" />
+            </button>
+          </>
         ) : (
-          <button onClick={() => setIsEditing(true)}>
-            <FontAwesomeIcon icon={faPenToSquare} className="w-5 h-5" />
-          </button>
+          <>
+            <button onClick={() => setIsEditing(true)}>
+              <FontAwesomeIcon icon={faPenToSquare} className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => {
+                onDelete(item.cartItemId);
+              }}
+            >
+              <Trash2 />
+            </button>
+          </>
         )}
-        <button
-          onClick={() => {
-            onDelete(item.cartItemId);
-          }}
-        >
-          <Trash2 />
-        </button>
       </div>
       <p className="font-bold text-right">
         {(item.price * item.quantity).toLocaleString()}₫

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 export default function ButtonAccount() {
   const router = useRouter();

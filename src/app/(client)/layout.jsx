@@ -34,7 +34,9 @@ export default function BaseLayout({ children }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 pt-[118px]">{children}</main>
+      <main className="flex-1 pt-[4.125rem] mdc:pt-[7.375rem] ">
+        {children}
+      </main>
       <Footer />
     </div>
   );

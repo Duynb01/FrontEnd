@@ -4,6 +4,7 @@ import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import NavButton from "@/components/NavButton";
 
 export default function ProductListPage() {
   const listProduct = useSelector((state) => state.product);
@@ -26,7 +27,10 @@ export default function ProductListPage() {
 
   return (
     <div className="wrapper-product container">
-      <h2 className="text-xl font-bold my-4">Danh sách sản phẩm</h2>
+      <div className="my-4 flex items-center gap-4">
+        <NavButton />
+        <h2 className="text-xl font-bold ">Danh sách sản phẩm</h2>
+      </div>
 
       {/* Bộ lọc */}
       <div className="flex flex-wrap items-center gap-4 mb-6">
@@ -56,7 +60,7 @@ export default function ProductListPage() {
         </select>
       </div>
       {/* Danh sách sản phẩm */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 mdc:grid-cols-5 xl:grid-cols-6 gap-4  pb-4">
         {sortedProducts.length === 0 ? (
           <p className="col-span-full text-gray-500">Không có sản phẩm nào.</p>
         ) : (

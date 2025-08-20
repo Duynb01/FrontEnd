@@ -18,11 +18,27 @@ export default function Home() {
   const vouchers = useSelector((state) => state.voucher);
   const products = useSelector((state) => state.product);
 
-  const categorys = [
-    { name: "Phòng khách", img: "/category/category_1_img.jpg" },
-    { name: "Phòng ngủ", img: "/category/category_2_img.jpg" },
-    { name: "Phòng ăn và bếp", img: "/category/category_3_img.jpg" },
-    { name: "Phòng làm việc", img: "/category/category_4_img.jpg" },
+  const categories = [
+    {
+      name: "Phòng khách",
+      img: "/category/category_1_img.jpg",
+      slug: "phong-khach",
+    },
+    {
+      name: "Phòng ngủ",
+      img: "/category/category_2_img.jpg",
+      slug: "phong-ngu",
+    },
+    {
+      name: "Phòng ăn và bếp",
+      img: "/category/category_3_img.jpg",
+      slug: "phong-an-va-bep",
+    },
+    {
+      name: "Phòng làm việc",
+      img: "/category/category_4_img.jpg",
+      slug: "phong-lam-viec",
+    },
   ];
   const handleSearchTrend = (name) => {
     const result = searchProduct(name, products);
@@ -62,11 +78,11 @@ export default function Home() {
       scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_6_img.jpg?v=91",
     },
     {
-      name: "Lọ hoa",
+      name: "Bình hoa",
       scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_7_img.jpg?v=91",
     },
     {
-      name: "Khung ảnh",
+      name: "Khung tranh",
       scr: "https://theme.hstatic.net/200000796751/1001266995/14/categorize_8_img.jpg?v=91",
     },
   ];
@@ -77,13 +93,13 @@ export default function Home() {
           <Banner />
         </section>
         <section className="home-category pt-0">
-          <div className="category-content flex justify-between items-center gap-[30px]">
-            {categorys.map((category, i) => (
+          <div className="category-content grid grid-cols-2 md:grid-cols-4 gap-4 ">
+            {categories.map((category, i) => (
               <div
                 key={i}
                 className="rounded-md overflow-hidden  w-full h-auto relative shadow-[0px_0px_10px_-5px_rgba(0,_0,_0,_0.1)] group"
               >
-                <Link href="">
+                <Link href={`/room/${category.slug}`}>
                   <Image
                     src={category.img}
                     width={350}
@@ -134,7 +150,7 @@ export default function Home() {
           </div>
         </section>
         {/* Voucher */}
-        <section className="home-voucher flex flex-wrap pt-0 gap-y-[14px] ">
+        <section className="home-voucher grid grid-cols-1 sm:grid-cols-2 mdc:grid-cols-3 xl:grid-cols-4 gap-4 ">
           {vouchers
             .filter((voucher) => voucher.active)
             .map((item, i) => {
@@ -145,7 +161,7 @@ export default function Home() {
         <section className="home-product-2">
           <div className="text-main text-2xl font-bold mb-5 pl-[7px]">
             <h2>
-              <Link href={""}>Back To School - Up To 60%</Link>
+              <Link href={""}>Hot This Week</Link>
             </h2>
           </div>
           <div className="flex overflow-x-scroll scrollbar-none scroll-x-start">

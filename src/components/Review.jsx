@@ -43,7 +43,7 @@ export default function Review({ productId }) {
   };
 
   return (
-    <div className="mt-6">
+    <div>
       <h3 className="text-lg font-semibold mb-2">Gửi đánh giá cho sản phẩm</h3>
 
       <div className="flex gap-1 mb-2">

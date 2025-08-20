@@ -279,6 +279,7 @@ export default function ProductDetail({ product }) {
             alt={product.name}
             width={500}
             height={500}
+            priority
             className="w-full max-w-sm max-h-[24rem] object-contain rounded-sm"
           />
         </div>

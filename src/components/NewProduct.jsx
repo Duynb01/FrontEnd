@@ -16,10 +16,11 @@ export default function NewProduct() {
             width={1500}
             height={3764}
             alt="Sidebar banner"
+            priority
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="product-content grid  grid-cols-3 sm:grid-cols-4 mdc:grid-cols-5  col-span-3 sm:col-span-4 mdc:col-span-5 gap-2">
+        <div className="product-content grid  grid-cols-2 smc:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 col-span-2 smc:col-span-3 md:col-span-5 gap-2">
           {products.slice(0, 10).map((product) => (
             <Link
               href={`/products/${product.id}`}

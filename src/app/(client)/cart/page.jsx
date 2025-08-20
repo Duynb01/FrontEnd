@@ -63,10 +63,13 @@ export default function CartPage() {
   };
 
   const handleUpdateQuantity = async (cartItemId, newQuantity) => {
-    const data = await updateCart({ cartItemId, newQuantity });
-    if (data) {
+    try {
+      await updateCart({ cartItemId, newQuantity });
       toast.success("Cập nhật thành công!");
       fetchCart();
+    } catch (err) {
+      toast.warning(err.message);
+      console.error(err.message);
     }
   };
 

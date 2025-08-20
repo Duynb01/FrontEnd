@@ -71,7 +71,7 @@ async function createUrlImage(file) {
   }
 }
 
-export async function createProduct(payload) {
+async function createProduct(payload) {
   try {
     const res = await api.post(
       `${process.env.NEXT_PUBLIC_API_URL}/products`,
@@ -84,6 +84,18 @@ export async function createProduct(payload) {
     throw err;
   }
 }
+async function getProductRoomStyle(slug) {
+  try {
+    const res = await api.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/products/${slug}/room`
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Lấy sản phẩm thất bại");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
 
 export {
   getProduct,
@@ -91,4 +103,6 @@ export {
   updateProduct,
   deleteProduct,
   createUrlImage,
+  createProduct,
+  getProductRoomStyle,
 };

@@ -1,11 +1,5 @@
-import { headers } from "next/headers";
-
 export async function refreshToken(url, options = {}) {
   const defaultOptions = {
-    headers: {
-      ...options.headers,
-      Authorization: token ? `Bearer ${token}` : undefined,
-    },
     credentials: "include",
     ...options,
   };
@@ -28,8 +22,6 @@ export async function refreshToken(url, options = {}) {
   );
 
   if (refreshRes.ok) {
-    const refreshData = await refreshRes.json();
-    localStorage.setItem("access_token", refreshData.access_token);
     return await fetch(url, defaultOptions);
   } else {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
