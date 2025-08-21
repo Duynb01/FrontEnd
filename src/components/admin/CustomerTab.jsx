@@ -40,7 +40,7 @@ export default function CustomerTab() {
   const { users, orders } = data;
 
   const quantityOrder = (userId) => {
-    return orders.filter((order) => order.user.id === userId).items.length;
+    return orders.filter((order) => order.user.id === userId).length;
   };
   const activeAccount = users.filter((user) => user.active).length;
 

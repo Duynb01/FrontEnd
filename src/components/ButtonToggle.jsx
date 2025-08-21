@@ -10,36 +10,25 @@ export default function ButtonToggle({ data, array, label, functionApi }) {
   const [isActive, setIsActive] = useState(true);
   useEffect(() => {
     if (label === "active") {
-      if (data[label]) {
-        return setIsActive(true);
-      } else {
-        return setIsActive(false);
-      }
+      setIsActive(!!data.active);
     } else if (label === "role") {
-      if (data[label] === array[0]) {
-        return setIsActive(true);
-      } else {
-        return setIsActive(false);
-      }
+      setIsActive(data.role === "ADMIN");
     }
-  }, [data, array, label]);
+  }, [data, label]);
 
   const handleToggle = async () => {
     const payload = {};
     if (label === "active") {
       payload.active = !isActive;
     } else if (label === "role") {
-      payload.roleId = isActive
-        ? tranformRole(array[1])
-        : tranformRole(array[0]);
+      payload.roleId = isActive ? tranformRole("USER") : tranformRole("ADMIN");
     }
     try {
-      const data = functionApi({
+      await functionApi({
         id: data.id,
         edit: payload,
       });
       setIsActive(!isActive);
-      toast.success(data.message);
     } catch (error) {
       toast.error(error.message);
     }
