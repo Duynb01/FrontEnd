@@ -3,6 +3,8 @@ import { calculatePrice, validateVoucher } from "@/utils/discountVoucher";
 import { formatPrice } from "@/utils/formatData";
 import {
   CheckCircle,
+  CircleCheckBig,
+  CircleX,
   Clock,
   Loader,
   Package,
@@ -50,6 +52,18 @@ export default function OrderDetail({
         return "Chưa xác định";
     }
   };
+  const getStatusPaymentText = (status) => {
+    switch (status) {
+      case "PENDING":
+        return "Chờ thanh toán";
+      case "SUCCESS":
+        return "Đã thanh toán";
+      case "FAIL":
+        return "Thanh toán thất bại";
+      default:
+        return "Chờ thanh toán";
+    }
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -63,6 +77,19 @@ export default function OrderDetail({
         return "text-red-600 bg-red-50";
       default:
         return "text-gray-600 bg-gray-50";
+    }
+  };
+
+  const getStatusPaymentIcon = (status) => {
+    switch (status) {
+      case "SUCCESS":
+        return <CircleCheckBig className="w-5 h-5 text-green-500" />;
+      case "FAIL":
+        return <CircleX className="w-5 h-5 text-red-500" />;
+      case "PENDING":
+        return <Loader className="w-5 h-5 text-yellow-500" />;
+      default:
+        return <Loader className="w-5 h-5 text-gray-500" />;
     }
   };
 
@@ -169,6 +196,21 @@ export default function OrderDetail({
                     : "Thanh toán VNPay"}
                 </td>
               </tr>
+              {type === "Page" && (
+                <tr>
+                  <th className="border px-4 py-3 bg-gray-100">
+                    Tình trạng thanh toán
+                  </th>
+                  <td className="border px-4 py-3 w-full">
+                    <span
+                      className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium`}
+                    >
+                      {getStatusPaymentIcon(dataOrder?.Payment?.status)}
+                      {getStatusPaymentText(dataOrder?.Payment?.status)}
+                    </span>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

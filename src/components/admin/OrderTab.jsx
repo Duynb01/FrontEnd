@@ -293,7 +293,7 @@ export default function OrderTab() {
         <div className=" w-full h-full">
           <div className="overlay2" onClick={handleCloseOrderDetail}></div>
           {/* OrderDeteil */}
-          <div className="overlay-content ">
+          <div className="overlay-content w-full  md:w-[90%] mdc:w-[80%] xl:w-[60%]">
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-lg font-semibold">Chi tiết đơn hàng</h3>
               <button
