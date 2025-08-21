@@ -11,9 +11,9 @@ export default function Footer() {
           {/* Cột 1: Liên hệ */}
           <div>
             <h4 className="font-semibold mb-2">Liên hệ</h4>
-            <p>Email: support@noithatabc.vn</p>
+            <p>Email: support@furniture.vn</p>
             <p>ĐT: 0123 456 789</p>
-            <p>Địa chỉ: 123 Đường ABC, TP.HCM</p>
+            <p>Địa chỉ: Đ.Nghiêm Xuân Yêm, Đại Kim, Hoàng Mai, Hà Nội</p>
           </div>
 
           {/* Cột 2: Chính sách */}
@@ -21,13 +21,13 @@ export default function Footer() {
             <h4 className="font-semibold mb-2">Chính sách</h4>
             <ul className="space-y-1">
               <li>
-                <Link href="/chinh-sach-doi-tra">Chính sách đổi trả</Link>
+                <Link href="/">Chính sách đổi trả</Link>
               </li>
               <li>
-                <Link href="/chinh-sach-bao-hanh">Chính sách bảo hành</Link>
+                <Link href="/">Chính sách bảo hành</Link>
               </li>
               <li>
-                <Link href="/bao-mat">Chính sách bảo mật</Link>
+                <Link href="/">Chính sách bảo mật</Link>
               </li>
             </ul>
           </div>
@@ -37,13 +37,13 @@ export default function Footer() {
             <h4 className="font-semibold mb-2">Hỗ trợ khách hàng</h4>
             <ul className="space-y-1">
               <li>
-                <Link href="/huong-dan-mua-hang">Hướng dẫn mua hàng</Link>
+                <Link href="/">Hướng dẫn mua hàng</Link>
               </li>
               <li>
-                <Link href="/cau-hoi-thuong-gap">Câu hỏi thường gặp</Link>
+                <Link href="/">Câu hỏi thường gặp</Link>
               </li>
               <li>
-                <Link href="/lien-he">Gửi yêu cầu hỗ trợ</Link>
+                <Link href="/">Gửi yêu cầu hỗ trợ</Link>
               </li>
             </ul>
           </div>
