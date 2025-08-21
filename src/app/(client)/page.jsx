@@ -129,7 +129,7 @@ export default function Home() {
         <section className="home-product-1">
           <div className="product-content bg-[#ffeef0] rounded-md py-4 px-2">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-4 pl-[7px] relative before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:content[''] after:border-main after:rounded-full after:w-2 after:h-2 after:absolute after:border after:animate-pulseSmall">
-              <Link href="">Sản phẩm nổi bật</Link>
+              Sản phẩm nổi bật
             </h2>
             <div className="flex items-center overflow-x-scroll scrollbar-none scroll-x-start">
               {products.slice(0, 5).map((product, i) => (
@@ -160,9 +160,7 @@ export default function Home() {
         {/* Ưu đãi */}
         <section className="home-product-2">
           <div className="text-main text-2xl font-bold mb-5 pl-[7px]">
-            <h2>
-              <Link href={""}>Hot This Week</Link>
-            </h2>
+            <h2>Hot This Week</h2>
           </div>
           <div className="flex overflow-x-scroll scrollbar-none scroll-x-start">
             {products.slice(0, 5).map((product, i) => (
