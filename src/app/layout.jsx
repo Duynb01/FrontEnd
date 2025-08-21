@@ -6,7 +6,7 @@ import "@/styles/globals.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export const metadata = {
-  title: "Siêu thị nội thất & trang trí Baya",
+  title: "Siêu thị nội thất & trang trí",
   description: "Trang trí nội thất",
   icons: {
     icon: "/logo.svg",
