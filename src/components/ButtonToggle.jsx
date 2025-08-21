@@ -34,11 +34,12 @@ export default function ButtonToggle({ data, array, label, functionApi }) {
         : tranformRole(array[0]);
     }
     try {
-      await functionApi({
+      const data = functionApi({
         id: data.id,
         edit: payload,
       });
       setIsActive(!isActive);
+      toast.success(data.message);
     } catch (error) {
       toast.error(error.message);
     }
