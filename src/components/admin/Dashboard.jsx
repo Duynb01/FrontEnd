@@ -93,7 +93,7 @@ export default function DashboardTab() {
 
   const { users, orders, products } = data;
   const totalRevenue = orders.reduce((total, item) => {
-    if (item.status === "DELIVERED" || item.Payment.method === "vnpay") {
+    if (item.status === "DELIVERED" || item.Payment?.method === "vnpay") {
       return total + item.total;
     }
     return total;
