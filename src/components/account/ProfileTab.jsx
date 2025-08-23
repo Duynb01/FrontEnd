@@ -8,11 +8,10 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 export default function ProfileTab() {
-  const user = useSelector((state) => state.user.userInfo);
-  const { id, name, email } = user;
+  const { id, name, email } = useSelector((state) => state.user.userInfo) ?? {};
   const [dataUser, setDataUser] = useState({});
   const [loading, setLoading] = useState(false);
-  const [flagData, setFlagData] = useState([]);
+  const [flagData, setFlagData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {
     let timeout;
@@ -39,7 +38,7 @@ export default function ProfileTab() {
       try {
         await updateProfile(flagData);
         toast.success("Cập nhật thành công");
-        setDataUser((prev) => ({ ...prev, flagData }));
+        setDataUser((prev) => ({ ...prev, ...flagData }));
         setIsEditing(false);
       } catch (err) {
         console.error(err.message);
