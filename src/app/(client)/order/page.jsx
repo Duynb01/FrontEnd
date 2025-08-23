@@ -12,14 +12,14 @@ import {
   XCircle,
 } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState, use } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export default function OrderPage({ searchParams }) {
+export default function OrderPage() {
   const router = useRouter();
-  const { orderId } = use(searchParams);
-  console.log("Check Order: ", orderId);
+  const searchParams = useSearchParams();
+  const orderId = searchParams.get("orderId");
 
   const getStatusIcon = (status) => {
     switch (status) {

@@ -85,7 +85,6 @@ export default function CheckoutPage() {
         } else if (payload.method === "cod") {
           await createPayment(orderId, payload.method, payload.totalPrice);
         }
-        console.log("orderId: ", orderId);
 
         router.push(`/order?orderId=${orderId}`);
         toast.success("Đặt hàng thành công!");
