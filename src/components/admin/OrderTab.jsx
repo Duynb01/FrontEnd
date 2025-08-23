@@ -101,8 +101,8 @@ export default function OrderTab() {
           order.id === orderId ? { ...order, status: status } : order
         )
       );
-    } catch (error) {
-      console.error("Update status failed:", err);
+    } catch (err) {
+      console.error("Update status failed:", err.message);
       toast.error("Không thể cập nhật trạng thái đơn hàng");
     }
   };

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { getProfileUser } from "@/lib/api/apiUser";
 import { useSelector } from "react-redux";
 import { createPayment, createVNPayPayment } from "@/lib/api/apiPayment";
+import { validFormDataShipping } from "@/utils/isValidData";
 export default function CheckoutPage() {
   const user = useSelector((state) => state.user.userInfo);
   const { id } = user;
@@ -43,6 +44,7 @@ export default function CheckoutPage() {
     address: "",
     note: "",
   });
+
   const handleInputChange = (e) => {
     setShippingInfo({ ...shippingInfo, [e.target.name]: e.target.value });
   };
@@ -68,23 +70,30 @@ export default function CheckoutPage() {
       voucherCode: voucher.code || null,
       totalPrice: infoPrice.afterDiscount,
     };
-    try {
-      const { orderId } = await createOrder(payload);
-      if (payload.method === "vnpay") {
-        const data = await createVNPayPayment(
-          orderId,
-          payload.method,
-          payload.totalPrice
-        );
-        window.location.href = data.url;
-        return;
-      } else if (payload.method === "cod") {
-        await createPayment(orderId, payload.method, payload.totalPrice);
+    const errs = validFormDataShipping(payload.info);
+    if (errs.length === 0) {
+      try {
+        const { orderId } = await createOrder(payload);
+        if (payload.method === "vnpay") {
+          const data = await createVNPayPayment(
+            orderId,
+            payload.method,
+            payload.totalPrice
+          );
+          window.location.href = data.url;
+          return;
+        } else if (payload.method === "cod") {
+          await createPayment(orderId, payload.method, payload.totalPrice);
+        }
+        router.push(`/order?orderId=${orderId}`);
+        toast.success("Đặt hàng thành công!");
+      } catch (err) {
+        toast.warning(err.message);
       }
-      router.push(`/order?orderId=${orderId}`);
-      toast.success("Đặt hàng thành công!");
-    } catch (err) {
-      toast.warning(err.message);
+    } else {
+      errs.forEach((err) => {
+        toast.warning(err);
+      });
     }
   };
 

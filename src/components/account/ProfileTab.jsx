@@ -1,6 +1,7 @@
 "use client";
 
 import { getProfileUser, updateProfile } from "@/lib/api/apiUser";
+import { validFormDataProfile } from "@/utils/isValidData";
 import { Edit2, Save, Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,8 +12,10 @@ export default function ProfileTab() {
   const { id, name, email } = user;
   const [dataUser, setDataUser] = useState({});
   const [loading, setLoading] = useState(false);
+  const [flagData, setFlagData] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {
+    let timeout;
     const fetchDataProfile = async () => {
       try {
         setLoading(true);
@@ -21,29 +24,33 @@ export default function ProfileTab() {
       } catch (error) {
         console.error("Failed to fetch profile:", error);
       } finally {
-        const timeOut = setTimeout(() => {
+        timeout = setTimeout(() => {
           setLoading(false);
         }, 200);
-        return () => clearTimeout(timeOut);
       }
     };
     fetchDataProfile();
-  }, []);
+    return () => clearTimeout(timeout);
+  }, [id]);
 
   const handleSaveProfile = async () => {
-    if (isValidPhone(dataUser.phone)) {
-      const data = await updateProfile(dataUser);
-      if (data) {
+    const errs = validFormDataProfile(flagData);
+    if (errs.length === 0) {
+      try {
+        await updateProfile(flagData);
         toast.success("Cập nhật thành công");
+        setDataUser((prev) => ({ ...prev, flagData }));
+        setIsEditing(false);
+      } catch (err) {
+        console.error(err.message);
       }
-      setIsEditing(false);
     } else {
-      toast.error("Vui lòng số điện thoại");
+      errs.forEach((err) => toast.warning(err));
     }
   };
-  const isValidPhone = (phone) => {
-    const check = /^(0|\+84)(3|5|7|8|9)\d{8}$/.test(phone);
-    return check;
+  const handleCancel = () => {
+    setFlagData(dataUser);
+    setIsEditing(false);
   };
 
   if (loading) {
@@ -71,7 +78,7 @@ export default function ProfileTab() {
         ) : (
           <div className="flex gap-2">
             <button
-              onClick={() => setIsEditing(false)}
+              onClick={handleCancel}
               className="px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
             >
               Hủy
@@ -94,9 +101,10 @@ export default function ProfileTab() {
           </label>
           <input
             type="text"
-            value={dataUser.name ?? name}
-            onChange={(e) => setDataUser({ ...dataUser, name: e.target.value })}
+            value={flagData.name ?? dataUser.name ?? name}
+            onChange={(e) => setFlagData({ ...flagData, name: e.target.value })}
             disabled={!isEditing}
+            required
             className="w-full px-3 py-2 border border-gray-300 rounded-lg  disabled:bg-gray-50 disabled:text-gray-500"
           />
         </div>
@@ -107,9 +115,9 @@ export default function ProfileTab() {
           </label>
           <input
             type="email"
-            value={dataUser.email ?? email}
+            value={flagData.email ?? dataUser.email ?? email}
             onChange={(e) =>
-              setDataUser({ ...dataUser, email: e.target.value })
+              setFlagData({ ...flagData, email: e.target.value })
             }
             disabled
             className="w-full px-3 py-2 border border-gray-300 rounded-lg  disabled:bg-gray-50 disabled:text-gray-500"
@@ -122,9 +130,9 @@ export default function ProfileTab() {
           </label>
           <input
             type="text"
-            value={dataUser.phone || ""}
+            value={flagData.phone ?? dataUser.phone ?? ""}
             onChange={(e) =>
-              setDataUser({ ...dataUser, phone: e.target.value })
+              setFlagData({ ...flagData, phone: e.target.value })
             }
             disabled={!isEditing}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg  disabled:bg-gray-50 disabled:text-gray-500"
@@ -136,9 +144,9 @@ export default function ProfileTab() {
             Địa chỉ
           </label>
           <textarea
-            value={dataUser.address || ""}
+            value={flagData.address ?? dataUser.address ?? ""}
             onChange={(e) =>
-              setDataUser({ ...dataUser, address: e.target.value })
+              setFlagData({ ...flagData, address: e.target.value })
             }
             disabled={!isEditing}
             rows={3}
