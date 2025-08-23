@@ -4,9 +4,7 @@ import { calculatePrice, validateVoucher } from "@/utils/discountVoucher";
 import { formatPrice } from "@/utils/formatData";
 import {
   CheckCircle,
-  CircleCheck,
   CircleCheckBig,
-  CircleCheckIcon,
   Clock,
   Loader,
   Package,
