@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 export default function OrderPage({ searchParams }) {
   const router = useRouter();
   const { orderId } = use(searchParams);
+  console.log("Check Order: ", orderId);
 
   const getStatusIcon = (status) => {
     switch (status) {
