@@ -30,7 +30,7 @@ export default function ProfileTab() {
     };
     fetchDataProfile();
     return () => clearTimeout(timeout);
-  }, [id]);
+  }, []);
 
   const handleSaveProfile = async () => {
     const errs = validFormDataProfile(flagData);
