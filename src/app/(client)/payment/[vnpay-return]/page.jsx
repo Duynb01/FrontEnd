@@ -4,6 +4,7 @@ import { verifyPayment } from "@/lib/api/apiPayment";
 import { CircleCheckBig, CircleX, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function VNPayReturnPage() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function VNPayReturnPage() {
         const data = await verifyPayment(queryString);
         setDataPayment(data);
       } catch (err) {
-        console.error(err.message);
+        toast.error(err.message);
       } finally {
         setLoading(false);
       }
