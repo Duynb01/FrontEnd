@@ -7,7 +7,7 @@ import { DollarSign, Package, ShoppingCart, Users } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import RevenueChart from "../RevenueChart";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function DashboardTab() {
   const router = useRouter();
@@ -128,6 +128,12 @@ export default function DashboardTab() {
     },
   ];
   const recentOrders = orders.slice(0, 4);
+  const searchParams = useSearchParams();
+  const btnHref = (tab) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", tab);
+    window.location.href = `?${params.toString()}`;
+  };
   return (
     <>
       {/* Stats Cards */}
@@ -170,12 +176,14 @@ export default function DashboardTab() {
               <h2 className="text-lg font-semibold text-slate-800">
                 Đơn hàng gần đây
               </h2>
-              <a
-                href="/dashboard?tab=orders"
+              <button
+                onClick={() => {
+                  btnHref("orders");
+                }}
                 className="text-indigo-600 hover:text-indigo-700 font-medium text-sm"
               >
                 Xem tất cả
-              </a>
+              </button>
             </div>
           </div>
           <div className="p-6">
