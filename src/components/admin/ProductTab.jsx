@@ -6,6 +6,7 @@ import {
   Search,
   CheckCircle,
   XCircle,
+  Loader,
 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import ButtonToggle from "../ButtonToggle";
@@ -20,14 +21,18 @@ import { searchProduct } from "@/utils/searchHistory";
 export default function ProductTab() {
   const [products, setProducts] = useState([]);
   const statuses = ["Active", "Inactive"];
+  const [loading, setLoading] = useState(false);
 
   // Lấy dữ liệu
   const fetchData = async () => {
     try {
+      setLoading(true);
       const data = await getProduct();
       setProducts(data);
     } catch (error) {
       console.error("Failed to fetch products:", error);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -106,6 +111,14 @@ export default function ProductTab() {
     }, 100);
     return () => clearTimeout(timeout);
   }, [keyword, productWithCategory]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Loader className="w-5 h-5 animate-spin text-main" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

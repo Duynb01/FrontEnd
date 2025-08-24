@@ -8,6 +8,7 @@ import {
   CheckCircle,
   XCircle,
   Search,
+  Loader,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import ButtonToggle from "../ButtonToggle";
@@ -19,12 +20,17 @@ import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { searchProduct } from "@/utils/searchHistory";
 
 export default function VoucherTab() {
+  const [loading, setLoading] = useState(false);
+
   const fetchData = async () => {
     try {
+      setLoading(true);
       const data = await getVoucher();
       setVouchers(data);
     } catch (error) {
       console.error("Failed to fetch products:", error);
+    } finally {
+      setLoading(false);
     }
   };
   const [vouchers, setVouchers] = useState([]);
@@ -49,9 +55,10 @@ export default function VoucherTab() {
       edit: { expiryDate: formatDateType(date) },
     };
     try {
-      await updateVoucher(payload);
+      const data = await updateVoucher(payload);
       toast.success("Cập nhật Voucher thành công");
       fetchData();
+      console.log(data);
     } catch (error) {
       toast.error(error.message || "Cập nhật Voucher thất bại");
     } finally {
@@ -103,6 +110,14 @@ export default function VoucherTab() {
     }, 100);
     return () => clearTimeout(timeout);
   }, [keyword, filteredVoucher]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Loader className="w-5 h-5 animate-spin text-main" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 relative">

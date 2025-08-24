@@ -3,14 +3,13 @@ import { getProduct } from "@/lib/api/apiProduct";
 import { getUser } from "@/lib/api/apiUser";
 import { formatPrice } from "@/utils/formatData";
 import { getMonthRevenue, getPerformance } from "@/lib/api/apiAnalytic";
-import { DollarSign, Package, ShoppingCart, Users } from "lucide-react";
+import { DollarSign, Loader, Package, ShoppingCart, Users } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import RevenueChart from "../RevenueChart";
 import { toast } from "react-toastify";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function DashboardTab() {
-  const router = useRouter();
   const [data, setData] = useState({
     users: [],
     orders: [],
@@ -18,23 +17,29 @@ export default function DashboardTab() {
     performances: [],
     revenues: [],
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const users = await getUser();
-        const orders = await getOrder();
-        const products = await getProduct();
-        const performances = await getPerformance();
-        const revenues = await getMonthRevenue();
-        if (users) setData((prev) => ({ ...prev, users: users }));
-        if (orders) setData((prev) => ({ ...prev, orders: orders }));
-        if (products) setData((prev) => ({ ...prev, products: products }));
-        if (performances)
-          setData((prev) => ({ ...prev, performances: performances }));
-        if (revenues) setData((prev) => ({ ...prev, revenues: revenues }));
+        setLoading(true);
+        const [users, orders, products, performances, revenues] =
+          await Promise.all([
+            getUser(),
+            getOrder(),
+            getProduct(),
+            getPerformance(),
+            getMonthRevenue(),
+          ]);
+        if (users) setData((prev) => ({ ...prev, users }));
+        if (orders) setData((prev) => ({ ...prev, orders }));
+        if (products) setData((prev) => ({ ...prev, products }));
+        if (performances) setData((prev) => ({ ...prev, performances }));
+        if (revenues) setData((prev) => ({ ...prev, revenues }));
       } catch (error) {
         toast.error("Failed to fetch data");
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -134,6 +139,13 @@ export default function DashboardTab() {
     params.set("tab", tab);
     window.location.href = `?${params.toString()}`;
   };
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Loader className="w-5 h-5 animate-spin text-main" />
+      </div>
+    );
+  }
   return (
     <>
       {/* Stats Cards */}

@@ -6,22 +6,29 @@ import {
   Clock,
   Eye,
   Filter,
+  Loader,
   ShoppingCart,
   Truck,
   XCircle,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import OrderDetail from "../OrderDetail";
+import { toast } from "react-toastify";
 
 export default function OrderTab() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const orders = await getOrder();
         setOrders(orders);
       } catch (error) {
         console.error("Failed to fetch products:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -109,7 +116,13 @@ export default function OrderTab() {
   const handleCloseOrderDetail = () => {
     setIsShowDetail(false);
   };
-
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Loader className="w-5 h-5 animate-spin text-main" />
+      </div>
+    );
+  }
   return (
     <>
       <div className="space-y-6">

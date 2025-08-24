@@ -23,7 +23,11 @@ export default function CreateVoucherBox({ onClick, fetchVoucher }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    if (!validateFormVoucher(form)) return;
+    const errs = validateFormVoucher(form);
+    if (errs.length > 0) {
+      errs.forEach((error) => toast.error(error));
+      return setIsLoading(false);
+    }
     try {
       const data = await createVoucher(form);
       fetchVoucher();

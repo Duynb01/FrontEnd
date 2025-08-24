@@ -74,6 +74,7 @@ export const validFormData = (formData) => {
 };
 
 export const validateFormVoucher = (form) => {
+  const errors = [];
   const { name, code, discount, startDate, expiryDate, type } = form;
 
   if (!name || !code || !discount || !startDate || !expiryDate) {
@@ -81,22 +82,45 @@ export const validateFormVoucher = (form) => {
     return false;
   }
 
-  if (new Date(startDate) > new Date(expiryDate)) {
-    toast.error("Ngày bắt đầu phải trước ngày kết thúc.");
-    return false;
+  if (!isValidName(name)) {
+    errors.push("Tên phải bắt đầu bằng chữ và không có ký tự đặc biệt!");
+  } else if (name.trim().length < 2) {
+    errors.push("Tên phải có ít nhất 2 ký tự!");
+  }
+  if (!isValidAddress(code)) {
+    errors.push("Mã giảm giá không được có ký tự đặc biệt!");
+  } else if (code.trim().length < 2) {
+    errors.push("Tên phải có ít nhất 2 ký tự!");
   }
 
+  if (new Date(startDate) > new Date(expiryDate)) {
+    errors.push("Ngày bắt đầu phải trước ngày kết thúc.");
+  }
   const numericValue = Number(discount);
   if (type === "percent" && (numericValue <= 0 || numericValue > 100)) {
-    toast.error("Giảm theo % phải nằm trong khoảng 1 đến 100.");
-    return false;
+    errors.push("Giảm theo % phải nằm trong khoảng 1 đến 100.");
   }
 
   if (type === "fixed" && numericValue <= 0) {
-    toast.error("Số tiền giảm phải lớn hơn 0.");
-    return false;
+    errors.push("Số tiền giảm phải lớn hơn 0.");
   }
-  return true;
+  return errors;
 };
 
-export { isValidPhone };
+const validFormCreateProduct = (formData) => {
+  const errors = [];
+  if (!isValidName(formData.name)) {
+    errors.push("Tên phải bắt đầu bằng chữ và không có ký tự đặc biệt!");
+  } else if (formData.name.trim().length < 2) {
+    errors.push("Tên phải có ít nhất 2 ký tự!");
+  }
+  if (formData.price <= 999) {
+    errors.push("Giá sản phẩm phải lớn hơn 1000đ");
+  }
+  if (formData.stock <= 0) {
+    errors.push("Số lượng sản phẩm phải lớn hơn 1");
+  }
+  return errors;
+};
+
+export { isValidPhone, validFormCreateProduct };

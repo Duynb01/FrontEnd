@@ -1,5 +1,8 @@
 import { createVoucher } from "@/lib/api/apiVoucher";
-import { validateFormVoucher } from "@/utils/isValidData";
+import {
+  validateFormVoucher,
+  validFormCreateProduct,
+} from "@/utils/isValidData";
 // import { set } from "date-fns";
 import { Loader, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -41,17 +44,25 @@ export default function CreateProductBox({ onClick, fetchProduct }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    const formData = {
+      name: form.name,
+      price: parseInt(form.price, 10),
+      stock: parseInt(form.stock, 10),
+      category: form.category,
+      description: form.description,
+    };
+    const errs = validFormCreateProduct(formData);
+    if (errs.length > 0) {
+      errs.forEach((error) => toast.error(error));
+      return setIsLoading(false);
+    }
     try {
       const urlImage = await createUrlImage(form.image);
       const payload = {
-        name: form.name,
-        price: parseInt(form.price, 10),
-        stock: parseInt(form.stock, 10),
-        category: form.category,
-        description: form.description,
+        ...formData,
         url: urlImage.url,
       };
-      const data = await createProduct(payload);
+      await createProduct(payload);
       fetchProduct();
       toast.success(data.message);
     } catch (err) {
@@ -105,14 +116,6 @@ export default function CreateProductBox({ onClick, fetchProduct }) {
                 </option>
               ))}
             </select>
-            {/* <input
-              name="category"
-              value={form.category}
-              onChange={handleChange}
-              placeholder="VÍ DỤ: 100000"
-              className="mt-1 w-full p-2 border rounded"
-              required
-            /> */}
           </div>
         </div>
 
@@ -177,7 +180,7 @@ export default function CreateProductBox({ onClick, fetchProduct }) {
           className="mt-4 mx-auto w-[20%] text-center bg-main text-white py-2 rounded hover:bg-discount"
         >
           {isLoading ? (
-            <div className="flex justify-center">
+            <div className="flex justify-center ">
               <Loader className="w-4 h-4 animate-spin text-white" />
             </div>
           ) : (

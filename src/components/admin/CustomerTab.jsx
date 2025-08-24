@@ -8,6 +8,7 @@ import {
   Mail,
   UserRoundX,
   UserRoundCheck,
+  Loader,
 } from "lucide-react";
 import { formatExpiryDate } from "@/utils/formatData";
 import ButtonToggle from "../ButtonToggle";
@@ -22,15 +23,18 @@ export default function CustomerTab() {
     users: [],
     orders: [],
   });
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     try {
-      const users = await getUser();
-      const orders = await getOrder();
+      setLoading(true);
+      const [users, orders] = await Promise.all([getUser(), getOrder()]);
       if (users) setData((prev) => ({ ...prev, users: users }));
       if (orders) setData((prev) => ({ ...prev, orders: orders }));
     } catch (error) {
       toast.error("Failed to fetch data");
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -95,6 +99,14 @@ export default function CustomerTab() {
 
   const roles = ["ADMIN", "USER"];
   const statuses = ["Active", "Inactive"];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Loader className="w-5 h-5 animate-spin text-main" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6">
