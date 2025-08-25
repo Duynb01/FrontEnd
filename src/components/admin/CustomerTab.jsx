@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { formatExpiryDate } from "@/utils/formatData";
 import ButtonToggle from "../ButtonToggle";
-import { getUser, updateStatus } from "@/lib/api/apiUser";
+import { deleteUser, getUser, updateStatus } from "@/lib/api/apiUser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { getOrder } from "@/lib/api/apiOrder";
@@ -99,6 +99,16 @@ export default function CustomerTab() {
 
   const roles = ["ADMIN", "USER"];
   const statuses = ["Active", "Inactive"];
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteUser(id);
+      toast.success("Xóa thành công!");
+      fetchData();
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   if (loading) {
     return (
@@ -322,7 +332,7 @@ export default function CustomerTab() {
                       <button
                         className="text-red-600 hover:text-red-900 p-1 rounded-lg hover:bg-red-50 transition-colors"
                         onClick={() => {
-                          console.log("Delete user: ", user.id);
+                          handleDelete(user.id);
                         }}
                       >
                         <Trash2 className="w-5 h-5" />

@@ -68,3 +68,16 @@ export async function updateStatus(payload) {
     throw err;
   }
 }
+
+export async function deleteUser(id) {
+  try {
+    const res = await api.delete(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Chỉnh sửa thất bại");
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
