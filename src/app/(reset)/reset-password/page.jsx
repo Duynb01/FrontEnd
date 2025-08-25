@@ -12,30 +12,32 @@ export default function ResetPasswordPage() {
   const token = searchParams.get("token");
 
   const [newPassword, setNewPassword] = useState("");
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !token) {
-      setMessage("Link không hợp lệ hoặc đã hết hạn.");
+      toast.error("Link không hợp lệ hoặc đã hết hạn.");
       return;
     }
 
     setLoading(true);
-    setMessage("");
     const payload = {
       email,
       token,
       newPassword,
     };
+    if (!isValidPassword(payload.newPassword)) {
+      toast.warning("Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số!");
+      setLoading(false);
+    }
 
     try {
       await resetPassword(payload);
       toast.success("Đặt lại mật khẩu thành công! Chuyển hướng...");
       setTimeout(() => router.push("/login"), 2000);
     } catch (err) {
-      setMessage("Token không hợp lệ hoặc đã hết hạn.");
+      toast.error("Token không hợp lệ hoặc đã hết hạn.");
     } finally {
       setLoading(false);
     }
