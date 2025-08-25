@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { getOrder } from "@/lib/api/apiOrder";
 import { searchProduct } from "@/utils/searchHistory";
+import { toast } from "react-toastify";
 
 export default function CustomerTab() {
   const [data, setData] = useState({
