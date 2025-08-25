@@ -192,7 +192,7 @@ export default function OrderTab() {
           </div>
         </div>
 
-        {/* Orders Filter */}
+        {/* Orders Filter status */}
         <div className="bg-white rounded-2xl shadow-sm p-6">
           <div>
             <div className="flex items-center space-x-2">
@@ -205,7 +205,7 @@ export default function OrderTab() {
                 <option value="ALL">Tất cả trạng thái</option>
                 {status.map((value) => (
                   <option key={value} value={value}>
-                    {getStatusName(value)}
+                    {getNameStatus(value)}
                   </option>
                 ))}
               </select>
