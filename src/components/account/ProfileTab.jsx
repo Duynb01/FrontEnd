@@ -30,10 +30,10 @@ export default function ProfileTab() {
     };
     fetchDataProfile();
     return () => clearTimeout(timeout);
-  }, []);
+  }, [id]);
 
   const handleSaveProfile = async () => {
-    const errs = validFormDataProfile(flagData);
+    const errs = validFormDataProfile({ ...dataUser, ...flagData });
     if (errs.length === 0) {
       try {
         await updateProfile(flagData);
@@ -48,7 +48,7 @@ export default function ProfileTab() {
     }
   };
   const handleCancel = () => {
-    setFlagData(dataUser);
+    setFlagData({});
     setIsEditing(false);
   };
 

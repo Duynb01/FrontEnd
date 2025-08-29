@@ -21,11 +21,26 @@ export default function PasswordTab() {
 
   const handlePasswordChange = async () => {
     setIsLoading(true);
+    if (
+      !passwordData.confirmPassword ||
+      !passwordData.newPassword ||
+      !passwordData.currentPassword
+    ) {
+      toast.warning("Vui lòng điền đầy đủ thông tin!");
+      setIsLoading(false);
+      return;
+    }
     if (passwordData.confirmPassword !== passwordData.newPassword) {
       toast.warning("Mật khẩu mới không khớp!");
       setIsLoading(false);
       return;
     }
+    if (passwordData.confirmPassword !== passwordData.newPassword) {
+      toast.warning("Mật khẩu mới không khớp!");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       await updatePassword(passwordData);
       toast.success("Cập nhật thành công!");
@@ -60,7 +75,6 @@ export default function PasswordTab() {
                 })
               }
               className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
             />
             <button
               type="button"
@@ -96,7 +110,6 @@ export default function PasswordTab() {
                 })
               }
               className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
             />
             <button
               type="button"
@@ -132,7 +145,6 @@ export default function PasswordTab() {
                 })
               }
               className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
             />
             <button
               type="button"

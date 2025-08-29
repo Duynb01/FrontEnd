@@ -18,7 +18,6 @@ import { toast } from "react-toastify";
 export default function OrderTab() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectStatus, setSelectStatus] = useState("ALL");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,12 +116,6 @@ export default function OrderTab() {
   const handleCloseOrderDetail = () => {
     setIsShowDetail(false);
   };
-
-  // Filter
-  const status = ["DELIVERED", "SHIPPING", "PROCESSING", "CANCELLED"];
-  const filteredStatus = orders.filter((order) =>
-    selectStatus === "ALL" ? true : order.status === selectStatus
-  );
   if (loading) {
     return (
       <div className="flex justify-center items-center">
@@ -192,22 +185,17 @@ export default function OrderTab() {
           </div>
         </div>
 
-        {/* Orders Filter status */}
+        {/* Orders Filter */}
         <div className="bg-white rounded-2xl shadow-sm p-6">
           <div>
             <div className="flex items-center space-x-2">
               <Filter className="w-5 h-5 text-slate-400" />
-              <select
-                className="border px-3 py-2 rounded-sm"
-                value={selectStatus}
-                onChange={(e) => setSelectStatus(e.target.value)}
-              >
-                <option value="ALL">Tất cả trạng thái</option>
-                {status.map((value) => (
-                  <option key={value} value={value}>
-                    {getNameStatus(value)}
-                  </option>
-                ))}
+              <select className="border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option>Tất cả trạng thái</option>
+                <option>Đang xử lý</option>
+                <option>Đang giao</option>
+                <option>Đã giao</option>
+                <option>Đã hủy</option>
               </select>
             </div>
           </div>
@@ -243,7 +231,7 @@ export default function OrderTab() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-slate-200">
-                {filteredStatus.map((order) => (
+                {orders.map((order) => (
                   <tr
                     key={order.id}
                     className="hover:bg-slate-50 transition-colors"
