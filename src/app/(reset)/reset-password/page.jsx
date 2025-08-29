@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { resetPassword } from "@/lib/api/apiAuth";
 import { toast } from "react-toastify";
+import { Loader } from "lucide-react";
 
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
@@ -27,9 +28,10 @@ export default function ResetPasswordPage() {
       token,
       newPassword,
     };
-    if (!isValidPassword(payload.newPassword)) {
-      toast.warning("Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số!");
+    if (newPassword.trim().length < 8) {
+      toast.warning("Mật khẩu phải lớn hơn 8 ký tự");
       setLoading(false);
+      return;
     }
 
     try {

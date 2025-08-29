@@ -1,8 +1,10 @@
 "use client";
 import NavButton from "@/components/NavButton";
 import { forgotPassword } from "@/lib/api/apiAuth";
+import { isValidEmail } from "@/utils/isValidData";
 import { Home, Loader } from "lucide-react";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -13,6 +15,17 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+    if (email.trim().length <= 0) {
+      toast.warning("Vui lòng nhập email");
+      setLoading(false);
+      return;
+    }
+    if (!isValidEmail(email)) {
+      toast.warning("Vui lòng nhập email đúng định dạng");
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await forgotPassword(email);
       setMessage(`${res.message}`);
@@ -34,12 +47,11 @@ export default function ForgotPasswordPage() {
         <h1 className="text-xl font-bold mb-4">Quên mật khẩu</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            type="email"
+            type="text"
             placeholder="Nhập email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full border p-2 mb-3 rounded"
-            required
           />
           <button
             type="submit"

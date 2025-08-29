@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-const isValidEmail = (email) => {
+export const isValidEmail = (email) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
