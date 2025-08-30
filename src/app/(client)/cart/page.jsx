@@ -4,16 +4,23 @@ import { useRouter } from "next/navigation";
 import { getCart, updateCart, removeItemCart } from "@/lib/api/apiCart";
 import { toast } from "react-toastify";
 import CartItem from "@/components/CartItem";
+import { Loader } from "lucide-react";
 
 export default function CartPage() {
   const router = useRouter();
   const [cartItem, setCartItems] = useState([]);
   const [listCart, setListCart] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchCart = async () => {
-    const data = await getCart();
-    if (data) {
+    try {
+      setLoading(true);
+      const data = await getCart();
       setListCart(data);
+    } catch (err) {
+      toast.warning(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,9 +76,18 @@ export default function CartPage() {
       fetchCart();
     } catch (err) {
       toast.warning(err.message);
-      console.error(err.message);
     }
   };
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center bg-white">
+        <div className="flex items-center">
+          <Loader className="w-5 h-5 animate-spin text-main" />
+          <span className="ml-2">Đang tải giỏ hàng...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -80,7 +96,7 @@ export default function CartPage() {
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
-            checked={cartItem.length === listCart.length}
+            checked={listCart.length > 0 && cartItem.length === listCart.length}
             onChange={handleSelectAll}
           />
           <span>Chọn tất cả</span>

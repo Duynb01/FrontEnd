@@ -1,6 +1,6 @@
 import { api } from "@/utils/wrapApi";
 
-export async function getVoucher() {
+async function getVoucher() {
   try {
     const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/vouchers`);
     const data = await res.json();
@@ -11,7 +11,7 @@ export async function getVoucher() {
   }
 }
 
-export async function getMyVoucher() {
+async function getMyVoucher() {
   try {
     const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/vouchers/me`);
     const data = await res.json();
@@ -22,7 +22,7 @@ export async function getMyVoucher() {
   }
 }
 
-export async function claimVoucher(payload) {
+async function claimVoucher(payload) {
   try {
     const res = await api.post(
       `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${payload}/claim`,
@@ -38,7 +38,7 @@ export async function claimVoucher(payload) {
   }
 }
 
-export async function validVoucher(payload) {
+async function validVoucher(payload) {
   try {
     const res = await api.get(
       `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${payload}`
@@ -51,7 +51,7 @@ export async function validVoucher(payload) {
   }
 }
 
-export async function updateVoucher(payload) {
+async function updateVoucher(payload) {
   const { id, edit } = payload;
   try {
     const res = await api.patch(
@@ -65,7 +65,7 @@ export async function updateVoucher(payload) {
     throw err;
   }
 }
-export async function createVoucher(payload) {
+async function createVoucher(payload) {
   try {
     const res = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/vouchers`, {
       name: payload.name,
@@ -82,7 +82,7 @@ export async function createVoucher(payload) {
     throw err;
   }
 }
-export async function deleteVoucher(id) {
+async function deleteVoucher(id) {
   try {
     const res = await api.delete(
       `${process.env.NEXT_PUBLIC_API_URL}/vouchers/${id}`
@@ -94,3 +94,13 @@ export async function deleteVoucher(id) {
     throw err;
   }
 }
+
+export {
+  getVoucher,
+  getMyVoucher,
+  claimVoucher,
+  validVoucher,
+  updateVoucher,
+  createVoucher,
+  deleteVoucher,
+};

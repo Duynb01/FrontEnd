@@ -172,7 +172,7 @@ export default function Search() {
     setIsOpen(false);
   };
   return (
-    <div className="max-w-xl  relative">
+    <div className="max-w-xl relative">
       {isOpen && (
         <div
           className="fixed inset-0 top-[66px] bg-black/40 z-50"

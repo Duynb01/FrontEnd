@@ -19,6 +19,7 @@ export default function ProductWithCategoryPage({ category }) {
     if (sortOrder === "high-to-low") return b.price - a.price;
     return 0;
   });
+
   return (
     <div className="wrapper-product container ">
       <div className="my-4">

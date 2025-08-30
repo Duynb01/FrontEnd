@@ -130,7 +130,7 @@ export default function CreateVoucherBox({ onClick, fetchVoucher }) {
 
         <button
           type="submit"
-          className="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+          className="mt-4 bg-black text-white py-2 rounded hover:bg-gray-800 flex justify-center items-center"
         >
           {isLoading ? (
             <>

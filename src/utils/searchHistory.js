@@ -1,5 +1,4 @@
-// utils/searchHistory.js
-export const saveSearchKeyword = (keyword) => {
+const saveSearchKeyword = (keyword) => {
   const key = "search_history";
   let history = JSON.parse(localStorage.getItem(key)) || [];
   const index = history.findIndex(
@@ -13,7 +12,7 @@ export const saveSearchKeyword = (keyword) => {
   localStorage.setItem(key, JSON.stringify(history));
 };
 
-export const removeSearchKeyword = (keyword) => {
+const removeSearchKeyword = (keyword) => {
   const key = "search_history";
   let history = JSON.parse(localStorage.getItem(key)) || [];
 
@@ -24,11 +23,11 @@ export const removeSearchKeyword = (keyword) => {
   localStorage.setItem(key, JSON.stringify(history));
 };
 
-export const getSearchHistory = () => {
+const getSearchHistory = () => {
   return JSON.parse(localStorage.getItem("search_history")) || [];
 };
 
-export const clearSearchHistory = () => {
+const clearSearchHistory = () => {
   localStorage.removeItem("search_history");
 };
 
@@ -39,7 +38,7 @@ const formatSearch = (value) => {
     .toLowerCase();
 };
 
-export const searchProduct = (value, productList) => {
+const searchProduct = (value, productList) => {
   const listProduct = productList.filter((product) => {
     return formatSearch(product.name).includes(formatSearch(value).trim());
   });
@@ -47,4 +46,10 @@ export const searchProduct = (value, productList) => {
   return listProduct;
 };
 
-//
+export {
+  saveSearchKeyword,
+  removeSearchKeyword,
+  getSearchHistory,
+  clearSearchHistory,
+  searchProduct,
+};

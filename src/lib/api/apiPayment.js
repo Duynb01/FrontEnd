@@ -32,8 +32,6 @@ async function createPayment(orderId, paymentMethod, totalPrice) {
 }
 
 async function verifyPayment(queryString) {
-  console.log(queryString);
-
   try {
     const res = await api.get(
       `${process.env.NEXT_PUBLIC_API_URL}/payments/vnpay-return?${queryString}`

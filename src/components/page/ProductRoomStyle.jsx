@@ -44,7 +44,7 @@ export default function ProductRoomStylePage({ room, products }) {
         </select>
       </div>
       {/* Danh sách sản phẩm */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 mdc:grid-cols-5 xl:grid-cols-6 gap-4  pb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4  pb-4">
         {sortedProducts.length === 0 ? (
           <p className="col-span-full text-gray-500">Không có sản phẩm nào.</p>
         ) : (

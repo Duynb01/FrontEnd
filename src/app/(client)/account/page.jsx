@@ -8,9 +8,7 @@ import ProfileTab from "@/components/account/ProfileTab";
 import PasswordTab from "@/components/account/PasswordTab";
 import OrderTab from "@/components/account/OrderTab";
 import VoucherTab from "@/components/account/VoucherTab";
-import { getProfileUser } from "@/lib/api/apiUser";
-import { getMyVoucher } from "@/lib/api/apiVoucher";
-import { getOrderByUser } from "@/lib/api/apiOrder";
+import { useSelector } from "react-redux";
 // import {
 //   ProfileTab,
 //   OrderTab,
@@ -20,6 +18,7 @@ import { getOrderByUser } from "@/lib/api/apiOrder";
 
 export default function AccountPage({}) {
   const searchParams = useSearchParams();
+  const { userInfo } = useSelector((state) => state.user);
   const currentTab = searchParams.get("tab") || "profile";
 
   const renderTabContent = () => {
@@ -76,8 +75,12 @@ export default function AccountPage({}) {
                   <User className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">User 3</h3>
-                  <p className="text-sm text-gray-600">user3@gmail.com</p>
+                  <h3 className="font-semibold text-gray-900">
+                    {userInfo?.name || "Lỗi cập nhật"}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {userInfo?.email || "Lỗi cập nhật"}
+                  </p>
                 </div>
               </div>
 

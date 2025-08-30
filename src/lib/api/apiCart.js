@@ -1,6 +1,6 @@
 import { api } from "@/utils/wrapApi";
 
-export async function addCart(payload) {
+async function addCart(payload) {
   try {
     const { id, quantity } = payload;
     const res = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/carts`, {
@@ -15,7 +15,7 @@ export async function addCart(payload) {
   }
 }
 
-export async function getCart() {
+async function getCart() {
   try {
     const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/carts`);
     const data = await res.json();
@@ -26,7 +26,7 @@ export async function getCart() {
   }
 }
 
-export async function updateCart(payload) {
+async function updateCart(payload) {
   try {
     const res = await api.patch(
       `${process.env.NEXT_PUBLIC_API_URL}/carts/${payload.cartItemId}`,
@@ -42,7 +42,7 @@ export async function updateCart(payload) {
   }
 }
 
-export async function removeItemCart(payload) {
+async function removeItemCart(payload) {
   try {
     const res = await api.delete(
       `${process.env.NEXT_PUBLIC_API_URL}/carts/${payload}`
@@ -54,3 +54,5 @@ export async function removeItemCart(payload) {
     throw err;
   }
 }
+
+export { addCart, getCart, updateCart, removeItemCart };

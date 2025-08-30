@@ -129,7 +129,7 @@ export default function Home() {
         <section className="home-product-1">
           <div className="product-content bg-[#ffeef0] rounded-md py-4 px-2">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-4 pl-[7px] relative before:content[''] before:bg-main before:rounded-full before:w-2 before:h-2 after:content[''] after:border-main after:rounded-full after:w-2 after:h-2 after:absolute after:border after:animate-pulseSmall">
-              Sản phẩm nổi bật
+              <Link href="">Sản phẩm nổi bật</Link>
             </h2>
             <div className="flex items-center overflow-x-scroll scrollbar-none scroll-x-start">
               {products.slice(0, 5).map((product, i) => (

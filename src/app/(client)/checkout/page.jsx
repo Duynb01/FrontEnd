@@ -85,7 +85,6 @@ export default function CheckoutPage() {
         } else if (payload.method === "cod") {
           await createPayment(orderId, payload.method, payload.totalPrice);
         }
-
         router.push(`/order?orderId=${orderId}`);
         toast.success("Đặt hàng thành công!");
       } catch (err) {
@@ -108,6 +107,7 @@ export default function CheckoutPage() {
   const handleApplyVoucher = async () => {
     try {
       const dataVoucher = await validVoucher(voucherCode);
+      toast.success("Áp dụng voucher thành công.");
       setVoucher({
         code: dataVoucher.code,
         discount: dataVoucher.discount,

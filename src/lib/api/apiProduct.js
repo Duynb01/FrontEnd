@@ -84,6 +84,7 @@ async function createProduct(payload) {
     throw err;
   }
 }
+
 async function getProductRoomStyle(slug) {
   try {
     const res = await api.get(

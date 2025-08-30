@@ -8,8 +8,14 @@ export async function refreshToken(url, options = {}) {
     return response;
   }
 
-  const skipRetryRoutes = ["/auth/login", "/auth/register", "/auth/refresh"];
-  if (skipRetryRoutes.some((r) => url.includes(r))) {
+  const skipRetryRoutes = [
+    "/auth/login",
+    "/auth/register",
+    "/auth/refresh",
+    "/auth/logout",
+    "/vouchers//claim",
+  ];
+  if (skipRetryRoutes.some((r) => url.includes(r)) || url.endsWith("/claim")) {
     return response;
   }
 

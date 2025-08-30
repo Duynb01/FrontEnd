@@ -35,6 +35,18 @@ export default function OrderDetail({
         return <Package className="w-5 h-5 text-gray-500" />;
     }
   };
+  const getStatusPaymentIcon = (status) => {
+    switch (status) {
+      case "SUCCESS":
+        return <CircleCheckBig className="w-5 h-5 text-green-500" />;
+      case "FAIL":
+        return <CircleX className="w-5 h-5 text-red-500" />;
+      case "PENDING":
+        return <Loader className="w-5 h-5 text-yellow-500" />;
+      default:
+        return <Loader className="w-5 h-5 text-gray-500" />;
+    }
+  };
 
   const getStatusText = (status) => {
     switch (status) {
@@ -50,18 +62,6 @@ export default function OrderDetail({
         return "Đã hủy";
       default:
         return "Chưa xác định";
-    }
-  };
-  const getStatusPaymentText = (status) => {
-    switch (status) {
-      case "PENDING":
-        return "Chờ thanh toán";
-      case "SUCCESS":
-        return "Đã thanh toán";
-      case "FAIL":
-        return "Thanh toán thất bại";
-      default:
-        return "Chờ thanh toán";
     }
   };
 
@@ -80,16 +80,16 @@ export default function OrderDetail({
     }
   };
 
-  const getStatusPaymentIcon = (status) => {
+  const getStatusPaymentText = (status) => {
     switch (status) {
-      case "SUCCESS":
-        return <CircleCheckBig className="w-5 h-5 text-green-500" />;
-      case "FAIL":
-        return <CircleX className="w-5 h-5 text-red-500" />;
       case "PENDING":
-        return <Loader className="w-5 h-5 text-yellow-500" />;
+        return "Chờ thanh toán";
+      case "SUCCESS":
+        return "Đã thanh toán";
+      case "FAIL":
+        return "Thanh toán thất bại";
       default:
-        return <Loader className="w-5 h-5 text-gray-500" />;
+        return "Chờ thanh toán";
     }
   };
 

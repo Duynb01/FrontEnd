@@ -68,18 +68,16 @@ export default function LoginForm() {
           onChange={handleInputChange}
           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
           placeholder="Họ tên .."
-          required
         />
 
         <input
-          type="email"
+          type="text"
           id="email"
           name="email"
           value={formData.email}
           onChange={handleInputChange}
           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
           placeholder="Email .."
-          required
         />
         <input
           type="password"
@@ -89,7 +87,6 @@ export default function LoginForm() {
           onChange={handleInputChange}
           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-main focus:border-transparent outline-none transition-all"
           placeholder="Mật Khẩu .."
-          required
         />
         <button
           type="submit"

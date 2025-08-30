@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-export const isValidEmail = (email) => {
+const isValidEmail = (email) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
@@ -26,20 +26,21 @@ const hasEmptyValue = (obj) => {
   );
 };
 
-export const validFormDataProfile = (formData) => {
+const validFormDataProfile = (formData) => {
   const errors = [];
   if (!isValidPhone(formData.phone)) {
     errors.push("Số điện thoại không hợp lệ!");
   }
-  if (!isValidName(formData.name)) {
+  const name = formData?.name?.trim() || "";
+  if (name.length < 2) {
+    errors.push("Tên phải có ít nhất 2 ký tự!");
+  } else if (!isValidName(name)) {
     errors.push("Tên phải bắt đầu bằng chữ và không có ký tự đặc biệt!");
-  } else if (formData.name.trim().length < 2) {
-    errors.push("Tên phải phải có ít nhất 2 ký tự!");
   }
   return errors;
 };
 
-export const validFormDataShipping = (formData) => {
+const validFormDataShipping = (formData) => {
   const errors = [];
   if (!isValidPhone(formData.phone)) {
     errors.push("Số điện thoại không hợp lệ!");
@@ -58,7 +59,7 @@ export const validFormDataShipping = (formData) => {
   return errors;
 };
 
-export const validFormData = (formData) => {
+const validFormData = (formData) => {
   const errors = [];
   if (hasEmptyValue(formData)) {
     errors.push("Vui lòng điền đầy đủ thông tin!");
@@ -73,7 +74,7 @@ export const validFormData = (formData) => {
   return errors;
 };
 
-export const validateFormVoucher = (form) => {
+const validateFormVoucher = (form) => {
   const errors = [];
   const { name, code, discount, startDate, expiryDate, type } = form;
 
@@ -123,4 +124,16 @@ const validFormCreateProduct = (formData) => {
   return errors;
 };
 
-export { isValidPhone, validFormCreateProduct };
+export {
+  isValidEmail,
+  isValidPassword,
+  isValidName,
+  isValidAddress,
+  isValidPhone,
+  hasEmptyValue,
+  validFormDataProfile,
+  validFormDataShipping,
+  validFormData,
+  validateFormVoucher,
+  validFormCreateProduct,
+};

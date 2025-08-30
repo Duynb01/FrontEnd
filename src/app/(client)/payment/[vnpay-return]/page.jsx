@@ -19,6 +19,8 @@ export default function VNPayReturnPage() {
       try {
         setLoading(true);
         const data = await verifyPayment(queryString);
+        console.log(data);
+
         setDataPayment(data);
       } catch (err) {
         toast.error(err.message);

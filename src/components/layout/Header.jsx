@@ -5,7 +5,7 @@ import Image from "next/image";
 import NavDesktop from "./NavDesktop";
 import NavMobile from "./NavMobile";
 import Search from "../search/SearchBox";
-import { ShoppingCart, User } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import ButtonAccount from "../ButtonAccount";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,7 @@ export default function Header() {
             className="mx-auto rounded-full  font-bold"
             priority
           />
-          <span className="">FNS</span>
+          <span>FNS</span>
         </a>
 
         {/* Search Bar */}

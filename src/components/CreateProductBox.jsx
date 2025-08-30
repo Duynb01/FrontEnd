@@ -62,7 +62,7 @@ export default function CreateProductBox({ onClick, fetchProduct }) {
         ...formData,
         url: urlImage.url,
       };
-      await createProduct(payload);
+      const data = await createProduct(payload);
       fetchProduct();
       toast.success(data.message);
     } catch (err) {

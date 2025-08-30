@@ -12,6 +12,7 @@ export default function VoucherCard({ voucher }) {
     try {
       await claimVoucher(voucher.id);
       setIsClaimed(true);
+      toast.success("Lưu voucher thành công!");
     } catch (err) {
       toast.warning(err.message);
     }

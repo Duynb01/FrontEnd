@@ -1,6 +1,6 @@
 import { api } from "@/utils/wrapApi";
 
-export async function getUser() {
+async function getUser() {
   try {
     const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/users`);
     const data = await res.json();
@@ -11,7 +11,7 @@ export async function getUser() {
   }
 }
 
-export async function getProfileUser(id) {
+async function getProfileUser(id) {
   try {
     const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/users/${id}`);
     const data = await res.json();
@@ -22,7 +22,7 @@ export async function getProfileUser(id) {
   }
 }
 
-export async function updateProfile(payload) {
+async function updateProfile(payload) {
   try {
     const res = await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
       infoDto: {
@@ -38,7 +38,7 @@ export async function updateProfile(payload) {
     throw err;
   }
 }
-export async function updatePassword(payload) {
+async function updatePassword(payload) {
   try {
     const res = await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
       passwordDto: {
@@ -54,7 +54,7 @@ export async function updatePassword(payload) {
   }
 }
 
-export async function updateStatus(payload) {
+async function updateStatus(payload) {
   const { id, edit } = payload;
   try {
     const res = await api.patch(
@@ -69,7 +69,7 @@ export async function updateStatus(payload) {
   }
 }
 
-export async function deleteUser(id) {
+async function deleteUser(id) {
   try {
     const res = await api.delete(
       `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`
@@ -81,3 +81,12 @@ export async function deleteUser(id) {
     throw err;
   }
 }
+
+export {
+  getUser,
+  getProfileUser,
+  updateProfile,
+  updatePassword,
+  updateStatus,
+  deleteUser,
+};

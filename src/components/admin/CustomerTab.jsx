@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { formatExpiryDate } from "@/utils/formatData";
 import ButtonToggle from "../ButtonToggle";
-import { deleteUser, getUser, updateStatus } from "@/lib/api/apiUser";
+import { getUser, updateStatus, deleteUser } from "@/lib/api/apiUser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { getOrder } from "@/lib/api/apiOrder";

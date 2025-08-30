@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import Link from "next/link";
 
 export default function ButtonAccount() {
   const router = useRouter();
@@ -41,9 +40,9 @@ export default function ButtonAccount() {
         dispatch(deleteProfile());
         localStorage.removeItem("isLogin");
         localStorage.removeItem("orderList");
-        toast.success(res.message || "Đăng xuất thành công!");
         setIsLogin(false);
         router.push("/");
+        toast.success(res.message || "Đăng xuất thành công!");
       }
     } catch (e) {
       toast.error(e.message || "Lỗi Đăng xuất!");
@@ -60,8 +59,7 @@ export default function ButtonAccount() {
   };
 
   const handleToAccount = () => {
-    const checkLogin = localStorage.getItem("isLogin");
-    if (!checkLogin) {
+    if (!isCheckLogin) {
       toast.warning("Vui lòng đăng nhập!");
       return;
     }

@@ -11,9 +11,9 @@ export default function Footer() {
           {/* Cột 1: Liên hệ */}
           <div>
             <h4 className="font-semibold mb-2">Liên hệ</h4>
-            <p>Email: support@furniture.vn</p>
+            <p>Email: support@noithatabc.vn</p>
             <p>ĐT: 0123 456 789</p>
-            <p>Địa chỉ: Đ.Nghiêm Xuân Yêm, Đại Kim, Hoàng Mai, Hà Nội</p>
+            <p>Địa chỉ: 123 Đường ABC, TP.HCM</p>
           </div>
 
           {/* Cột 2: Chính sách */}
