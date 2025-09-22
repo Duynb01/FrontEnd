@@ -107,20 +107,14 @@ export default function Home() {
                     className="group-hover:scale-110 transition-transform duration-500"
                     alt={category.name}
                   />
-                </Link>
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center px-5 py-[10px] w-full">
-                  <h3>
-                    <Link
-                      href=""
-                      className="text-main font-bold text-[16px] mdx:text-[18px]"
-                    >
+
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center px-5 py-[10px] w-full">
+                    <h3 className="text-main font-bold text-[16px] mdx:text-[18px]">
                       {category.name}
-                    </Link>
-                  </h3>
-                  <Link href="" className="text-sm text-[#252A2B]">
-                    Xem ngay
-                  </Link>
-                </div>
+                    </h3>
+                    <p className="text-sm text-[#252A2B]">Xem ngay</p>
+                  </div>
+                </Link>
               </div>
             ))}
           </div>

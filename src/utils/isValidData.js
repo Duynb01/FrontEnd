@@ -9,7 +9,7 @@ const isValidPassword = (password) => {
 };
 
 const isValidName = (name) => {
-  return /^[A-Za-zÀ-ỹ][A-Za-zÀ-ỹ0-9\s]{1,}$/.test(name);
+  return /^[A-Za-zÀ-ỹ].*$/.test(name.trim());
 };
 
 const isValidAddress = (name) => {
