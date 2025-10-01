@@ -60,7 +60,7 @@ export default function ForgotPasswordPage() {
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">
-                <Loader className="w-4 h-4 animate-spin" />
+                <Loader className="w-4 h-4 animate-spin text-main" />
                 Đang xử lý
               </div>
             ) : (
