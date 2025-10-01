@@ -38,8 +38,8 @@ export default function BaseLayout({ children }) {
   }, [dispatch]);
   if (loading) {
     return (
-      <div className="flex justify-center items-center gap-2">
-        <Loader className="w-5 h-5 animate-spin text-main" />
+      <div className="flex justify-center items-center gap-2 w-screen h-screen">
+        <Loader className="w-6 h-6 animate-spin text-main" />
         Đang tải dữ liệu lần đầu...
       </div>
     );
