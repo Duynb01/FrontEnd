@@ -10,13 +10,13 @@ import { deleteProfile, setProfile } from "@/redux/store/slices/userSlice";
 export default function Reload({ children }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const isLogin =
     typeof window !== "undefined" && localStorage.getItem("isLogin");
   useEffect(() => {
     if (!isLogin) {
       dispatch(setLogout());
-      setLoading(false);
+      // setLoading(false);
       return;
     }
     const fetchReload = async () => {
@@ -36,19 +36,19 @@ export default function Reload({ children }) {
         dispatch(deleteProfile());
         router.push("/");
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
     fetchReload();
   }, [dispatch]);
 
-  if (loading) {
-    return (
-      <div className="w-screen h-screen flex items-center justify-center">
-        <Loader className="w-6 h-6 animate-spin text-main" />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="w-screen h-screen flex items-center justify-center">
+  //       <Loader className="w-6 h-6 animate-spin text-main" />
+  //     </div>
+  //   );
+  // }
 
   return <>{children}</>;
 }
